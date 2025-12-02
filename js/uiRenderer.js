@@ -27,6 +27,9 @@ export class UIRenderer {
         this.soulBounce = 0;
         this.soulBounceDir = 1;
         
+        // Additional UI sprites
+        this.hpNameSprite = 'data/assets/Undertale Sprites/Battle/UI/spr_hpname_0.png';
+        
         // Preload all sprites
         this.preloadSprites();
     }
@@ -53,15 +56,15 @@ export class UIRenderer {
         } else {
             // Deltarune
             return {
-                fight: `${basePath}/spr_fight_button_0.png`,
-                fightHover: `${basePath}/spr_fight_button_1.png`,
-                act: `${basePath}/spr_act_button_0.png`,
-                actHover: `${basePath}/spr_act_button_1.png`,
-                item: `${basePath}/spr_item_button_0.png`,
-                itemHover: `${basePath}/spr_item_button_1.png`,
-                mercy: `${basePath}/spr_mercy_button_0.png`,
-                spare: `${basePath}/spr_spare_button_0.png`,
-                spareHover: `${basePath}/spr_spare_button_1.png`
+                fight: `${basePath}/spr_btfight_0.png`,
+                fightHover: `${basePath}/spr_btfight_1.png`,
+                act: `${basePath}/spr_btact_0.png`,
+                actHover: `${basePath}/spr_btact_1.png`,
+                item: `${basePath}/spr_btitem_0.png`,
+                itemHover: `${basePath}/spr_btitem_1.png`,
+                mercy: `${basePath}/spr_btspare_0.png`,
+                spare: `${basePath}/spr_btspare_0.png`,
+                spareHover: `${basePath}/spr_btspare_1.png`
             };
         }
     }
@@ -78,18 +81,16 @@ export class UIRenderer {
      */
     getBattleBoxSprites() {
         const mode = gameModeManager.getMode();
+        const basePath = gameModeManager.getBattleBoxPath();
         
         if (mode === GAME_MODES.UNDERTALE) {
-            return {
-                corner: 'Undertale Sprites/Battle/UI/Battle Box/spr_battlebox_0.png',
-                horizontal: 'Undertale Sprites/Battle/UI/Battle Box/spr_battlebox_1.png',
-                vertical: 'Undertale Sprites/Battle/UI/Battle Box/spr_battlebox_2.png'
-            };
+            // Undertale doesn't use sprite-based battle boxes, just white borders
+            return null;
         } else {
             return {
-                corner: 'Deltarune Sprites/UI/Battle/Battle Box/Ch1/spr_battlebox_corner_0.png',
-                horizontal: 'Deltarune Sprites/UI/Battle/Battle Box/Ch1/spr_battlebox_horizontal_0.png',
-                vertical: 'Deltarune Sprites/UI/Battle/Battle Box/Ch1/spr_battlebox_vertical_0.png'
+                corner: `${basePath}/spr_battlebox_corner_0.png`,
+                horizontal: `${basePath}/spr_battlebox_horizontal_0.png`,
+                vertical: `${basePath}/spr_battlebox_vertical_0.png`
             };
         }
     }
@@ -105,8 +106,13 @@ export class UIRenderer {
         const sprites = [
             ...Object.values(buttonSprites),
             soulSprite,
-            ...Object.values(battleBoxSprites)
+            this.hpNameSprite
         ];
+        
+        // Add battle box sprites if they exist (Deltarune)
+        if (battleBoxSprites) {
+            sprites.push(...Object.values(battleBoxSprites));
+        }
         
         await spriteManager.loadSprites(sprites);
         console.log(`UI sprites loaded for ${gameModeManager.getMode()} mode`);
@@ -206,48 +212,107 @@ export class UIRenderer {
      */
     drawHPBar(hp, maxHp, kr = 0) {
         const ctx = this.ctx;
+        const mode = gameModeManager.getMode();
         const x = UI.HP_BAR_X;
         const y = UI.HP_BAR_Y;
         
-        // Draw "HP" text (yellow)
-        ctx.font = 'bold 16px Determination Mono, monospace';
-        ctx.fillStyle = COLORS.TEXT_YELLOW;
-        ctx.fillText('HP', x, y);
-        
-        // Draw HP bar background (red)
-        const barWidth = UI.HP_BAR_WIDTH;
-        const barHeight = UI.HP_BAR_HEIGHT;
-        ctx.fillStyle = COLORS.HP_BAR_BACKGROUND;
-        ctx.fillRect(x + UI.HP_BAR_OFFSET, y - 14, barWidth, barHeight);
-        
-        // Draw HP bar border
-        ctx.strokeStyle = COLORS.HP_BAR_BORDER;
-        ctx.lineWidth = 2;
-        ctx.strokeRect(x + UI.HP_BAR_OFFSET, y - 14, barWidth, barHeight);
-        
-        // Draw HP bar fill (yellow)
-        const hpPercent = Math.max(0, Math.min(1, hp / maxHp));
-        ctx.fillStyle = COLORS.HP_BAR_FULL;
-        ctx.fillRect(x + UI.HP_BAR_OFFSET + 2, y - 12, (barWidth - 4) * hpPercent, barHeight - 4);
-        
-        // Draw KARMA (purple overlay)
-        if (kr > 0) {
-            const krPercent = Math.min(1, kr / maxHp);
-            ctx.fillStyle = COLORS.KARMA_OVERLAY;
-            ctx.fillRect(x + UI.HP_BAR_OFFSET + 2, y - 12, (barWidth - 4) * krPercent, barHeight - 4);
+        // Draw HP name sprite if available (Undertale)
+        if (mode === GAME_MODES.UNDERTALE) {
+            const hpNameImg = spriteManager.getSprite(this.hpNameSprite);
+            if (hpNameImg && hpNameImg.complete) {
+                ctx.imageSmoothingEnabled = false;
+                ctx.drawImage(hpNameImg, x - 5, y - 25, 100, 30);
+            } else {
+                // Fallback text
+                ctx.font = 'bold 16px Determination Mono, monospace';
+                ctx.fillStyle = COLORS.TEXT_YELLOW;
+                ctx.fillText('HP', x, y);
+            }
+        } else {
+            // Deltarune style - draw player name and HP/Max HP
+            ctx.font = 'bold 14px Determination Mono, monospace';
+            ctx.fillStyle = COLORS.TEXT_WHITE;
+            ctx.fillText('Kris', x - 5, y - 10);
         }
         
-        // Draw HP numbers (white)
+        // Draw HP bar background
+        const barWidth = UI.HP_BAR_WIDTH;
+        const barHeight = UI.HP_BAR_HEIGHT;
+        const barX = mode === GAME_MODES.UNDERTALE ? x + UI.HP_BAR_OFFSET : x + 50;
+        
+        ctx.fillStyle = mode === GAME_MODES.UNDERTALE ? COLORS.HP_BAR_BACKGROUND : '#800000';
+        ctx.fillRect(barX, y - 14, barWidth, barHeight);
+        
+        // Draw HP bar border
+        ctx.strokeStyle = COLORS.TEXT_WHITE;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(barX, y - 14, barWidth, barHeight);
+        
+        // Draw HP bar fill
+        const hpPercent = Math.max(0, Math.min(1, hp / maxHp));
+        const colors = gameModeManager.getColors();
+        ctx.fillStyle = colors.hpFill;
+        ctx.fillRect(barX + 2, y - 12, (barWidth - 4) * hpPercent, barHeight - 4);
+        
+        // Draw KARMA (purple overlay) for Undertale
+        if (kr > 0 && mode === GAME_MODES.UNDERTALE) {
+            const krPercent = Math.min(1, kr / maxHp);
+            ctx.fillStyle = COLORS.KARMA_OVERLAY;
+            ctx.fillRect(barX + 2, y - 12, (barWidth - 4) * krPercent, barHeight - 4);
+        }
+        
+        // Draw HP numbers
         ctx.fillStyle = COLORS.TEXT_WHITE;
         ctx.font = '16px Determination Mono, monospace';
         const currentHP = Math.max(0, Math.floor(hp));
-        ctx.fillText(`${currentHP} / ${maxHp}`, x + barWidth + UI.HP_TEXT_OFFSET, y);
+        ctx.fillText(`${currentHP} / ${maxHp}`, barX + barWidth + 10, y);
         
         // Draw KR indicator if present
-        if (kr > 0) {
+        if (kr > 0 && mode === GAME_MODES.UNDERTALE) {
             ctx.fillStyle = COLORS.TEXT_PINK;
-            ctx.fillText(` KR`, x + barWidth + 120, y);
+            ctx.fillText(` KR`, barX + barWidth + 120, y);
         }
+    }
+    
+    /**
+     * Draw TP bar (Deltarune only)
+     * @param {number} tp - Current TP (0-100)
+     * @param {number} maxTp - Maximum TP (usually 100)
+     */
+    drawTPBar(tp = 0, maxTp = 100) {
+        const mode = gameModeManager.getMode();
+        if (mode !== GAME_MODES.DELTARUNE) return;
+        
+        const ctx = this.ctx;
+        const x = UI.HP_BAR_X + 250;
+        const y = UI.HP_BAR_Y;
+        const barWidth = 80;
+        const barHeight = UI.HP_BAR_HEIGHT;
+        
+        // Draw "TP" text
+        ctx.font = 'bold 14px Determination Mono, monospace';
+        ctx.fillStyle = COLORS.TEXT_WHITE;
+        ctx.fillText('TP', x, y - 10);
+        
+        // Draw TP bar background (dark orange)
+        ctx.fillStyle = '#804000';
+        ctx.fillRect(x, y - 14, barWidth, barHeight);
+        
+        // Draw TP bar border
+        ctx.strokeStyle = COLORS.TEXT_WHITE;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y - 14, barWidth, barHeight);
+        
+        // Draw TP bar fill (orange)
+        const tpPercent = Math.max(0, Math.min(1, tp / maxTp));
+        const colors = gameModeManager.getColors();
+        ctx.fillStyle = colors.tp || '#ff8800';
+        ctx.fillRect(x + 2, y - 12, (barWidth - 4) * tpPercent, barHeight - 4);
+        
+        // Draw TP percentage
+        ctx.fillStyle = COLORS.TEXT_WHITE;
+        ctx.font = '14px Determination Mono, monospace';
+        ctx.fillText(`${Math.floor(tp)}%`, x + barWidth + 10, y);
     }
     
     /**
@@ -257,15 +322,108 @@ export class UIRenderer {
      */
     drawEnemyName(name, hp = null) {
         const ctx = this.ctx;
+        const mode = gameModeManager.getMode();
+        
         ctx.font = 'bold 18px Determination Mono, monospace';
         ctx.fillStyle = COLORS.TEXT_WHITE;
         ctx.textAlign = 'left';
-        ctx.fillText(`★ ${name}`, UI.ENEMY_NAME_X, UI.ENEMY_NAME_Y);
+        
+        if (mode === GAME_MODES.UNDERTALE) {
+            ctx.fillText(`★ ${name}`, UI.ENEMY_NAME_X, UI.ENEMY_NAME_Y);
+        } else {
+            // Deltarune style - show enemy name with * prefix
+            ctx.fillText(`* ${name}`, UI.ENEMY_NAME_X, UI.ENEMY_NAME_Y);
+        }
         
         if (hp !== null) {
             ctx.font = '14px Determination Mono, monospace';
             ctx.fillStyle = COLORS.TEXT_GRAY;
             ctx.fillText(`HP: ${hp}`, UI.ENEMY_NAME_X, UI.ENEMY_HP_Y);
+        }
+    }
+    
+    /**
+     * Draw battle box with proper styling for each mode
+     * @param {number} x - X position
+     * @param {number} y - Y position
+     * @param {number} width - Box width
+     * @param {number} height - Box height
+     */
+    drawBattleBox(x, y, width, height) {
+        const ctx = this.ctx;
+        const mode = gameModeManager.getMode();
+        
+        if (mode === GAME_MODES.UNDERTALE) {
+            // Undertale: Simple white border
+            ctx.fillStyle = COLORS.BG_BLACK;
+            ctx.fillRect(x, y, width, height);
+            
+            ctx.strokeStyle = COLORS.TEXT_WHITE;
+            ctx.lineWidth = 5;
+            ctx.strokeRect(x, y, width, height);
+        } else {
+            // Deltarune: Gradient border with sprites (if available)
+            const battleBoxSprites = this.getBattleBoxSprites();
+            
+            // Draw black background
+            ctx.fillStyle = COLORS.BG_BLACK;
+            ctx.fillRect(x, y, width, height);
+            
+            // Try to use sprites for borders
+            if (battleBoxSprites) {
+                const cornerImg = spriteManager.getSprite(battleBoxSprites.corner);
+                const horzImg = spriteManager.getSprite(battleBoxSprites.horizontal);
+                const vertImg = spriteManager.getSprite(battleBoxSprites.vertical);
+                
+                if (cornerImg && cornerImg.complete && horzImg && horzImg.complete && vertImg && vertImg.complete) {
+                    ctx.imageSmoothingEnabled = false;
+                    
+                    // Draw corners
+                    const cornerSize = 8;
+                    ctx.drawImage(cornerImg, x, y, cornerSize, cornerSize); // Top-left
+                    ctx.save();
+                    ctx.translate(x + width, y);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(cornerImg, 0, 0, cornerSize, cornerSize); // Top-right
+                    ctx.restore();
+                    ctx.save();
+                    ctx.translate(x, y + height);
+                    ctx.scale(1, -1);
+                    ctx.drawImage(cornerImg, 0, 0, cornerSize, cornerSize); // Bottom-left
+                    ctx.restore();
+                    ctx.save();
+                    ctx.translate(x + width, y + height);
+                    ctx.scale(-1, -1);
+                    ctx.drawImage(cornerImg, 0, 0, cornerSize, cornerSize); // Bottom-right
+                    ctx.restore();
+                    
+                    // Draw horizontal borders
+                    const horzWidth = horzImg.width;
+                    for (let i = cornerSize; i < width - cornerSize; i += horzWidth) {
+                        const drawWidth = Math.min(horzWidth, width - cornerSize - i);
+                        ctx.drawImage(horzImg, 0, 0, drawWidth, horzImg.height, x + i, y, drawWidth, 4);
+                        ctx.drawImage(horzImg, 0, 0, drawWidth, horzImg.height, x + i, y + height - 4, drawWidth, 4);
+                    }
+                    
+                    // Draw vertical borders
+                    const vertHeight = vertImg.height;
+                    for (let i = cornerSize; i < height - cornerSize; i += vertHeight) {
+                        const drawHeight = Math.min(vertHeight, height - cornerSize - i);
+                        ctx.drawImage(vertImg, 0, 0, vertImg.width, drawHeight, x, y + i, 4, drawHeight);
+                        ctx.drawImage(vertImg, 0, 0, vertImg.width, drawHeight, x + width - 4, y + i, 4, drawHeight);
+                    }
+                } else {
+                    // Fallback: gradient border
+                    ctx.strokeStyle = COLORS.TEXT_WHITE;
+                    ctx.lineWidth = 5;
+                    ctx.strokeRect(x, y, width, height);
+                }
+            } else {
+                // Fallback: simple white border
+                ctx.strokeStyle = COLORS.TEXT_WHITE;
+                ctx.lineWidth = 5;
+                ctx.strokeRect(x, y, width, height);
+            }
         }
     }
     

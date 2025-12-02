@@ -12,6 +12,7 @@ import { uiManager } from './ui.js';
 import { UIRenderer } from './uiRenderer.js';
 import { audioManager } from './audio.js';
 import { InputManager } from './utils.js';
+import { gameModeManager } from './gameMode.js';
 
 /**
  * Battle class - Main battle controller
@@ -26,6 +27,8 @@ export class Battle {
         this.phase = CONFIG.PHASE.MENU;
         this.playerHP = CONFIG.HP.current;
         this.maxHP = CONFIG.HP.max;
+        this.playerTP = 0; // Deltarune TP system
+        this.maxTP = 100;
         
         // Battle components
         this.soul = new Soul(
@@ -36,6 +39,13 @@ export class Battle {
         this.enemy = null;
         this.currentAttackPattern = null;
         this.turnCount = 0;
+        
+        // Visual effects
+        this.damageNumbers = [];
+        this.screenFlash = 0;
+        this.battleBoxPulse = 0;
+        this.flavorText = '';
+        this.flavorTextTimer = 0;
         
         // UI Renderer for sprite-based UI
         this.uiRenderer = new UIRenderer(this.canvas);
@@ -224,11 +234,38 @@ export class Battle {
         // Show enemy dialogue
         uiManager.showDialogue(`* ${this.enemy.getDialogue()}`);
         
+        // Set flavor text
+        this.setFlavorText(this.getRandomFlavorText());
+        
         // Start attack pattern after brief delay
         setTimeout(() => {
             this.currentAttackPattern = this.enemy.getNextAttackPattern();
             this.currentAttackPattern.start();
+            this.battleBoxPulse = 1;
         }, TIMING.ATTACK_START_DELAY);
+    }
+    
+    /**
+     * Get random flavor text for attacks
+     */
+    getRandomFlavorText() {
+        const texts = [
+            'Watch out!',
+            'Stay focused!',
+            'Keep moving!',
+            'Don\'t give up!',
+            'You can do this!',
+            'Stay determined!'
+        ];
+        return texts[Math.floor(Math.random() * texts.length)];
+    }
+    
+    /**
+     * Set flavor text with timer
+     */
+    setFlavorText(text) {
+        this.flavorText = text;
+        this.flavorTextTimer = 180; // 3 seconds at 60fps
     }
     
     /**
@@ -244,9 +281,28 @@ export class Battle {
         // Shake effect
         this.shakeAmount = CONFIG.ANIMATION.shakeIntensity;
         
+        // Screen flash
+        this.screenFlash = 0.5;
+        
+        // Spawn damage number
+        this.spawnDamageNumber(data.damage, this.soul.x, this.soul.y);
+        
         if (this.playerHP <= 0) {
             this.handleGameOver();
         }
+    }
+    
+    /**
+     * Spawn floating damage number
+     */
+    spawnDamageNumber(damage, x, y) {
+        this.damageNumbers.push({
+            damage: Math.floor(damage),
+            x: x,
+            y: y,
+            life: 60,
+            vy: -2
+        });
     }
     
     /**
@@ -317,6 +373,9 @@ export class Battle {
             this.enemy.update();
         }
         
+        // Update visual effects
+        this.updateVisualEffects();
+        
         // Update based on phase
         switch (this.phase) {
             case CONFIG.PHASE.ENEMY_ATTACK:
@@ -333,6 +392,34 @@ export class Battle {
     }
     
     /**
+     * Update visual effects
+     */
+    updateVisualEffects() {
+        // Update damage numbers
+        this.damageNumbers = this.damageNumbers.filter(num => {
+            num.y += num.vy;
+            num.life--;
+            num.vy *= 0.95; // Slow down
+            return num.life > 0;
+        });
+        
+        // Update screen flash
+        if (this.screenFlash > 0) {
+            this.screenFlash -= 0.05;
+        }
+        
+        // Update battle box pulse
+        if (this.battleBoxPulse > 0) {
+            this.battleBoxPulse -= 0.02;
+        }
+        
+        // Update flavor text timer
+        if (this.flavorTextTimer > 0) {
+            this.flavorTextTimer--;
+        }
+    }
+    
+    /**
      * Update attack phase
      */
     updateAttackPhase() {
@@ -344,8 +431,20 @@ export class Battle {
         // Update attack pattern
         this.currentAttackPattern.update();
         
+        // Store previous collision state for TP gain detection
+        const hadCollision = this.soul.invincible;
+        
         // Check collisions
         collisionManager.checkCollisions(this.soul, this.currentAttackPattern.getActiveObjects());
+        
+        // Grant TP in Deltarune mode for successful dodging
+        if (gameModeManager.getMode() === 'deltarune') {
+            // If we're not invincible and there are active attacks nearby, grant small TP
+            const activeObjects = this.currentAttackPattern.getActiveObjects();
+            if (activeObjects.length > 0 && !hadCollision) {
+                this.playerTP = Math.min(this.maxTP, this.playerTP + 0.1);
+            }
+        }
         
         // Check if attack phase is complete
         if (!this.currentAttackPattern.isActive) {
@@ -430,10 +529,19 @@ export class Battle {
         
         ctx.restore();
         
+        // Draw visual effects
+        this.drawVisualEffects(ctx);
+        
         // Draw sprite-based UI elements
         if (this.enemy) {
             this.uiRenderer.drawHPBar(this.playerHP, this.maxHP);
+            this.uiRenderer.drawTPBar(this.playerTP, this.maxTP);
             this.uiRenderer.drawEnemyName(this.enemy.name);
+        }
+        
+        // Draw flavor text during attacks
+        if (this.flavorTextTimer > 0 && this.phase === CONFIG.PHASE.ENEMY_ATTACK) {
+            this.drawFlavorText(ctx);
         }
         
         // Draw action buttons (menu phase)
@@ -443,20 +551,69 @@ export class Battle {
     }
     
     /**
+     * Draw visual effects
+     */
+    drawVisualEffects(ctx) {
+        // Draw screen flash
+        if (this.screenFlash > 0) {
+            ctx.fillStyle = `rgba(255, 0, 0, ${this.screenFlash * 0.3})`;
+            ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        }
+        
+        // Draw damage numbers
+        this.damageNumbers.forEach(num => {
+            const alpha = num.life / 60;
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.font = 'bold 24px Determination Mono, monospace';
+            ctx.fillStyle = '#ff0000';
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 3;
+            ctx.strokeText(num.damage.toString(), num.x, num.y);
+            ctx.fillText(num.damage.toString(), num.x, num.y);
+            ctx.restore();
+        });
+    }
+    
+    /**
+     * Draw flavor text
+     */
+    drawFlavorText(ctx) {
+        const alpha = Math.min(1, this.flavorTextTimer / 60);
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.font = 'bold 18px Determination Mono, monospace';
+        ctx.fillStyle = '#ffff00';
+        ctx.textAlign = 'center';
+        ctx.fillText(this.flavorText, this.canvas.width / 2, 100);
+        ctx.restore();
+    }
+    
+    /**
      * Draw battle box
      * @param {CanvasRenderingContext2D} ctx - Canvas context
      */
     drawBattleBox(ctx) {
         const box = CONFIG.BATTLE_BOX;
         
-        // Draw border
-        ctx.strokeStyle = CONFIG.COLORS.battleBoxBorder;
-        ctx.lineWidth = box.borderWidth;
-        ctx.strokeRect(box.x, box.y, box.width, box.height);
+        // Apply pulse effect during attacks
+        const scale = 1 + (this.battleBoxPulse * 0.05);
+        const offsetX = (box.width * (scale - 1)) / 2;
+        const offsetY = (box.height * (scale - 1)) / 2;
         
-        // Draw fill
-        ctx.fillStyle = CONFIG.COLORS.battleBox;
-        ctx.fillRect(box.x + box.borderWidth, box.y + box.borderWidth, 
-                     box.width - box.borderWidth * 2, box.height - box.borderWidth * 2);
+        ctx.save();
+        if (this.battleBoxPulse > 0) {
+            ctx.globalAlpha = 0.8 + (this.battleBoxPulse * 0.2);
+        }
+        
+        // Use UIRenderer's battle box method for proper styling
+        this.uiRenderer.drawBattleBox(
+            box.x - offsetX, 
+            box.y - offsetY, 
+            box.width * scale, 
+            box.height * scale
+        );
+        
+        ctx.restore();
     }
 }

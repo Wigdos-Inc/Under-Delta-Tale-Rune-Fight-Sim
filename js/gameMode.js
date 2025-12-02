@@ -14,28 +14,33 @@ export class GameModeManager {
         this.config = {
             [GAME_MODES.UNDERTALE]: {
                 name: 'UNDERTALE',
-                buttonPath: 'Undertale Sprites/Battle/UI/Buttons/',
-                soulPath: 'Undertale Sprites/Battle/UI/Soul/',
-                battleBoxPath: 'Undertale Sprites/Battle/UI/BG/',
-                enemyPath: 'Undertale Sprites/Battle/',
+                buttonPath: 'data/assets/Undertale Sprites/Battle/UI/Buttons',
+                soulPath: 'data/assets/Undertale Sprites/Battle/UI/Soul/spr_heart_0.png',
+                battleBoxPath: 'data/assets/Undertale Sprites/Battle/UI',
+                enemyPath: 'data/assets/Undertale Sprites/Battle',
                 dataPath: 'data/enemies/',
                 colors: {
                     primary: '#ffffff',
                     secondary: '#ffff00',
-                    accent: '#ff0000'
+                    accent: '#ff0000',
+                    hp: '#ff0000',
+                    hpFill: '#ffff00'
                 }
             },
             [GAME_MODES.DELTARUNE]: {
                 name: 'DELTARUNE',
-                buttonPath: 'Deltarune Sprites/UI/Battle/Buttons/Ch1/',
-                soulPath: 'Deltarune Sprites/UI/Battle/Soul/Ch1/',
-                battleBoxPath: 'Deltarune Sprites/UI/Battle/Battle Box/Ch1/',
-                enemyPath: 'Deltarune Sprites/Characters/',
+                buttonPath: 'data/assets/Deltarune Sprites/UI/Battle/Buttons/Ch1',
+                soulPath: 'data/assets/Deltarune Sprites/UI/Battle/Soul/Ch1/spr_heart_0.png',
+                battleBoxPath: 'data/assets/Deltarune Sprites/UI/Battle/Battle Box/Ch1',
+                enemyPath: 'data/assets/Deltarune Sprites/Characters',
                 dataPath: 'data/enemies/deltarune/',
                 colors: {
                     primary: '#ffffff',
                     secondary: '#00ffff',
-                    accent: '#ff00ff'
+                    accent: '#ff00ff',
+                    hp: '#00c000',
+                    hpFill: '#ffff00',
+                    tp: '#ff8800'
                 }
             }
         };

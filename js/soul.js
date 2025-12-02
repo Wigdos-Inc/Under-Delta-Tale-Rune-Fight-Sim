@@ -24,6 +24,12 @@ export class Soul {
         
         // For animation
         this.angle = 0;
+        this.pulse = 0;
+        this.pulseDir = 1;
+        
+        // Trail effect
+        this.trail = [];
+        this.maxTrailLength = 5;
     }
     
     /**
@@ -64,8 +70,22 @@ export class Soul {
         this.x = clamp(this.x, bounds.x + halfSize, bounds.x + bounds.width - halfSize);
         this.y = clamp(this.y, bounds.y + halfSize, bounds.y + bounds.height - halfSize);
         
+        // Add to trail if moving
+        if (dx !== 0 || dy !== 0) {
+            this.trail.push({ x: this.x, y: this.y, life: this.maxTrailLength });
+        }
+        
+        // Update trail
+        this.trail = this.trail.filter(t => {
+            t.life--;
+            return t.life > 0;
+        });
+        
         // Update animation
         this.angle += 0.05;
+        this.pulse += 0.1 * this.pulseDir;
+        if (this.pulse > 1) this.pulseDir = -1;
+        if (this.pulse < 0) this.pulseDir = 1;
     }
     
     /**
@@ -75,14 +95,46 @@ export class Soul {
     draw(ctx) {
         ctx.save();
         
+        // Draw trail
+        this.trail.forEach((t, i) => {
+            const alpha = t.life / this.maxTrailLength;
+            ctx.globalAlpha = alpha * 0.3;
+            ctx.fillStyle = this.color;
+            ctx.translate(t.x, t.y);
+            
+            const trailSize = this.size * (0.7 + alpha * 0.3);
+            ctx.beginPath();
+            ctx.moveTo(0, -trailSize / 4);
+            ctx.bezierCurveTo(-trailSize / 2, -trailSize / 2, -trailSize / 2, trailSize / 6, 0, trailSize / 2);
+            ctx.bezierCurveTo(trailSize / 2, trailSize / 6, trailSize / 2, -trailSize / 2, 0, -trailSize / 4);
+            ctx.fill();
+            
+            ctx.translate(-t.x, -t.y);
+        });
+        
+        ctx.globalAlpha = 1;
+        
         // Flash when invincible
         if (this.invincible && Math.floor(this.invincibilityTimer / ANIMATION.INVINCIBILITY_FLASH_INTERVAL) % ANIMATION.INVINCIBILITY_FLASH_DURATION === 0) {
             ctx.globalAlpha = 0.5;
         }
         
+        // Draw glow
+        const glowSize = this.size * (1 + this.pulse * 0.2);
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, glowSize);
+        gradient.addColorStop(0, `${this.color}80`);
+        gradient.addColorStop(0.5, `${this.color}40`);
+        gradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(this.x - glowSize, this.y - glowSize, glowSize * 2, glowSize * 2);
+        
         // Draw heart shape
         ctx.fillStyle = this.color;
         ctx.translate(this.x, this.y);
+        
+        // Add subtle pulse
+        const scale = 1 + (this.pulse * 0.1);
+        ctx.scale(scale, scale);
         
         // Simple heart shape using bezier curves
         const size = this.size;
@@ -90,6 +142,12 @@ export class Soul {
         ctx.moveTo(0, -size / 4);
         ctx.bezierCurveTo(-size / 2, -size / 2, -size / 2, size / 6, 0, size / 2);
         ctx.bezierCurveTo(size / 2, size / 6, size / 2, -size / 2, 0, -size / 4);
+        ctx.fill();
+        
+        // Draw highlight
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.beginPath();
+        ctx.arc(-size / 6, -size / 6, size / 6, 0, Math.PI * 2);
         ctx.fill();
         
         ctx.restore();

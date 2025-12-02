@@ -245,6 +245,15 @@ export class AttackPattern {
             case 'circle':
                 this.spawnCircle(wave, box);
                 break;
+            case 'circle_pellets':
+                this.spawnCirclePellets(wave, box);
+                break;
+            case 'chaos_sabers':
+                this.spawnChaosSabers(wave, box);
+                break;
+            case 'legs':
+                this.spawnLegs(wave, box);
+                break;
             default:
                 console.warn(`Unknown wave type: ${wave.type}`);
         }
@@ -335,6 +344,88 @@ export class AttackPattern {
         const duration = wave.duration || ATTACK.DEFAULT_CIRCLE_DURATION;
         
         this.objects.push(new CircleAttack(x, y, startRadius, endRadius, duration));
+    }
+    
+    /**
+     * Spawn circle pellets (radial projectiles)
+     */
+    spawnCirclePellets(wave, box) {
+        const count = wave.count || 8;
+        const speed = wave.speed || ATTACK.DEFAULT_PROJECTILE_SPEED;
+        const size = wave.size || ATTACK.DEFAULT_PROJECTILE_SIZE;
+        const centerX = box.x + box.width / 2;
+        const centerY = box.y + box.height / 2;
+        
+        for (let i = 0; i < count; i++) {
+            const angle = (Math.PI * 2 * i) / count;
+            const vx = Math.cos(angle) * speed;
+            const vy = Math.sin(angle) * speed;
+            
+            this.objects.push(new Projectile(centerX, centerY, vx, vy, size, '#ffffff'));
+        }
+    }
+    
+    /**
+     * Spawn chaos sabers (rotating blades)
+     */
+    spawnChaosSabers(wave, box) {
+        const count = wave.count || 4;
+        const speed = wave.speed || 2;
+        const centerX = box.x + box.width / 2;
+        const centerY = box.y + box.height / 2;
+        
+        for (let i = 0; i < count; i++) {
+            const angle = (Math.PI * 2 * i) / count;
+            const radius = 50;
+            const x = centerX + Math.cos(angle) * radius;
+            const y = centerY + Math.sin(angle) * radius;
+            
+            // Create rotating projectile
+            const saber = new Projectile(x, y, 0, 0, 30, '#ff00ff');
+            saber.angle = angle;
+            saber.rotationSpeed = speed;
+            saber.radius = radius;
+            saber.centerX = centerX;
+            saber.centerY = centerY;
+            
+            // Override update to rotate around center
+            const originalUpdate = saber.update.bind(saber);
+            saber.update = function(box) {
+                this.angle += this.rotationSpeed * 0.05;
+                this.x = this.centerX + Math.cos(this.angle) * this.radius;
+                this.y = this.centerY + Math.sin(this.angle) * this.radius;
+                return originalUpdate(box);
+            };
+            
+            this.objects.push(saber);
+        }
+    }
+    
+    /**
+     * Spawn legs attack (sweeping horizontal attacks)
+     */
+    spawnLegs(wave, box) {
+        const count = wave.count || 2;
+        const height = wave.height || 40;
+        
+        for (let i = 0; i < count; i++) {
+            const y = box.y + (box.height * (i + 1)) / (count + 1);
+            const direction = i % 2 === 0 ? 1 : -1;
+            const x = direction > 0 ? box.x : box.x + box.width;
+            
+            // Create wide horizontal projectile
+            const leg = new Projectile(x, y, direction * 3, 0, 20, '#ffffff');
+            leg.width = 60;
+            leg.height = height;
+            
+            // Override draw to make it rectangular
+            leg.draw = function(ctx) {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x - this.width/2, this.y - this.height/2, this.width, this.height);
+            };
+            
+            this.objects.push(leg);
+        }
     }
     
     /**
