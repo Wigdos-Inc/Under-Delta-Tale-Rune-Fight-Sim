@@ -38,32 +38,40 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Flexing Arms Attack",
+            "description": "Muscular arms move upward from sides, then sweat drops fall",
+            "duration": 5000,
+            "sprites": {
+                "muscleLeft": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Aaron/spr_muscbul1_0.png",
+                "muscleRight": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Aaron/spr_muscbul1_r_0.png",
+                "sweat": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Aaron/spr_muscbul2_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
-                    "type": "projectiles",
-                    "count": 5,
+                    "type": "custom",
+                    "pattern": "flexing_arms",
+                    "side": "left",
                     "speed": 2,
-                    "size": 15,
-                    "side": "top"
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Aaron/spr_muscbul1_0.png"
                 },
                 {
-                    "time": 1500,
-                    "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
+                    "time": 200,
+                    "type": "custom",
+                    "pattern": "flexing_arms",
+                    "side": "right",
+                    "speed": 2,
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Aaron/spr_muscbul1_r_0.png"
                 },
                 {
-                    "time": 2500,
+                    "time": 2000,
                     "type": "projectiles",
-                    "count": 4,
+                    "pattern": "sweat_drops",
+                    "count": 8,
                     "speed": 2.5,
                     "size": 15,
-                    "side": "right"
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Aaron/spr_muscbul2_0.png"
                 }
             ]
         }

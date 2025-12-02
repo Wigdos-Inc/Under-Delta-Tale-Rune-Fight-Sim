@@ -32,32 +32,42 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
+            "name": "Roach Swarm Attack",
+            "description": "Small roach bullets spread in patterns",
             "duration": 4000,
+            "sprites": {
+                "roach": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Migosp/spr_roachbullet_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
+                    "pattern": "roach_spread",
                     "count": 5,
                     "speed": 2,
-                    "size": 15,
-                    "side": "top"
+                    "size": 10,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Migosp/spr_roachbullet_0.png"
                 },
                 {
                     "time": 1500,
                     "type": "projectiles",
-                    "count": 4,
+                    "pattern": "roach_scatter",
+                    "count": 6,
                     "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
+                    "size": 10,
+                    "side": "sides",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Migosp/spr_roachbullet_1.png"
                 },
                 {
                     "time": 2500,
                     "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "right"
+                    "pattern": "roach_spiral",
+                    "count": 7,
+                    "speed": 2,
+                    "size": 10,
+                    "side": "center",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Migosp/spr_roachbullet_0.png"
                 }
             ]
         }

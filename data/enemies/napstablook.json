@@ -39,32 +39,43 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Falling Tears Attack",
+            "description": "Tears fall in arcs and bounce off the floor",
+            "duration": 4500,
+            "sprites": {
+                "tear": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Napstablook/spr_teardrop_0.png",
+                "sadBullet": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Napstablook/spr_bulletNapstaSad_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
-                    "count": 5,
-                    "speed": 2,
-                    "size": 15,
-                    "side": "top"
+                    "pattern": "tear_arc",
+                    "count": 3,
+                    "speed": 1.5,
+                    "size": 12,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Napstablook/spr_teardrop_0.png"
                 },
                 {
                     "time": 1500,
                     "type": "projectiles",
+                    "pattern": "tear_bounce",
                     "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
+                    "speed": 2,
+                    "size": 12,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Napstablook/spr_bulletNapstaSad_0.png"
                 },
                 {
-                    "time": 2500,
+                    "time": 3000,
                     "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "right"
+                    "pattern": "tear_arc",
+                    "count": 3,
+                    "speed": 1.8,
+                    "size": 12,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Napstablook/spr_teardrop_0.png"
                 }
             ]
         }

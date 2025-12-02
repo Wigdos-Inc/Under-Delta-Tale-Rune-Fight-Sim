@@ -38,32 +38,32 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
+            "name": "Moth Ring Attack",
+            "description": "Ring of moths spinning around and vertical moth lines",
             "duration": 4000,
+            "sprites": {
+                "butterfly": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Whimsun/spr_butterflybllt_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
-                    "count": 5,
+                    "pattern": "moth_ring",
+                    "count": 6,
+                    "speed": 1.5,
+                    "size": 12,
+                    "side": "center",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Whimsun/spr_butterflybllt_0.png"
+                },
+                {
+                    "time": 2000,
+                    "type": "projectiles",
+                    "pattern": "vertical_line",
+                    "count": 3,
                     "speed": 2,
-                    "size": 15,
-                    "side": "top"
-                },
-                {
-                    "time": 1500,
-                    "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
-                },
-                {
-                    "time": 2500,
-                    "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "right"
+                    "size": 12,
+                    "side": "bottom",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Whimsun/spr_butterflybllt_1.png"
                 }
             ]
         }

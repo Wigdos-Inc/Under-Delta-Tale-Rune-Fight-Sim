@@ -38,32 +38,42 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Bouncing Orbs Attack",
+            "description": "Bouncing orbs that ricochet and spinning orb patterns",
+            "duration": 5000,
+            "sprites": {
+                "orb": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Loox/spr_circlebulletmd1_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
-                    "count": 5,
-                    "speed": 2,
+                    "pattern": "bouncing_orbs",
+                    "count": 3,
+                    "speed": 3,
                     "size": 15,
-                    "side": "top"
+                    "side": "left",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Loox/spr_circlebulletmd1_0.png"
                 },
                 {
                     "time": 1500,
                     "type": "projectiles",
+                    "pattern": "worm_trail",
                     "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
+                    "speed": 2,
+                    "size": 12,
+                    "side": "right",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Loox/spr_circlebulletsm_0.png"
                 },
                 {
-                    "time": 2500,
+                    "time": 3000,
                     "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
+                    "pattern": "bouncing_orbs",
+                    "count": 2,
+                    "speed": 3.5,
                     "size": 15,
-                    "side": "right"
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Loox/spr_circlebulletmed2_0.png"
                 }
             ]
         }

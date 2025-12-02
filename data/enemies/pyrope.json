@@ -38,32 +38,44 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Bomb and Rope Attack",
+            "description": "Bombs bounce and explode, burning rope moves horizontally",
+            "duration": 5500,
+            "sprites": {
+                "bomb": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Pyrope/spr_bombd_0.png",
+                "explosion": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Pyrope/spr_bombexplosion_0.png",
+                "rope": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Pyrope/spr_ropebul_0.png",
+                "fire": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Pyrope/spr_orangefire_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
-                    "count": 5,
-                    "speed": 2,
-                    "size": 15,
-                    "side": "top"
-                },
-                {
-                    "time": 1500,
-                    "type": "projectiles",
+                    "pattern": "bouncing_bombs",
                     "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
+                    "speed": 2,
+                    "size": 18,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Pyrope/spr_bombd_0.png",
+                    "explodeSprite": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Pyrope/spr_bombexplosion_0.png"
                 },
                 {
                     "time": 2500,
+                    "type": "custom",
+                    "pattern": "burning_rope",
+                    "count": 1,
+                    "speed": 2,
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Pyrope/spr_ropebul_0.png"
+                },
+                {
+                    "time": 4000,
                     "type": "projectiles",
-                    "count": 4,
+                    "pattern": "fire_chain",
+                    "count": 6,
                     "speed": 2.5,
-                    "size": 15,
-                    "side": "right"
+                    "size": 12,
+                    "side": "left",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Pyrope/spr_orangefire_0.png"
                 }
             ]
         }

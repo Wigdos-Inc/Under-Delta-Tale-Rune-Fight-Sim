@@ -38,32 +38,54 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Spider Web Attack",
+            "description": "Spider strings drop, croissants boomerang, donuts bounce",
+            "duration": 6000,
+            "sprites": {
+                "spider": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Muffet/Attacks/spr_spiderbullet1_0.png",
+                "croissantL": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Muffet/Attacks/spr_croissantl_0.png",
+                "croissantR": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Muffet/Attacks/spr_croissantr_0.png",
+                "donut": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Muffet/Attacks/spr_donutbullet_0.png",
+                "cupcake": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Muffet/Attacks/spr_cupcakebullet_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
-                    "count": 5,
+                    "pattern": "spider_drop",
+                    "count": 6,
                     "speed": 2,
-                    "size": 15,
-                    "side": "top"
+                    "size": 12,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Muffet/Attacks/spr_spiderbullet1_0.png"
                 },
                 {
                     "time": 1500,
-                    "type": "projectiles",
-                    "count": 4,
+                    "type": "custom",
+                    "pattern": "croissant_boomerang",
+                    "count": 2,
                     "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Muffet/Attacks/spr_croissantl_0.png"
                 },
                 {
-                    "time": 2500,
+                    "time": 3000,
                     "type": "projectiles",
+                    "pattern": "donut_bounce",
                     "count": 4,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Muffet/Attacks/spr_donutbullet_0.png"
+                },
+                {
+                    "time": 4500,
+                    "type": "projectiles",
+                    "pattern": "cupcake_drop",
+                    "count": 3,
                     "speed": 2.5,
                     "size": 15,
-                    "side": "right"
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Muffet/Attacks/spr_cupcakebullet_0.png"
                 }
             ]
         }

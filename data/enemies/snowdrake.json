@@ -38,32 +38,43 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Ice Claw Attack",
+            "description": "Ice claw projectiles that rotate and spread",
+            "duration": 4500,
+            "sprites": {
+                "claw": "data/assets/Undertale Sprites/Battle/Enemies/02 - Snowdin/Snowdrake/spr_clawbullet_0.png",
+                "rotClaw": "data/assets/Undertale Sprites/Battle/Enemies/02 - Snowdin/Snowdrake/spr_rotclawbullet_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
+                    "pattern": "claw_spread",
                     "count": 5,
-                    "speed": 2,
+                    "speed": 2.5,
                     "size": 15,
-                    "side": "top"
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/02 - Snowdin/Snowdrake/spr_clawbullet_0.png"
                 },
                 {
                     "time": 1500,
                     "type": "projectiles",
+                    "pattern": "rotating_claws",
                     "count": 4,
-                    "speed": 2.5,
+                    "speed": 2,
                     "size": 15,
-                    "side": "left"
+                    "side": "sides",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/02 - Snowdin/Snowdrake/spr_rotclawbullet_0.png"
                 },
                 {
-                    "time": 2500,
+                    "time": 3000,
                     "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
+                    "pattern": "claw_diagonal",
+                    "count": 6,
+                    "speed": 2.8,
                     "size": 15,
-                    "side": "right"
+                    "side": "corners",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/02 - Snowdin/Snowdrake/spr_clawbullet_1.png"
                 }
             ]
         }

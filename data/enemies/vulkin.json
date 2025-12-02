@@ -38,32 +38,41 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Fire and Lightning Attack",
+            "description": "Lightning bolts from clouds and fireballs arcing upward",
+            "duration": 5000,
+            "sprites": {
+                "cloud": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Vulkin/spr_vulkincloudbul_0.png",
+                "lightning": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Vulkin/spr_vulkinlightning_0.png",
+                "lava": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Vulkin/spr_lavaflame_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
+                    "type": "custom",
+                    "pattern": "cloud_lightning",
+                    "count": 3,
+                    "speed": 3,
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Vulkin/spr_vulkincloudbul_0.png",
+                    "lightningSprite": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Vulkin/spr_vulkinlightning_0.png"
+                },
+                {
+                    "time": 2000,
                     "type": "projectiles",
+                    "pattern": "fireball_arc",
                     "count": 5,
-                    "speed": 2,
-                    "size": 15,
-                    "side": "top"
-                },
-                {
-                    "time": 1500,
-                    "type": "projectiles",
-                    "count": 4,
                     "speed": 2.5,
                     "size": 15,
-                    "side": "left"
+                    "side": "bottom",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Vulkin/spr_lavaflame_0.png"
                 },
                 {
-                    "time": 2500,
-                    "type": "projectiles",
+                    "time": 3500,
+                    "type": "custom",
+                    "pattern": "cloud_lightning",
                     "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "right"
+                    "speed": 3.5,
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/04 - Hotland/Vulkin/spr_vulkincloudbul_0.png"
                 }
             ]
         }

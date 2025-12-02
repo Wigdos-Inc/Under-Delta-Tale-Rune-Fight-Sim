@@ -38,32 +38,44 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Butterfly Circle Attack",
+            "description": "Fast butterflies in circular waves and rising columns",
+            "duration": 5000,
+            "sprites": {
+                "butterfly": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Whimsalot/spr_butterflybullet_0.png",
+                "butterflyGreen": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Whimsalot/spr_butterflybullet_green_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
-                    "count": 5,
-                    "speed": 2,
-                    "size": 15,
-                    "side": "top"
+                    "pattern": "butterfly_circle",
+                    "count": 3,
+                    "speed": 2.5,
+                    "size": 12,
+                    "side": "center",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Whimsalot/spr_butterflybullet_0.png"
                 },
                 {
                     "time": 1500,
                     "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
+                    "pattern": "rising_trio",
+                    "count": 3,
+                    "speed": 3,
+                    "size": 12,
+                    "side": "bottom",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Whimsalot/spr_butterflybullet_1.png"
                 },
                 {
-                    "time": 2500,
+                    "time": 3000,
                     "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "right"
+                    "pattern": "butterfly_circle",
+                    "count": 3,
+                    "speed": 3,
+                    "size": 12,
+                    "side": "center",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Whimsalot/spr_butterflybullet_0.png",
+                    "greenSprite": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Whimsalot/spr_butterflybullet_green_0.png"
                 }
             ]
         }

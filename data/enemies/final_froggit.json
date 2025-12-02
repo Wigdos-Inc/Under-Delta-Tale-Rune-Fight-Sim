@@ -38,32 +38,52 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Rapid Fly Swarm Attack",
+            "description": "Intensified Froggit - rapid flying bullets in parabola arcs",
+            "duration": 5000,
+            "sprites": {
+                "megaFly": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Final Froggit/spr_megaflybullet_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
-                    "count": 5,
-                    "speed": 2,
-                    "size": 15,
-                    "side": "top"
+                    "pattern": "rapid_fly_arc",
+                    "count": 6,
+                    "speed": 3,
+                    "size": 12,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Final Froggit/spr_megaflybullet_0.png"
                 },
                 {
-                    "time": 1500,
+                    "time": 1200,
                     "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
+                    "pattern": "rapid_fly_arc",
+                    "count": 5,
+                    "speed": 3.5,
+                    "size": 12,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Final Froggit/spr_megaflybullet_1.png"
                 },
                 {
                     "time": 2500,
                     "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "right"
+                    "pattern": "parabola_arc",
+                    "count": 7,
+                    "speed": 3,
+                    "size": 12,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Final Froggit/spr_megaflybullet_0.png"
+                },
+                {
+                    "time": 3700,
+                    "type": "projectiles",
+                    "pattern": "rapid_fly_arc",
+                    "count": 6,
+                    "speed": 3.5,
+                    "size": 12,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Final Froggit/spr_megaflybullet_1.png"
                 }
             ]
         }

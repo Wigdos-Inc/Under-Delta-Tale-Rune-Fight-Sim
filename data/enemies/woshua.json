@@ -38,32 +38,42 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Water Spiral Attack",
+            "description": "Spiral of blue water drops and floating soap bar with stars",
+            "duration": 5000,
+            "sprites": {
+                "water": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Woshua/spr_waterbul_0.png",
+                "soap": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Woshua/spr_soapbul_0.png",
+                "glitter": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Woshua/spr_glitterbul_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
-                    "count": 5,
-                    "speed": 2,
-                    "size": 15,
-                    "side": "top"
+                    "pattern": "water_spiral",
+                    "count": 8,
+                    "speed": 1.5,
+                    "size": 10,
+                    "side": "center",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Woshua/spr_waterbul_0.png"
                 },
                 {
                     "time": 1500,
-                    "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
+                    "type": "custom",
+                    "pattern": "soap_bar",
+                    "count": 1,
+                    "speed": 2,
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Woshua/spr_soapbul_0.png"
                 },
                 {
-                    "time": 2500,
+                    "time": 2000,
                     "type": "projectiles",
+                    "pattern": "falling_stars",
                     "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "right"
+                    "speed": 1.5,
+                    "size": 8,
+                    "side": "soap",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Woshua/spr_glitterbul_0.png"
                 }
             ]
         }

@@ -38,32 +38,44 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Falling Vegetables Attack",
+            "description": "Vegetables fall from top, can be eaten to heal",
+            "duration": 4500,
+            "sprites": {
+                "carrot": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Vegetoid/spr_carrotbullet_0.png",
+                "carrotGreen": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Vegetoid/spr_carrotbullet_gr_0.png",
+                "veggie": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Vegetoid/spr_vegbullet_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
+                    "pattern": "falling_vertical",
                     "count": 5,
                     "speed": 2,
                     "size": 15,
-                    "side": "top"
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Vegetoid/spr_carrotbullet_0.png"
                 },
                 {
                     "time": 1500,
                     "type": "projectiles",
+                    "pattern": "falling_vertical",
                     "count": 4,
                     "speed": 2.5,
                     "size": 15,
-                    "side": "left"
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Vegetoid/spr_vegbullet_1.png"
                 },
                 {
-                    "time": 2500,
+                    "time": 3000,
                     "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
+                    "pattern": "falling_vertical",
+                    "count": 3,
+                    "speed": 2,
                     "size": 15,
-                    "side": "right"
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/01 - Ruins/Vegetoid/spr_vegbullet_3.png"
                 }
             ]
         }

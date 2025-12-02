@@ -38,32 +38,54 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Bouncing Orbs and Spinning Attack",
+            "description": "Bouncing orbs and spinning orb patterns",
+            "duration": 5500,
+            "sprites": {
+                "largeBullet": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Astigmatism/spr_circlebulletlarge_ex_0.png",
+                "medBullet": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Astigmatism/spr_circlebulletmed_ex_0.png",
+                "smallBullet": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Astigmatism/spr_circlebulletsm_ex_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
-                    "count": 5,
-                    "speed": 2,
-                    "size": 15,
-                    "side": "top"
+                    "pattern": "bouncing_large",
+                    "count": 2,
+                    "speed": 3,
+                    "size": 20,
+                    "side": "left",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Astigmatism/spr_circlebulletlarge_ex_0.png"
                 },
                 {
                     "time": 1500,
                     "type": "projectiles",
-                    "count": 4,
+                    "pattern": "spinning_row",
+                    "count": 3,
                     "speed": 2.5,
                     "size": 15,
-                    "side": "left"
+                    "side": "right",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Astigmatism/spr_circlebulletmed_ex_0.png"
                 },
                 {
-                    "time": 2500,
+                    "time": 3000,
                     "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "right"
+                    "pattern": "spiral_bounce",
+                    "count": 5,
+                    "speed": 3.5,
+                    "size": 12,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Astigmatism/spr_circlebulletsm_ex_0.png"
+                },
+                {
+                    "time": 4000,
+                    "type": "projectiles",
+                    "pattern": "bouncing_large",
+                    "count": 2,
+                    "speed": 3.5,
+                    "size": 20,
+                    "side": "right",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/05 - Core/Astigmatism/spr_circlebulletlarge_ex_0.png"
                 }
             ]
         }

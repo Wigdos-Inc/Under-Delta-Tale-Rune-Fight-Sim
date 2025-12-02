@@ -38,32 +38,43 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Upward Shooting Attack",
+            "description": "Small bullets shoot upward from bottom and converge from sides",
+            "duration": 4500,
+            "sprites": {
+                "worm": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Moldbygg/spr_wormbul_0.png",
+                "circle": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Moldbygg/spr_circlebulletb_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
+                    "pattern": "upward_shoot",
                     "count": 5,
-                    "speed": 2,
-                    "size": 15,
-                    "side": "top"
+                    "speed": 2.5,
+                    "size": 12,
+                    "side": "bottom",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Moldbygg/spr_wormbul_0.png"
                 },
                 {
                     "time": 1500,
                     "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
+                    "pattern": "converging_volley",
+                    "count": 8,
+                    "speed": 2,
+                    "size": 10,
+                    "side": "sides",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Moldbygg/spr_circlebulletb_0.png"
                 },
                 {
-                    "time": 2500,
+                    "time": 3000,
                     "type": "projectiles",
+                    "pattern": "upward_shoot",
                     "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "right"
+                    "speed": 3,
+                    "size": 12,
+                    "side": "bottom",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Moldbygg/spr_wormbul_1.png"
                 }
             ]
         }

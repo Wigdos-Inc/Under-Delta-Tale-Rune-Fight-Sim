@@ -37,34 +37,10 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
-            "waves": [
-                {
-                    "time": 0,
-                    "type": "projectiles",
-                    "count": 5,
-                    "speed": 2,
-                    "size": 15,
-                    "side": "top"
-                },
-                {
-                    "time": 1500,
-                    "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
-                },
-                {
-                    "time": 2500,
-                    "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "right"
-                }
-            ]
+            "name": "No Attack",
+            "description": "The Dummy does not attack - just taunts with EN GARDE",
+            "duration": 2000,
+            "waves": []
         }
     ]
 }

@@ -12,7 +12,7 @@ export class SpriteManager {
     constructor() {
         this.sprites = new Map();
         this.loadingPromises = new Map();
-        this.basePath = 'data/assets/Undertale Sprites/';
+        this.basePath = ''; // Empty base path - full paths are provided by callers
         this.failedSprites = new Set(); // Track failed loads to avoid retrying
         this.loadAttempts = new Map(); // Track load attempts
         this.maxRetries = 3;

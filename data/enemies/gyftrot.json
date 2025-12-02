@@ -38,32 +38,44 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Gift Box Attack",
+            "description": "Gift boxes and circle bullets fall",
+            "duration": 4500,
+            "sprites": {
+                "gift": "data/assets/Undertale Sprites/Battle/Enemies/02 - Snowdin/Gyftrot/spr_gyfgift_0.png",
+                "bullet": "data/assets/Undertale Sprites/Battle/Enemies/02 - Snowdin/Gyftrot/spr_gyftbullet_0.png",
+                "circle": "data/assets/Undertale Sprites/Battle/Enemies/02 - Snowdin/Gyftrot/spr_circlebullet_noc_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
-                    "count": 5,
+                    "pattern": "falling_gifts",
+                    "count": 4,
                     "speed": 2,
-                    "size": 15,
-                    "side": "top"
+                    "size": 18,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/02 - Snowdin/Gyftrot/spr_gyfgift_0.png"
                 },
                 {
                     "time": 1500,
                     "type": "projectiles",
-                    "count": 4,
+                    "pattern": "circle_drop",
+                    "count": 6,
                     "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
+                    "size": 12,
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/02 - Snowdin/Gyftrot/spr_circlebullet_noc_0.png"
                 },
                 {
-                    "time": 2500,
+                    "time": 3000,
                     "type": "projectiles",
-                    "count": 4,
+                    "pattern": "mixed_drop",
+                    "count": 5,
                     "speed": 2.5,
                     "size": 15,
-                    "side": "right"
+                    "side": "top",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/02 - Snowdin/Gyftrot/spr_gyftbullet_0.png"
                 }
             ]
         }

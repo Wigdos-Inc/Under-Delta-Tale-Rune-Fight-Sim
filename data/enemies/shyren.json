@@ -38,32 +38,42 @@
     ],
     "attackPatterns": [
         {
-            "name": "Default Attack",
-            "duration": 4000,
+            "name": "Musical Note Attack",
+            "description": "Orange musical sharps in oscillating pattern",
+            "duration": 4500,
+            "sprites": {
+                "note": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Shyren/spr_musbul_1_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "projectiles",
-                    "count": 5,
+                    "pattern": "musical_wave",
+                    "count": 6,
                     "speed": 2,
-                    "size": 15,
-                    "side": "top"
+                    "size": 12,
+                    "side": "left",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Shyren/spr_musbul_1_0.png"
                 },
                 {
                     "time": 1500,
                     "type": "projectiles",
-                    "count": 4,
+                    "pattern": "musical_wave",
+                    "count": 5,
                     "speed": 2.5,
-                    "size": 15,
-                    "side": "left"
+                    "size": 12,
+                    "side": "right",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Shyren/spr_musbul_1_1.png"
                 },
                 {
-                    "time": 2500,
+                    "time": 3000,
                     "type": "projectiles",
-                    "count": 4,
-                    "speed": 2.5,
-                    "size": 15,
-                    "side": "right"
+                    "pattern": "musical_oscillate",
+                    "count": 7,
+                    "speed": 3,
+                    "size": 12,
+                    "side": "left",
+                    "sprite": "data/assets/Undertale Sprites/Battle/Enemies/03 - Waterfall/Shyren/spr_musbul_1_2.png"
                 }
             ]
         }
