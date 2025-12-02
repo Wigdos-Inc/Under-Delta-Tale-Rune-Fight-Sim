@@ -9,11 +9,12 @@ export const CONFIG = {
     CANVAS_HEIGHT: 480,
     
     // Battle box (where attacks happen)
+    // Authentic Undertale dimensions: centered horizontally, positioned between enemy and dialogue
     BATTLE_BOX: {
-        x: 160,
-        y: 150,
-        width: 320,
-        height: 160,
+        x: 160,      // Centered: (640 - 320) / 2 = 160
+        y: 245,      // Below enemy (~120), above dialogue/buttons (~390)
+        width: 320,  // Standard Undertale battle box width
+        height: 130, // Standard Undertale battle box height
         borderWidth: 5
     },
     
@@ -29,6 +30,12 @@ export const CONFIG = {
     HP: {
         max: 20,
         current: 20
+    },
+    
+    // Enemy position
+    ENEMY_POSITION: {
+        x: 320,  // Center of 640px canvas
+        y: 120   // Top area, above battle box
     },
     
     // Turn phases

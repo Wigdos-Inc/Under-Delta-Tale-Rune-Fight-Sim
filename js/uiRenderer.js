@@ -12,12 +12,17 @@ export class UIRenderer {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         
-        // Button positions (Undertale layout - centered and evenly spaced)
+        // Button positions (Undertale layout - 2x2 grid in text box area)  
+        // Canvas height: 480px
+        // Text box: bottom 10px, height 155px → top edge at y=315 (480-10-155)
+        // Buttons positioned in middle/lower area of text box
+        // Top row: y = 315 + 85 = 400
+        // Bottom row: y = 315 + 120 = 435
         this.buttonLayout = {
-            fight: { x: 32, y: UI.BUTTON_LAYOUT_Y, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
-            act: { x: 185, y: UI.BUTTON_LAYOUT_Y, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
-            item: { x: 345, y: UI.BUTTON_LAYOUT_Y, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
-            mercy: { x: 500, y: UI.BUTTON_LAYOUT_Y, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT }
+            fight: { x: 245, y: 400, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
+            act: { x: 410, y: 400, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
+            item: { x: 245, y: 435, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
+            mercy: { x: 410, y: 435, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT }
         };
         
         this.selectedButton = null;
