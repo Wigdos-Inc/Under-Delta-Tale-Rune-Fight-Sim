@@ -13,16 +13,20 @@ export class UIRenderer {
         this.ctx = canvas.getContext('2d');
         
         // Button positions (Undertale layout - 2x2 grid in text box area)  
-        // Canvas height: 480px
-        // Text box: bottom 10px, height 155px → top edge at y=315 (480-10-155)
-        // Buttons positioned in middle/lower area of text box
-        // Top row: y = 315 + 85 = 400
-        // Bottom row: y = 315 + 120 = 435
+        // Canvas: 480px height
+        // Text box: bottom 10px, height 155px → top at y=315 (480-10-155)
+        // Buttons in middle/lower text box area
+        const TEXT_BOX_TOP = 480 - 10 - 155; // 315
+        const BUTTON_TOP_ROW = TEXT_BOX_TOP + 85;  // 400
+        const BUTTON_BOTTOM_ROW = TEXT_BOX_TOP + 120; // 435
+        const BUTTON_LEFT_COL = 245;
+        const BUTTON_RIGHT_COL = 410;
+        
         this.buttonLayout = {
-            fight: { x: 245, y: 400, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
-            act: { x: 410, y: 400, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
-            item: { x: 245, y: 435, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
-            mercy: { x: 410, y: 435, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT }
+            fight: { x: BUTTON_LEFT_COL, y: BUTTON_TOP_ROW, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
+            act: { x: BUTTON_RIGHT_COL, y: BUTTON_TOP_ROW, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
+            item: { x: BUTTON_LEFT_COL, y: BUTTON_BOTTOM_ROW, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
+            mercy: { x: BUTTON_RIGHT_COL, y: BUTTON_BOTTOM_ROW, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT }
         };
         
         this.selectedButton = null;

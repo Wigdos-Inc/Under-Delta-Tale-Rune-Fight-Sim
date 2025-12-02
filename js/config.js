@@ -34,7 +34,7 @@ export const CONFIG = {
     
     // Enemy position
     ENEMY_POSITION: {
-        x: 320,  // Center of 640px canvas
+        x: 320,  // Center of 640px canvas (CANVAS_WIDTH / 2)
         y: 120   // Top area, above battle box
     },
     
