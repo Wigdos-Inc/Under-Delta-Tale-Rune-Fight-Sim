@@ -1,9 +1,10 @@
 /**
  * audio.js
- * Audio manager for sound effects and music
+ * Audio manager for sound effects and music with improved error handling
  */
 
 import { CONFIG } from './config.js';
+import { errorHandler, ErrorLevel } from './errorHandler.js';
 
 /**
  * AudioManager class - Handles all audio playback
@@ -14,6 +15,7 @@ export class AudioManager {
         this.music = null;
         this.enabled = CONFIG.SOUND.enabled;
         this.volume = CONFIG.SOUND.volume;
+        this.failedSounds = new Set(); // Track failed audio loads
     }
     
     /**
@@ -26,8 +28,25 @@ export class AudioManager {
             const audio = new Audio(path);
             audio.volume = this.volume;
             this.sounds[name] = audio;
+            
+            // Add error handler
+            audio.onerror = () => {
+                this.failedSounds.add(name);
+                errorHandler.log(
+                    `Failed to load sound: ${name}`,
+                    ErrorLevel.WARNING,
+                    null,
+                    { name, path }
+                );
+            };
         } catch (error) {
-            console.warn(`Failed to load sound: ${name}`, error);
+            this.failedSounds.add(name);
+            errorHandler.log(
+                `Failed to load sound: ${name}`,
+                ErrorLevel.WARNING,
+                error,
+                { name, path }
+            );
         }
     }
     
@@ -36,14 +55,31 @@ export class AudioManager {
      * @param {string} name - Sound identifier
      */
     playSound(name) {
-        if (!this.enabled || !this.sounds[name]) return;
+        if (!this.enabled || this.failedSounds.has(name) || !this.sounds[name]) {
+            return;
+        }
         
         try {
             const sound = this.sounds[name].cloneNode();
             sound.volume = this.volume;
-            sound.play().catch(e => console.warn(`Failed to play sound: ${name}`, e));
+            sound.play().catch(e => {
+                // Only log if not user interaction issue
+                if (e.name !== 'NotAllowedError') {
+                    errorHandler.log(
+                        `Failed to play sound: ${name}`,
+                        ErrorLevel.WARNING,
+                        e,
+                        { name }
+                    );
+                }
+            });
         } catch (error) {
-            console.warn(`Error playing sound: ${name}`, error);
+            errorHandler.log(
+                `Error playing sound: ${name}`,
+                ErrorLevel.WARNING,
+                error,
+                { name }
+            );
         }
     }
     
@@ -63,9 +99,33 @@ export class AudioManager {
             this.music = new Audio(path);
             this.music.volume = this.volume * 0.5; // Music is quieter than SFX
             this.music.loop = loop;
-            this.music.play().catch(e => console.warn('Failed to play music', e));
+            
+            this.music.onerror = () => {
+                errorHandler.log(
+                    'Failed to load music',
+                    ErrorLevel.WARNING,
+                    null,
+                    { path }
+                );
+            };
+            
+            this.music.play().catch(e => {
+                if (e.name !== 'NotAllowedError') {
+                    errorHandler.log(
+                        'Failed to play music',
+                        ErrorLevel.WARNING,
+                        e,
+                        { path }
+                    );
+                }
+            });
         } catch (error) {
-            console.warn('Error playing music', error);
+            errorHandler.log(
+                'Error playing music',
+                ErrorLevel.WARNING,
+                error,
+                { path }
+            );
         }
     }
     

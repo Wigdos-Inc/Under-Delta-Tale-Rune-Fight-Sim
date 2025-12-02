@@ -5,6 +5,7 @@
 
 import { AttackPattern } from './attacks.js';
 import { COMBAT, SPRITE } from './constants.js';
+import { errorHandler, ErrorLevel, validateEnemyData, validateSpriteData } from './errorHandler.js';
 import { spriteManager, AnimatedSprite } from './sprites.js';
 
 /**
@@ -210,11 +211,55 @@ export class Enemy {
 export async function loadEnemyFromJSON(path) {
     try {
         const response = await fetch(path);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const data = await response.json();
+        
+        // Validate enemy data
+        const validation = validateEnemyData(data);
+        if (!validation.valid) {
+            errorHandler.log(
+                `Invalid enemy data in ${path}`,
+                ErrorLevel.WARNING,
+                null,
+                { errors: validation.errors, path }
+            );
+            // Continue with default values for invalid fields
+        }
+        
+        // Validate sprite data if present
+        if (data.sprites) {
+            const spriteValidation = validateSpriteData(data.sprites);
+            if (!spriteValidation.valid) {
+                errorHandler.log(
+                    `Invalid sprite data in ${path}`,
+                    ErrorLevel.WARNING,
+                    null,
+                    { errors: spriteValidation.errors, path }
+                );
+            }
+        }
+        
         return new Enemy(data);
     } catch (error) {
-        console.error('Failed to load enemy:', error);
-        // Return default enemy
+        errorHandler.log(
+            `Failed to load enemy from ${path}`,
+            ErrorLevel.ERROR,
+            error,
+            { path }
+        );
+        
+        // Return default enemy as fallback
+        errorHandler.log(
+            'Using default enemy as fallback',
+            ErrorLevel.INFO,
+            null,
+            { path }
+        );
+        
         return new Enemy({
             name: 'Test Enemy',
             hp: 50,

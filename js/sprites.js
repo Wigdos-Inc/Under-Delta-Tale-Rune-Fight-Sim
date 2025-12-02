@@ -1,7 +1,9 @@
 /**
  * sprites.js
- * Sprite loading and management system
+ * Sprite loading and management system with improved caching
  */
+
+import { errorHandler, ErrorLevel } from './errorHandler.js';
 
 /**
  * SpriteManager class - Handles loading and caching of sprite images
@@ -11,6 +13,9 @@ export class SpriteManager {
         this.sprites = new Map();
         this.loadingPromises = new Map();
         this.basePath = 'data/assets/Undertale Sprites/';
+        this.failedSprites = new Set(); // Track failed loads to avoid retrying
+        this.loadAttempts = new Map(); // Track load attempts
+        this.maxRetries = 3;
     }
     
     /**
@@ -24,24 +29,54 @@ export class SpriteManager {
             return this.sprites.get(path);
         }
         
+        // Check if previously failed multiple times
+        if (this.failedSprites.has(path)) {
+            errorHandler.log(
+                `Skipping previously failed sprite: ${path}`,
+                ErrorLevel.WARNING,
+                null,
+                { path }
+            );
+            return null;
+        }
+        
         // Check if currently loading
         if (this.loadingPromises.has(path)) {
             return this.loadingPromises.get(path);
         }
         
+        // Track attempts
+        const attempts = this.loadAttempts.get(path) || 0;
+        this.loadAttempts.set(path, attempts + 1);
+        
         // Start loading
         const promise = new Promise((resolve, reject) => {
             const img = new Image();
+            
             img.onload = () => {
                 this.sprites.set(path, img);
                 this.loadingPromises.delete(path);
+                this.loadAttempts.delete(path);
                 resolve(img);
             };
+            
             img.onerror = () => {
-                console.error(`Failed to load sprite: ${path}`);
+                const currentAttempts = this.loadAttempts.get(path) || 0;
+                
+                if (currentAttempts >= this.maxRetries) {
+                    this.failedSprites.add(path);
+                    errorHandler.log(
+                        `Failed to load sprite after ${currentAttempts} attempts`,
+                        ErrorLevel.WARNING,
+                        new Error(`Sprite load failed: ${path}`),
+                        { path, attempts: currentAttempts }
+                    );
+                }
+                
                 this.loadingPromises.delete(path);
                 reject(new Error(`Failed to load sprite: ${path}`));
             };
+            
             img.src = this.basePath + path;
         });
         
@@ -55,7 +90,19 @@ export class SpriteManager {
      * @returns {Promise<Array<HTMLImageElement>>} Loaded images
      */
     async loadSprites(paths) {
-        return Promise.all(paths.map(path => this.loadSprite(path)));
+        const promises = paths.map(path => 
+            this.loadSprite(path).catch(err => {
+                // Don't fail entire batch if one sprite fails
+                errorHandler.log(
+                    `Sprite load failed in batch`,
+                    ErrorLevel.WARNING,
+                    err,
+                    { path }
+                );
+                return null;
+            })
+        );
+        return Promise.all(promises);
     }
     
     /**
@@ -74,6 +121,29 @@ export class SpriteManager {
      */
     isLoaded(path) {
         return this.sprites.has(path);
+    }
+    
+    /**
+     * Get cache statistics
+     * @returns {Object} Cache statistics
+     */
+    getStats() {
+        return {
+            loaded: this.sprites.size,
+            loading: this.loadingPromises.size,
+            failed: this.failedSprites.size,
+            totalAttempts: Array.from(this.loadAttempts.values()).reduce((sum, val) => sum + val, 0)
+        };
+    }
+    
+    /**
+     * Clear cache
+     */
+    clearCache() {
+        this.sprites.clear();
+        this.loadingPromises.clear();
+        this.failedSprites.clear();
+        this.loadAttempts.clear();
     }
     
     /**
