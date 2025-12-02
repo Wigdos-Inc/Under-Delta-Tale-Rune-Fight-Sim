@@ -123,18 +123,10 @@ export class SpriteRenderer {
      * @param {number} height - Height
      */
     drawBattleBackground(x, y, width, height) {
-        const bg = spriteLoader.getSprite('background');
-        if (!bg) {
-            // Fallback to black
-            this.ctx.fillStyle = '#000000';
-            this.ctx.fillRect(x, y, width, height);
-            return;
-        }
-        
-        this.ctx.save();
-        this.ctx.imageSmoothingEnabled = false;
-        this.ctx.drawImage(bg, x, y, width, height);
-        this.ctx.restore();
+        // Always use solid black background (authentic Undertale style)
+        // The sprite has debug grid lines we don't want
+        this.ctx.fillStyle = '#000000';
+        this.ctx.fillRect(x, y, width, height);
     }
     
     /**
