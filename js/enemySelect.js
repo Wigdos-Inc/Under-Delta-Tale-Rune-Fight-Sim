@@ -8,89 +8,96 @@ import { gameModeManager, GAME_MODES } from './gameMode.js';
 export class EnemySelectMenu {
     constructor() {
         this.undertaleEnemies = [
-            // RUINS
-            { category: "Ruins", name: "Dummy", path: "data/enemies/dummy.json" },
-            { category: "Ruins", name: "Froggit", path: "data/enemies/froggit.json" },
-            { category: "Ruins", name: "Whimsun", path: "data/enemies/whimsun.json" },
-            { category: "Ruins", name: "Moldsmal", path: "data/enemies/moldsmal.json" },
-            { category: "Ruins", name: "Loox", path: "data/enemies/loox.json" },
-            { category: "Ruins", name: "Vegetoid", path: "data/enemies/vegetoid.json" },
-            { category: "Ruins", name: "Migosp", path: "data/enemies/migosp.json" },
-            { category: "Ruins", name: "Napstablook", path: "data/enemies/napstablook.json" },
-            { category: "Ruins (Boss)", name: "Toriel", path: "data/enemies/bosses/toriel.json" },
+            // RUINS ENEMIES
+            { name: 'Froggit', path: 'data/enemies/undertale/froggit.json', category: 'Ruins' },
+            { name: 'Whimsun', path: 'data/enemies/undertale/whimsun.json', category: 'Ruins' },
+            { name: 'Moldsmal', path: 'data/enemies/undertale/moldsmal.json', category: 'Ruins' },
+            { name: 'Loox', path: 'data/enemies/undertale/loox.json', category: 'Ruins' },
+            { name: 'Vegetoid', path: 'data/enemies/undertale/vegetoid.json', category: 'Ruins' },
+            { name: 'Migosp', path: 'data/enemies/undertale/migosp.json', category: 'Ruins' },
+            { name: 'Napstablook', path: 'data/enemies/undertale/napstablook.json', category: 'Ruins' },
             
-            // RUINS - HARD MODE
-            { category: "Ruins (Hard Mode)", name: "Parsnik", path: "data/enemies/parsnik.json" },
-            { category: "Ruins (Hard Mode)", name: "Moldessa", path: "data/enemies/moldessa.json" },
-            { category: "Ruins (Hard Mode)", name: "Migospel", path: "data/enemies/migospel.json" },
+            // SNOWDIN ENEMIES
+            { name: 'Snowdrake', path: 'data/enemies/undertale/snowdrake.json', category: 'Snowdin' },
+            { name: 'Ice Cap', path: 'data/enemies/undertale/icecap.json', category: 'Snowdin' },
+            { name: 'Gyftrot', path: 'data/enemies/undertale/gyftrot.json', category: 'Snowdin' },
+            { name: 'Doggo', path: 'data/enemies/undertale/doggo.json', category: 'Snowdin' },
+            { name: 'Dogamy & Dogaressa', path: 'data/enemies/undertale/dogamy_dogaressa.json', category: 'Snowdin' },
+            { name: 'Lesser Dog', path: 'data/enemies/undertale/lesserdog.json', category: 'Snowdin' },
+            { name: 'Greater Dog', path: 'data/enemies/undertale/greaterdog.json', category: 'Snowdin' },
+            { name: 'Jerry', path: 'data/enemies/undertale/jerry.json', category: 'Snowdin' },
+            { name: 'Glyde', path: 'data/enemies/undertale/glyde.json', category: 'Snowdin' },
             
-            // SNOWDIN
-            { category: "Snowdin", name: "Snowdrake", path: "data/enemies/snowdrake.json" },
-            { category: "Snowdin", name: "Chilldrake", path: "data/enemies/chilldrake.json" },
-            { category: "Snowdin", name: "Ice Cap", path: "data/enemies/icecap.json" },
-            { category: "Snowdin", name: "Gyftrot", path: "data/enemies/gyftrot.json" },
-            { category: "Snowdin", name: "Jerry", path: "data/enemies/jerry.json" },
-            { category: "Snowdin", name: "Doggo", path: "data/enemies/doggo.json" },
-            { category: "Snowdin", name: "Dogamy & Dogaressa", path: "data/enemies/dogamy_dogaressa.json" },
-            { category: "Snowdin", name: "Lesser Dog", path: "data/enemies/lesser_dog.json" },
-            { category: "Snowdin", name: "Greater Dog", path: "data/enemies/greater_dog.json" },
-            { category: "Snowdin", name: "Glyde", path: "data/enemies/glyde.json" },
-            { category: "Snowdin (Boss)", name: "Papyrus", path: "data/enemies/bosses/papyrus.json" },
+            // WATERFALL ENEMIES
+            { name: 'Aaron', path: 'data/enemies/undertale/aaron.json', category: 'Waterfall' },
+            { name: 'Woshua', path: 'data/enemies/undertale/woshua.json', category: 'Waterfall' },
+            { name: 'Moldbygg', path: 'data/enemies/undertale/moldbygg.json', category: 'Waterfall' },
+            { name: 'Temmie', path: 'data/enemies/undertale/temmie.json', category: 'Waterfall' },
+            { name: 'Mad Dummy', path: 'data/enemies/undertale/maddummy.json', category: 'Waterfall' },
+            { name: 'Shyren', path: 'data/enemies/undertale/shyren.json', category: 'Waterfall' },
             
-            // WATERFALL
-            { category: "Waterfall", name: "Aaron", path: "data/enemies/aaron.json" },
-            { category: "Waterfall", name: "Woshua", path: "data/enemies/woshua.json" },
-            { category: "Waterfall", name: "Moldbygg", path: "data/enemies/moldbygg.json" },
-            { category: "Waterfall", name: "Shyren", path: "data/enemies/shyren.json" },
-            { category: "Waterfall", name: "Temmie", path: "data/enemies/temmie.json" },
-            { category: "Waterfall (Boss)", name: "Mad Dummy", path: "data/enemies/mad_dummy.json" },
-            { category: "Waterfall (Boss)", name: "Undyne", path: "data/enemies/bosses/undyne.json" },
+            // HOTLAND ENEMIES
+            { name: 'Vulkin', path: 'data/enemies/undertale/vulkin.json', category: 'Hotland' },
+            { name: 'Tsunderplane', path: 'data/enemies/undertale/tsunderplane.json', category: 'Hotland' },
+            { name: 'Pyrope', path: 'data/enemies/undertale/pyrope.json', category: 'Hotland' },
+            { name: 'Muffet', path: 'data/enemies/undertale/muffet.json', category: 'Hotland' },
+            { name: 'Royal Guards', path: 'data/enemies/undertale/royalguards.json', category: 'Hotland' },
+            { name: 'So Sorry', path: 'data/enemies/undertale/sosorry.json', category: 'Hotland' },
             
-            // HOTLAND
-            { category: "Hotland", name: "Vulkin", path: "data/enemies/vulkin.json" },
-            { category: "Hotland", name: "Tsunderplane", path: "data/enemies/tsunderplane.json" },
-            { category: "Hotland", name: "Pyrope", path: "data/enemies/pyrope.json" },
-            { category: "Hotland", name: "Royal Guards", path: "data/enemies/royal_guards.json" },
-            { category: "Hotland", name: "So Sorry", path: "data/enemies/so_sorry.json" },
-            { category: "Hotland (Boss)", name: "Muffet", path: "data/enemies/muffet.json" },
-            { category: "Hotland (Boss)", name: "Mettaton EX", path: "data/enemies/bosses/mettaton.json" },
+            // CORE ENEMIES
+            { name: 'Madjick', path: 'data/enemies/undertale/madjick.json', category: 'CORE' },
+            { name: 'Knight Knight', path: 'data/enemies/undertale/knightknight.json', category: 'CORE' },
+            { name: 'Final Froggit', path: 'data/enemies/undertale/finalfroggit.json', category: 'CORE' },
+            { name: 'Whimsalot', path: 'data/enemies/undertale/whimsalot.json', category: 'CORE' },
+            { name: 'Astigmatism', path: 'data/enemies/undertale/astigmatism.json', category: 'CORE' },
             
-            // CORE
-            { category: "Core", name: "Final Froggit", path: "data/enemies/final_froggit.json" },
-            { category: "Core", name: "Whimsalot", path: "data/enemies/whimsalot.json" },
-            { category: "Core", name: "Astigmatism", path: "data/enemies/astigmatism.json" },
-            { category: "Core", name: "Knight Knight", path: "data/enemies/knight_knight.json" },
-            { category: "Core", name: "Madjick", path: "data/enemies/madjick.json" },
+            // BOSSES
+            { name: 'Toriel', path: 'data/enemies/undertale/bosses/toriel.json', category: 'Bosses' },
+            { name: 'Papyrus', path: 'data/enemies/undertale/bosses/papyrus.json', category: 'Bosses' },
+            { name: 'Undyne', path: 'data/enemies/undertale/bosses/undyne.json', category: 'Bosses' },
+            { name: 'Undyne the Undying', path: 'data/enemies/undertale/bosses/undyne_undying.json', category: 'Bosses' },
+            { name: 'Mettaton', path: 'data/enemies/undertale/bosses/mettaton.json', category: 'Bosses' },
+            { name: 'Mettaton EX', path: 'data/enemies/undertale/bosses/mettaton_ex.json', category: 'Bosses' },
+            { name: 'Mettaton NEO', path: 'data/enemies/undertale/bosses/mettaton_neo.json', category: 'Bosses' },
+            { name: 'Asgore', path: 'data/enemies/undertale/bosses/asgore.json', category: 'Bosses' },
+            { name: 'Photoshop Flowey', path: 'data/enemies/undertale/bosses/flowey.json', category: 'Bosses' },
+            { name: 'Asriel Dreemurr', path: 'data/enemies/undertale/bosses/asriel.json', category: 'Bosses' },
+            { name: 'Sans', path: 'data/enemies/undertale/bosses/sans.json', category: 'Bosses' },
             
-            // FINAL BOSSES
-            { category: "Final Bosses", name: "Asgore", path: "data/enemies/bosses/asgore.json" },
-            { category: "Final Bosses", name: "Flowey", path: "data/enemies/bosses/flowey.json" },
-            { category: "Final Bosses", name: "Asriel Dreemurr", path: "data/enemies/bosses/asriel.json" },
-            { category: "Final Bosses", name: "Sans", path: "data/enemies/bosses/sans.json" }
+            // TEST ENEMIES
+            { name: 'Test Enemy', path: 'data/enemies/test_enemy.json', category: 'Test' },
+            { name: 'Test Homing', path: 'data/enemies/undertale/test_homing.json', category: 'Test' },
+            { name: 'Test Bouncing', path: 'data/enemies/undertale/test_bouncing.json', category: 'Test' },
+            { name: 'Test Exploding', path: 'data/enemies/undertale/test_exploding.json', category: 'Test' },
+            { name: 'Test Arc', path: 'data/enemies/undertale/test_arc.json', category: 'Test' },
+            { name: 'Test Wave', path: 'data/enemies/undertale/test_wave.json', category: 'Test' },
+            { name: 'Test Rotating Beam', path: 'data/enemies/undertale/test_rotating_beam.json', category: 'Test' },
+            { name: 'Test Wall Attack', path: 'data/enemies/undertale/test_wall_attack.json', category: 'Test' },
+            { name: 'Test Gaster Blaster', path: 'data/enemies/undertale/test_gaster_blaster.json', category: 'Test' }
         ];
         
         this.deltaruneEnemies = [
             // CHAPTER 1
-            { category: "Chapter 1", name: "Rudinn", path: "data/enemies/deltarune/rudinn.json" },
-            { category: "Chapter 1", name: "Hathy", path: "data/enemies/deltarune/hathy.json" },
-            { category: "Chapter 1", name: "Jigsawry", path: "data/enemies/deltarune/jigsawry.json" },
-            { category: "Chapter 1", name: "Ponman", path: "data/enemies/deltarune/ponman.json" },
-            { category: "Chapter 1", name: "Bloxer", path: "data/enemies/deltarune/bloxer.json" },
-            { category: "Chapter 1", name: "Starwalker", path: "data/enemies/deltarune/starwalker.json" },
-            { category: "Chapter 1 (Boss)", name: "Jevil", path: "data/enemies/deltarune/bosses/jevil.json" },
-            { category: "Chapter 1 (Boss)", name: "King", path: "data/enemies/deltarune/bosses/king.json" },
+            { name: 'Rudinn', path: 'data/enemies/deltarune/rudinn.json', category: 'Chapter 1' },
+            { name: 'Hathy', path: 'data/enemies/deltarune/hathy.json', category: 'Chapter 1' },
+            { name: 'Ponman', path: 'data/enemies/deltarune/ponman.json', category: 'Chapter 1' },
+            { name: 'Jigsawry', path: 'data/enemies/deltarune/jigsawry.json', category: 'Chapter 1' },
+            { name: 'C. Round', path: 'data/enemies/deltarune/cround.json', category: 'Chapter 1' },
+            { name: 'K. Round', path: 'data/enemies/deltarune/kround.json', category: 'Chapter 1' },
+            { name: 'Lancer', path: 'data/enemies/deltarune/bosses/lancer.json', category: 'Chapter 1 Bosses' },
+            { name: 'Jevil', path: 'data/enemies/deltarune/bosses/jevil.json', category: 'Chapter 1 Bosses' },
+            { name: 'King', path: 'data/enemies/deltarune/bosses/king.json', category: 'Chapter 1 Bosses' },
             
             // CHAPTER 2
-            { category: "Chapter 2", name: "Virovirokun", path: "data/enemies/deltarune/virovirokun.json" },
-            { category: "Chapter 2", name: "Ambyu-Lance", path: "data/enemies/deltarune/ambyu_lance.json" },
-            { category: "Chapter 2", name: "Werewire", path: "data/enemies/deltarune/werewire.json" },
-            { category: "Chapter 2", name: "Tasque", path: "data/enemies/deltarune/tasque.json" },
-            { category: "Chapter 2", name: "Maus", path: "data/enemies/deltarune/maus.json" },
-            { category: "Chapter 2", name: "Swatchling", path: "data/enemies/deltarune/swatchling.json" },
-            { category: "Chapter 2 (Boss)", name: "Spamton NEO", path: "data/enemies/deltarune/bosses/spamton_neo.json" },
-            { category: "Chapter 2 (Boss)", name: "Queen", path: "data/enemies/deltarune/bosses/queen.json" },
-            { category: "Chapter 2 (Boss)", name: "Tasque Manager", path: "data/enemies/deltarune/bosses/tasque_manager.json" },
-            { category: "Chapter 2 (Boss)", name: "Sweet Cap'n Cakes", path: "data/enemies/deltarune/bosses/sweet_capn_cakes.json" }
+            { name: 'Ambyu-Lance', path: 'data/enemies/deltarune/ambulance.json', category: 'Chapter 2' },
+            { name: 'Virovirokun', path: 'data/enemies/deltarune/virovirokun.json', category: 'Chapter 2' },
+            { name: 'Werewire', path: 'data/enemies/deltarune/werewire.json', category: 'Chapter 2' },
+            { name: 'Tasque', path: 'data/enemies/deltarune/tasque.json', category: 'Chapter 2' },
+            { name: 'Maus', path: 'data/enemies/deltarune/maus.json', category: 'Chapter 2' },
+            { name: 'Spamton', path: 'data/enemies/deltarune/bosses/spamton.json', category: 'Chapter 2 Bosses' },
+            { name: 'Spamton NEO', path: 'data/enemies/deltarune/bosses/spamton_neo.json', category: 'Chapter 2 Bosses' },
+            { name: 'Queen', path: 'data/enemies/deltarune/bosses/queen.json', category: 'Chapter 2 Bosses' },
+            { name: 'Berdly', path: 'data/enemies/deltarune/bosses/berdly.json', category: 'Chapter 2 Bosses' }
         ];
         
         this.selectedIndex = 0;

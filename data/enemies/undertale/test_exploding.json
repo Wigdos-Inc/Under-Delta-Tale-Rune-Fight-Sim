@@ -1,0 +1,258 @@
+{
+    "name": "Test Exploding",
+    "hp": 100,
+    "maxHp": 100,
+    "attack": 5,
+    "defense": 0,
+    "gold": 10,
+    "exp": 10,
+    "canSpare": true,
+    "checkText": "Testing exploding projectile mechanics.",
+    
+    "attackPatterns": [
+        {
+            "name": "Basic Explosion Test",
+            "duration": 6000,
+            "waves": [
+                {
+                    "type": "exploding_projectiles",
+                    "time": 0,
+                    "count": 1,
+                    "speed": 1.5,
+                    "spawnPosition": "center",
+                    "explosionTimer": 90,
+                    "fragmentCount": 8,
+                    "fragmentSpeed": 2.5,
+                    "fragmentPattern": "uniform",
+                    "color": "#ff6600"
+                },
+                {
+                    "type": "exploding_projectiles",
+                    "time": 2000,
+                    "count": 2,
+                    "speed": 2,
+                    "side": "left",
+                    "explosionTimer": 120,
+                    "fragmentCount": 12,
+                    "fragmentSpeed": 2,
+                    "fragmentPattern": "uniform",
+                    "color": "#ff0000"
+                },
+                {
+                    "type": "exploding_projectiles",
+                    "time": 4000,
+                    "count": 3,
+                    "speed": 1,
+                    "spawnPosition": "random",
+                    "explosionTimer": 60,
+                    "fragmentCount": 6,
+                    "fragmentSpeed": 3,
+                    "fragmentPattern": "random",
+                    "color": "#ffaa00"
+                }
+            ]
+        },
+        {
+            "name": "Directional Fragments",
+            "duration": 7000,
+            "waves": [
+                {
+                    "type": "exploding_projectiles",
+                    "time": 0,
+                    "count": 1,
+                    "speed": 2.5,
+                    "side": "left",
+                    "explosionTimer": 100,
+                    "fragmentCount": 10,
+                    "fragmentSpeed": 2.5,
+                    "fragmentPattern": "directional",
+                    "color": "#ff00ff"
+                },
+                {
+                    "type": "exploding_projectiles",
+                    "time": 1500,
+                    "count": 1,
+                    "speed": 2.5,
+                    "side": "right",
+                    "explosionTimer": 100,
+                    "fragmentCount": 10,
+                    "fragmentSpeed": 2.5,
+                    "fragmentPattern": "directional",
+                    "color": "#00ff00"
+                },
+                {
+                    "type": "exploding_projectiles",
+                    "time": 3000,
+                    "count": 1,
+                    "speed": 2.5,
+                    "side": "top",
+                    "explosionTimer": 100,
+                    "fragmentCount": 10,
+                    "fragmentSpeed": 2.5,
+                    "fragmentPattern": "cone",
+                    "color": "#00ffff"
+                },
+                {
+                    "type": "exploding_projectiles",
+                    "time": 4500,
+                    "count": 1,
+                    "speed": 2.5,
+                    "side": "bottom",
+                    "explosionTimer": 100,
+                    "fragmentCount": 10,
+                    "fragmentSpeed": 2.5,
+                    "fragmentPattern": "cone",
+                    "color": "#ffff00"
+                }
+            ]
+        },
+        {
+            "name": "Chain Reaction",
+            "duration": 8000,
+            "waves": [
+                {
+                    "type": "exploding_projectiles",
+                    "time": 0,
+                    "count": 5,
+                    "speed": 0.5,
+                    "spawnPosition": "random",
+                    "explosionTimer": 180,
+                    "fragmentCount": 8,
+                    "fragmentSpeed": 2,
+                    "fragmentPattern": "uniform",
+                    "canChainExplode": true,
+                    "chainRadius": 80,
+                    "warningTime": 45,
+                    "color": "#ff0000"
+                },
+                {
+                    "type": "exploding_projectiles",
+                    "time": 3000,
+                    "count": 1,
+                    "speed": 3,
+                    "spawnPosition": "center",
+                    "targetCenter": false,
+                    "randomAngle": true,
+                    "explosionTimer": 60,
+                    "fragmentCount": 12,
+                    "fragmentSpeed": 2.5,
+                    "fragmentPattern": "uniform",
+                    "canChainExplode": true,
+                    "chainRadius": 80,
+                    "color": "#ffff00"
+                }
+            ]
+        },
+        {
+            "name": "Mixed Explosion Pattern",
+            "duration": 9000,
+            "waves": [
+                {
+                    "type": "exploding_projectiles",
+                    "time": 0,
+                    "count": 2,
+                    "speed": 2,
+                    "side": "left",
+                    "explosionTimer": 90,
+                    "fragmentCount": 8,
+                    "fragmentSpeed": 2,
+                    "fragmentPattern": "uniform",
+                    "color": "#ff6600"
+                },
+                {
+                    "type": "projectiles",
+                    "time": 1000,
+                    "count": 6,
+                    "side": "top",
+                    "speed": 2.5,
+                    "spread": true,
+                    "color": "#ffffff"
+                },
+                {
+                    "type": "exploding_projectiles",
+                    "time": 2000,
+                    "count": 1,
+                    "speed": 0,
+                    "spawnPosition": "center",
+                    "explosionTimer": 120,
+                    "fragmentCount": 16,
+                    "fragmentSpeed": 3,
+                    "fragmentPattern": "uniform",
+                    "warningTime": 60,
+                    "color": "#ff0000"
+                },
+                {
+                    "type": "bones",
+                    "time": 3000,
+                    "side": "bottom",
+                    "length": 100,
+                    "speed": 3,
+                    "gap": 80,
+                    "color": "#ffffff"
+                },
+                {
+                    "type": "exploding_projectiles",
+                    "time": 4500,
+                    "count": 3,
+                    "speed": 1.5,
+                    "spawnPosition": "random",
+                    "explosionTimer": 75,
+                    "fragmentCount": 6,
+                    "fragmentSpeed": 2.5,
+                    "fragmentPattern": "random",
+                    "fragmentLifespan": 120,
+                    "color": "#ffaa00"
+                },
+                {
+                    "type": "circle_pellets",
+                    "time": 6000,
+                    "count": 12,
+                    "speed": 2,
+                    "size": 8
+                },
+                {
+                    "type": "exploding_projectiles",
+                    "time": 7000,
+                    "count": 4,
+                    "speed": 2.5,
+                    "side": "top",
+                    "explosionTimer": 100,
+                    "fragmentCount": 10,
+                    "fragmentSpeed": 2,
+                    "fragmentPattern": "cone",
+                    "color": "#ff00ff"
+                }
+            ]
+        }
+    ],
+    
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Duck",
+            "effect": "custom",
+            "text": "You duck as the projectiles explode overhead."
+        },
+        {
+            "name": "Shield",
+            "effect": "custom",
+            "text": "You brace yourself for the explosion."
+        }
+    ],
+    
+    "spareCondition": {
+        "type": "acts",
+        "requiredActs": ["Duck", "Shield"],
+        "count": 2
+    },
+    
+    "flavorText": [
+        "Test Exploding appears!",
+        "The air feels volatile.",
+        "Projectiles pulse ominously.",
+        "Something's about to explode!"
+    ]
+}

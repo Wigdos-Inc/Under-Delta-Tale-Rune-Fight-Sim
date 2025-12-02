@@ -1,0 +1,113 @@
+{
+    "name": "Doggo",
+    "hp": 70,
+    "attack": 8,
+    "defense": 2,
+    "gold": 30,
+    "exp": 30,
+    "dialogue": [
+        "* Doggo is suspicious of you.",
+        "* Doggo sniffs the air.",
+        "* Doggo's eyes dart around nervously.",
+        "* It's so excited that it thinks you're a fridge."
+    ],
+    "checkText": "ATK 8 DEF 2 - Easily excited by moving things. Hopelessly near-sighted.",
+    "spareThreshold": 0,
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Pet",
+            "effect": "pet",
+            "mercyIncrease": 50,
+            "text": "You pet Doggo. He seems confused but excited."
+        },
+        {
+            "name": "Walk Around",
+            "effect": "walk",
+            "mercyIncrease": 30,
+            "text": "You walk around. Doggo tracks your movement suspiciously."
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Blue Sword Slash",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "blue_bones",
+                    "count": 1,
+                    "speed": 4,
+                    "orientation": "horizontal"
+                },
+                {
+                    "time": 1200,
+                    "type": "blue_bones",
+                    "count": 1,
+                    "speed": 4,
+                    "orientation": "horizontal"
+                },
+                {
+                    "time": 2400,
+                    "type": "blue_bones",
+                    "count": 2,
+                    "speed": 3.5,
+                    "orientation": "horizontal"
+                }
+            ]
+        },
+        {
+            "name": "Double Blue Slash",
+            "duration": 3500,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "blue_bones",
+                    "count": 2,
+                    "speed": 5,
+                    "orientation": "vertical"
+                },
+                {
+                    "time": 1500,
+                    "type": "blue_bones",
+                    "count": 2,
+                    "speed": 4,
+                    "orientation": "horizontal"
+                }
+            ]
+        },
+        {
+            "name": "Blue Projectile Storm",
+            "duration": 4500,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "blue_projectiles",
+                    "count": 3,
+                    "speed": 2.5,
+                    "size": 20,
+                    "side": "left"
+                },
+                {
+                    "time": 1000,
+                    "type": "blue_projectiles",
+                    "count": 3,
+                    "speed": 2.5,
+                    "size": 20,
+                    "side": "right"
+                },
+                {
+                    "time": 2000,
+                    "type": "blue_projectiles",
+                    "count": 4,
+                    "speed": 3,
+                    "size": 20,
+                    "side": "top"
+                }
+            ]
+        }
+    ]
+}

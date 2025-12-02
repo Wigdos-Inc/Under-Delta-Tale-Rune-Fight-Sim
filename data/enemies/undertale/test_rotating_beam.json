@@ -1,0 +1,240 @@
+{
+    "name": "Test Rotating Beam",
+    "hp": 100,
+    "maxHp": 100,
+    "attack": 5,
+    "defense": 0,
+    "gold": 10,
+    "exp": 10,
+    "canSpare": true,
+    "checkText": "Testing rotating beam mechanics.",
+    
+    "attackPatterns": [
+        {
+            "name": "Basic Rotation Test",
+            "duration": 8000,
+            "waves": [
+                {
+                    "type": "rotating_beam",
+                    "time": 0,
+                    "origin": "center",
+                    "beamLength": 180,
+                    "beamWidth": 20,
+                    "startAngle": 0,
+                    "rotationSpeed": 0.04,
+                    "rotationDirection": 1,
+                    "telegraphDuration": 60,
+                    "activeDuration": 200,
+                    "safeZoneRadius": 35,
+                    "color": "#ff0000"
+                }
+            ]
+        },
+        {
+            "name": "Dual Rotating Beams",
+            "duration": 9000,
+            "waves": [
+                {
+                    "type": "rotating_beam",
+                    "time": 0,
+                    "origin": "center",
+                    "beamLength": 170,
+                    "beamWidth": 18,
+                    "startAngle": 0,
+                    "rotationSpeed": 0.05,
+                    "rotationDirection": 1,
+                    "telegraphDuration": 60,
+                    "activeDuration": 250,
+                    "safeZoneRadius": 30,
+                    "color": "#ff00ff"
+                },
+                {
+                    "type": "rotating_beam",
+                    "time": 0,
+                    "origin": "center",
+                    "beamLength": 170,
+                    "beamWidth": 18,
+                    "startAngle": 3.14159,
+                    "rotationSpeed": 0.05,
+                    "rotationDirection": 1,
+                    "telegraphDuration": 60,
+                    "activeDuration": 250,
+                    "safeZoneRadius": 30,
+                    "color": "#00ff00"
+                }
+            ]
+        },
+        {
+            "name": "Counter-Rotating Beams",
+            "duration": 10000,
+            "waves": [
+                {
+                    "type": "rotating_beam",
+                    "time": 0,
+                    "origin": "center",
+                    "beamLength": 180,
+                    "beamWidth": 16,
+                    "startAngle": 0,
+                    "rotationSpeed": 0.06,
+                    "rotationDirection": 1,
+                    "telegraphDuration": 60,
+                    "activeDuration": 280,
+                    "safeZoneRadius": 35,
+                    "color": "#ff6600"
+                },
+                {
+                    "type": "rotating_beam",
+                    "time": 0,
+                    "origin": "center",
+                    "beamLength": 180,
+                    "beamWidth": 16,
+                    "startAngle": 1.57,
+                    "rotationSpeed": 0.06,
+                    "rotationDirection": -1,
+                    "telegraphDuration": 60,
+                    "activeDuration": 280,
+                    "safeZoneRadius": 35,
+                    "color": "#0066ff"
+                }
+            ]
+        },
+        {
+            "name": "Oscillating Beam",
+            "duration": 8000,
+            "waves": [
+                {
+                    "type": "rotating_beam",
+                    "time": 0,
+                    "origin": "center",
+                    "beamLength": 200,
+                    "beamWidth": 25,
+                    "startAngle": 0.78539,
+                    "rotationSpeed": 0.04,
+                    "rotationDirection": 1,
+                    "hasAngularLimit": true,
+                    "minAngle": 0,
+                    "maxAngle": 3.14159,
+                    "reverseAtLimit": true,
+                    "telegraphDuration": 60,
+                    "activeDuration": 300,
+                    "safeZoneRadius": 30,
+                    "color": "#ffff00"
+                }
+            ]
+        },
+        {
+            "name": "Fast Spinning",
+            "duration": 7000,
+            "waves": [
+                {
+                    "type": "rotating_beam",
+                    "time": 0,
+                    "origin": "center",
+                    "beamLength": 160,
+                    "beamWidth": 15,
+                    "startAngle": 0,
+                    "rotationSpeed": 0.1,
+                    "rotationDirection": 1,
+                    "telegraphDuration": 45,
+                    "activeDuration": 200,
+                    "safeZoneRadius": 40,
+                    "color": "#ff0000"
+                }
+            ]
+        },
+        {
+            "name": "Mixed Pattern",
+            "duration": 11000,
+            "waves": [
+                {
+                    "type": "rotating_beam",
+                    "time": 0,
+                    "origin": "center",
+                    "beamLength": 175,
+                    "beamWidth": 18,
+                    "startAngle": 0,
+                    "rotationSpeed": 0.05,
+                    "rotationDirection": 1,
+                    "telegraphDuration": 60,
+                    "activeDuration": 200,
+                    "safeZoneRadius": 35,
+                    "color": "#ff00ff"
+                },
+                {
+                    "type": "projectiles",
+                    "time": 2000,
+                    "count": 8,
+                    "side": "top",
+                    "speed": 2.5,
+                    "spread": true,
+                    "color": "#ffffff"
+                },
+                {
+                    "type": "rotating_beam",
+                    "time": 4000,
+                    "origin": "center",
+                    "beamLength": 185,
+                    "beamWidth": 20,
+                    "startAngle": 1.57,
+                    "rotationSpeed": 0.04,
+                    "rotationDirection": -1,
+                    "telegraphDuration": 60,
+                    "activeDuration": 220,
+                    "safeZoneRadius": 30,
+                    "color": "#00ff00"
+                },
+                {
+                    "type": "circle_pellets",
+                    "time": 6500,
+                    "count": 12,
+                    "speed": 2,
+                    "size": 8
+                },
+                {
+                    "type": "rotating_beam",
+                    "time": 8000,
+                    "origin": "center",
+                    "beamLength": 190,
+                    "beamWidth": 22,
+                    "startAngle": 0,
+                    "rotationSpeed": 0.07,
+                    "rotationDirection": 1,
+                    "telegraphDuration": 50,
+                    "activeDuration": 180,
+                    "safeZoneRadius": 35,
+                    "color": "#ff6600"
+                }
+            ]
+        }
+    ],
+    
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Duck",
+            "effect": "custom",
+            "text": "You duck under the sweeping beam."
+        },
+        {
+            "name": "Jump",
+            "effect": "custom",
+            "text": "You time your jump over the rotating beam."
+        }
+    ],
+    
+    "spareCondition": {
+        "type": "acts",
+        "requiredActs": ["Duck", "Jump"],
+        "count": 2
+    },
+    
+    "flavorText": [
+        "Test Rotating Beam appears!",
+        "A beam of light sweeps across the battlefield.",
+        "The laser rotates menacingly.",
+        "Stay in the safe zone or dodge the beam!"
+    ]
+}

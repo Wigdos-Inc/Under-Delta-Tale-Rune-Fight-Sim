@@ -30,13 +30,31 @@ export class CollisionManager {
         if (soul.isInvincible()) return;
         
         const soulBounds = soul.getBounds();
+        const soulCenterX = soul.x;
+        const soulCenterY = soul.y;
+        const soulRadius = Math.max(soulBounds.width, soulBounds.height) / 2;
         
         for (const obj of attackObjects) {
             if (!obj.active) continue;
             
-            const objBounds = obj.getBounds();
+            let isColliding = false;
             
-            if (rectCollision(soulBounds, objBounds)) {
+            // Check for custom collision method (e.g., RotatingBeam)
+            if (obj.collidesWith && typeof obj.collidesWith === 'function') {
+                isColliding = obj.collidesWith(soulCenterX, soulCenterY, soulRadius);
+            } else {
+                // Standard AABB collision
+                const objBounds = obj.getBounds();
+                isColliding = rectCollision(soulBounds, objBounds);
+            }
+            
+            if (isColliding) {
+                // Check if this is a blue/orange attack
+                if (obj.shouldDamage && !obj.shouldDamage(soul)) {
+                    // Blue/Orange attack that shouldn't damage - skip collision
+                    continue;
+                }
+                
                 // Collision detected!
                 this.handleCollision(soul, obj);
             }

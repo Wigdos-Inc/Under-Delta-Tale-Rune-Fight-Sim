@@ -1,0 +1,157 @@
+{
+  "name": "Papyrus",
+  "hp": 680,
+  "maxHp": 680,
+  "def": 20,
+  "atk": 8,
+  "gold": 200,
+  "exp": 0,
+  "flavor": "NYEH HEH HEH HEH HEH HEH HEH!!!",
+  "check": "* PAPYRUS - ATK 20 DEF 20\\n* Likes to say 'NYEH HEH HEH!'",
+  "soulMode": "blue",
+  "canSpare": true,
+  "acts": [
+    {
+      "name": "Check",
+      "description": "Likes to say 'NYEH HEH HEH!'",
+      "effect": "check",
+      "canUse": true
+    },
+    {
+      "name": "Compliment",
+      "description": "You tell Papyrus his attack is 'REALLY COOL!!'",
+      "effect": "mercy_up",
+      "canUse": true
+    },
+    {
+      "name": "Flirt",
+      "description": "You flirt with Papyrus. Somehow...he's flustered!?",
+      "effect": "mercy_up",
+      "canUse": true
+    },
+    {
+      "name": "Insult",
+      "description": "You insult Papyrus. He doesn't understand what you mean...",
+      "effect": "neutral",
+      "canUse": true
+    }
+  ],
+  "dialogue": [
+    "NYEH HEH HEH!",
+    "READY OR NOT,\\nHERE I COME!",
+    "THIS IS MY\\nSPECIAL ATTACK!",
+    "I, THE GREAT\\nPAPYRUS,\\nWILL CAPTURE YOU!",
+    "WOWIE! YOU'RE\\nTOUGHER THAN YOU\\nLOOK!"
+  ],
+  "attackPatterns": [
+    {
+      "name": "Blue Mode Bone Test",
+      "duration": 4000,
+      "waves": [
+        {
+          "time": 0,
+          "type": "blue_bones",
+          "count": 3,
+          "speed": 3,
+          "orientation": "horizontal"
+        },
+        {
+          "time": 1500,
+          "type": "blue_bones",
+          "count": 2,
+          "speed": 3,
+          "orientation": "horizontal"
+        },
+        {
+          "time": 3000,
+          "type": "bones",
+          "count": 4,
+          "speed": 4,
+          "orientation": "horizontal"
+        }
+      ]
+    },
+    {
+      "name": "Jump Challenge",
+      "duration": 5000,
+      "waves": [
+        {
+          "time": 0,
+          "type": "bones",
+          "count": 2,
+          "speed": 2,
+          "orientation": "horizontal"
+        },
+        {
+          "time": 800,
+          "type": "bones",
+          "count": 2,
+          "speed": 2,
+          "orientation": "horizontal"
+        },
+        {
+          "time": 1600,
+          "type": "bones",
+          "count": 3,
+          "speed": 3,
+          "orientation": "horizontal"
+        },
+        {
+          "time": 2400,
+          "type": "blue_bones",
+          "count": 2,
+          "speed": 3,
+          "orientation": "horizontal"
+        },
+        {
+          "time": 3200,
+          "type": "bones",
+          "count": 4,
+          "speed": 4,
+          "orientation": "horizontal"
+        },
+        {
+          "time": 4000,
+          "type": "blue_bones",
+          "count": 3,
+          "speed": 3,
+          "orientation": "horizontal"
+        }
+      ]
+    },
+    {
+      "name": "Cool Dude Pattern",
+      "duration": 4500,
+      "waves": [
+        {
+          "time": 0,
+          "type": "projectiles",
+          "count": 4,
+          "speed": 2,
+          "side": "top",
+          "size": 12
+        },
+        {
+          "time": 1000,
+          "type": "bones",
+          "count": 3,
+          "speed": 3,
+          "orientation": "horizontal"
+        },
+        {
+          "time": 2000,
+          "type": "blue_bones",
+          "count": 2,
+          "speed": 2,
+          "orientation": "horizontal"
+        },
+        {
+          "time": 3000,
+          "type": "circle_pellets",
+          "count": 8,
+          "speed": 2.5
+        }
+      ]
+    }
+  ]
+}

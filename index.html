@@ -12,8 +12,9 @@
         
         <!-- Battle UI Elements -->
         <div id="battle-ui">
-            <!-- HP Bar -->
+            <!-- HP Bar (Top-Left Corner) -->
             <div id="hp-container">
+                <div id="player-name">KRIS</div>
                 <span id="hp-text">HP</span>
                 <div id="hp-bar-bg">
                     <div id="hp-bar-fill"></div>
@@ -21,25 +22,38 @@
                 <span id="hp-numbers"><span id="hp-current">20</span> / <span id="hp-max">20</span></span>
             </div>
             
-            <!-- Dialogue Box -->
-            <div id="dialogue-box">
+            <!-- Text Box (Bottom Area) -->
+            <div id="text-box">
                 <div id="dialogue-text"></div>
             </div>
             
-            <!-- Action Buttons -->
+            <!-- Action Buttons (Inside Text Box Area) -->
             <div id="action-buttons" class="hidden">
-                <button class="action-btn" id="btn-fight" data-action="fight">
-                    FIGHT
-                </button>
-                <button class="action-btn" id="btn-act" data-action="act">
-                    ACT
-                </button>
-                <button class="action-btn" id="btn-item" data-action="item">
-                    ITEM
-                </button>
-                <button class="action-btn" id="btn-mercy" data-action="mercy">
-                    MERCY
-                </button>
+                <div class="button-row">
+                    <button class="action-btn fight-btn" id="btn-fight" data-action="fight">
+                        <span class="button-icon">*</span>
+                        <span class="button-text">FIGHT</span>
+                    </button>
+                    <button class="action-btn act-btn" id="btn-act" data-action="act">
+                        <span class="button-icon">*</span>
+                        <span class="button-text">ACT</span>
+                    </button>
+                </div>
+                <div class="button-row">
+                    <button class="action-btn item-btn" id="btn-item" data-action="item">
+                        <span class="button-icon">*</span>
+                        <span class="button-text">ITEM</span>
+                    </button>
+                    <button class="action-btn mercy-btn" id="btn-mercy" data-action="mercy">
+                        <span class="button-icon">*</span>
+                        <span class="button-text">MERCY</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Soul Cursor (Red Heart) -->
+            <div id="soul-cursor" class="hidden">
+                <div class="heart">❤</div>
             </div>
             
             <!-- Sub-menu for actions -->
@@ -58,6 +72,19 @@
     <script type="module" src="js/sprites.js"></script>
     <script type="module" src="js/uiRenderer.js"></script>
     <script type="module" src="js/menuUI.js"></script>
+    
+    <!-- Advanced Attack System (TODO #2) -->
+    <script type="module" src="js/easing.js"></script>
+    <script type="module" src="js/attackModifiers.js"></script>
+    <script type="module" src="js/attackStates.js"></script>
+    <script type="module" src="js/attackTiming.js"></script>
+    <script type="module" src="js/attackComposition.js"></script>
+    <script type="module" src="js/advancedAttackExamples.js"></script>
+    
+    <!-- Soul Mode System (TODO #3) -->
+    <script type="module" src="js/soulModes.js"></script>
+    
+    <!-- Core Battle Systems -->
     <script type="module" src="js/soul.js"></script>
     <script type="module" src="js/collision.js"></script>
     <script type="module" src="js/attacks.js"></script>

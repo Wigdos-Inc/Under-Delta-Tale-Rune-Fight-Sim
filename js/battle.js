@@ -13,6 +13,8 @@ import { UIRenderer } from './uiRenderer.js';
 import { audioManager } from './audio.js';
 import { InputManager } from './utils.js';
 import { gameModeManager } from './gameMode.js';
+import { battleState, BATTLE_STATES } from './battleState.js';
+import { SpriteRenderer } from './spriteRenderer.js';
 
 /**
  * Battle class - Main battle controller
@@ -23,8 +25,10 @@ export class Battle {
         this.ctx = canvas.getContext('2d');
         this.input = new InputManager();
         
-        // Battle state
+        // Battle state (using state machine)
+        // Legacy phase kept for backward compatibility
         this.phase = CONFIG.PHASE.MENU;
+        
         this.playerHP = CONFIG.HP.current;
         this.maxHP = CONFIG.HP.max;
         this.playerTP = 0; // Deltarune TP system
@@ -47,8 +51,15 @@ export class Battle {
         this.flavorText = '';
         this.flavorTextTimer = 0;
         
+        // Death and game over animations
+        this.dustCloudAnimation = null; // {x, y, frame, timer}
+        this.heartBreakAnimation = null; // {x, y, frame, timer}
+        
         // UI Renderer for sprite-based UI
         this.uiRenderer = new UIRenderer(this.canvas);
+        
+        // Sprite Renderer for authentic Undertale graphics
+        this.spriteRenderer = new SpriteRenderer(this.canvas);
         
         // Setup collision detection
         collisionManager.onCollision((data) => {
@@ -74,6 +85,9 @@ export class Battle {
      * @param {string} enemyPath - Path to enemy JSON file
      */
     async startBattle(enemyPath) {
+        // Initialize battle state
+        battleState.setState(BATTLE_STATES.INTRO);
+        
         this.enemy = await loadEnemyFromJSON(enemyPath);
         this.turnCount = 0;
         this.playerHP = this.maxHP;
@@ -92,8 +106,15 @@ export class Battle {
      * Start player's turn (show action buttons)
      */
     startPlayerTurn() {
-        this.phase = CONFIG.PHASE.MENU;
+        // Transition to player turn
+        battleState.setState(BATTLE_STATES.PLAYER_TURN_START);
+        
+        this.phase = CONFIG.PHASE.MENU; // Legacy
         this.soul.reset(CONFIG.BATTLE_BOX);
+        
+        // Transition to menu selection state
+        battleState.setState(BATTLE_STATES.MENU_SELECTION);
+        
         uiManager.showActionButtons();
         uiManager.showDialogue('* What will you do?');
     }
@@ -103,6 +124,15 @@ export class Battle {
      * @param {string} action - Action type (fight/act/item/mercy)
      */
     handleAction(action) {
+        // Guard: Only allow actions during menu selection
+        if (!battleState.canSelectMenuOption()) {
+            console.warn(`Cannot perform action ${action} in state ${battleState.getState()}`);
+            return;
+        }
+        
+        // Transition to action processing state
+        battleState.setState(BATTLE_STATES.ACTION_PROCESSING);
+        
         uiManager.hideActionButtons();
         
         switch (action) {
@@ -125,9 +155,22 @@ export class Battle {
      * Handle FIGHT action
      */
     handleFight() {
+        // Guard: Only allow during action processing
+        if (battleState.getState() !== BATTLE_STATES.ACTION_PROCESSING) {
+            console.warn('Cannot fight in current state');
+            return;
+        }
+        
+        battleState.setState(BATTLE_STATES.FIGHT_ANIMATION);
+        
         // Simple damage calculation (in a full game, this would have a timing minigame)
         const damage = Math.floor(Math.random() * COMBAT.BASE_ATTACK_DAMAGE_MAX) + COMBAT.BASE_ATTACK_DAMAGE_MIN;
         const actualDamage = this.enemy.takeDamage(damage);
+        
+        // Show sprite-based damage number above enemy
+        const enemyX = this.canvas.width / 2;
+        const enemyY = CONFIG.ENEMY_POSITION.y;
+        this.spriteRenderer.addFloatingDamage(actualDamage, enemyX, enemyY, false);
         
         uiManager.showDialogue(`* You attack ${this.enemy.name} for ${actualDamage} damage!`);
         audioManager.playSound('attack');
@@ -145,6 +188,13 @@ export class Battle {
      * Handle ACT action
      */
     handleAct() {
+        // Guard: Only allow during action processing
+        if (battleState.getState() !== BATTLE_STATES.ACTION_PROCESSING) {
+            console.warn('Cannot act in current state');
+            return;
+        }
+        
+        battleState.setState(BATTLE_STATES.DIALOGUE_DISPLAY);
         const acts = this.enemy.acts;
         
         uiManager.showSubMenu(acts.map(act => ({
@@ -228,10 +278,13 @@ export class Battle {
      * Start enemy's turn (attack phase)
      */
     startEnemyTurn() {
-        this.phase = CONFIG.PHASE.ENEMY_ATTACK;
+        // Transition to enemy turn
+        battleState.setState(BATTLE_STATES.ENEMY_TURN_START);
+        this.phase = CONFIG.PHASE.ENEMY_ATTACK; // Legacy
         this.turnCount++;
         
         // Show enemy dialogue
+        battleState.setState(BATTLE_STATES.ENEMY_DIALOGUE);
         uiManager.showDialogue(`* ${this.enemy.getDialogue()}`);
         
         // Set flavor text
@@ -239,9 +292,13 @@ export class Battle {
         
         // Start attack pattern after brief delay
         setTimeout(() => {
+            battleState.setState(BATTLE_STATES.ENEMY_ATTACKING);
             this.currentAttackPattern = this.enemy.getNextAttackPattern();
             this.currentAttackPattern.start();
             this.battleBoxPulse = 1;
+            
+            // Transition to dodging phase
+            battleState.setState(BATTLE_STATES.DODGING);
         }, TIMING.ATTACK_START_DELAY);
     }
     
@@ -309,6 +366,19 @@ export class Battle {
      * Handle victory
      */
     handleVictory() {
+        battleState.setState(BATTLE_STATES.VICTORY);
+        
+        // Start dust cloud animation at enemy position
+        const enemyX = this.canvas.width / 2;
+        const enemyY = CONFIG.ENEMY_POSITION.y;
+        this.dustCloudAnimation = {
+            x: enemyX,
+            y: enemyY,
+            frame: 0,
+            timer: 0,
+            frameDuration: 150 // ms per frame
+        };
+        
         uiManager.showDialogue(`* YOU WON!\n* You earned ${this.enemy.exp} XP and ${this.enemy.gold} GOLD.`);
         setTimeout(() => {
             this.endBattle();
@@ -319,7 +389,18 @@ export class Battle {
      * Handle game over
      */
     handleGameOver() {
-        this.phase = CONFIG.PHASE.MENU;
+        battleState.setState(BATTLE_STATES.DEFEAT);
+        
+        // Start heart break animation at soul position
+        this.heartBreakAnimation = {
+            x: this.soul.x,
+            y: this.soul.y,
+            frame: 0,
+            timer: 0,
+            frameDuration: 150 // ms per frame
+        };
+        
+        this.phase = CONFIG.PHASE.MENU; // Legacy
         uiManager.showDialogue('* You died...');
         this.playerHP = 0;
         
@@ -333,7 +414,8 @@ export class Battle {
      * End battle
      */
     endBattle() {
-        this.phase = CONFIG.PHASE.MENU;
+        battleState.setState(BATTLE_STATES.IDLE);
+        this.phase = CONFIG.PHASE.MENU; // Legacy
         uiManager.showDialogue('* Battle ended.');
         this.showReturnButton();
     }
@@ -364,6 +446,7 @@ export class Battle {
     update() {
         // Update UI animations
         this.uiRenderer.update();
+        this.spriteRenderer.update(16); // Assuming ~60fps (16ms per frame)
         
         // Update UI text animation
         uiManager.updateDialogue();
@@ -417,6 +500,35 @@ export class Battle {
         if (this.flavorTextTimer > 0) {
             this.flavorTextTimer--;
         }
+        
+        // Update dust cloud animation (enemy defeat)
+        if (this.dustCloudAnimation) {
+            this.dustCloudAnimation.timer += 16; // ~60fps
+            if (this.dustCloudAnimation.timer >= this.dustCloudAnimation.frameDuration) {
+                this.dustCloudAnimation.frame++;
+                this.dustCloudAnimation.timer = 0;
+                
+                // Dust cloud has 3 frames (0-2), stop after last frame
+                if (this.dustCloudAnimation.frame > 2) {
+                    this.dustCloudAnimation = null;
+                }
+            }
+        }
+        
+        // Update heart break animation (game over)
+        if (this.heartBreakAnimation) {
+            this.heartBreakAnimation.timer += 16; // ~60fps
+            if (this.heartBreakAnimation.timer >= this.heartBreakAnimation.frameDuration) {
+                this.heartBreakAnimation.frame++;
+                this.heartBreakAnimation.timer = 0;
+                
+                // Heart break animation frames (break → shards)
+                // Keep showing final frame
+                if (this.heartBreakAnimation.frame > 5) {
+                    this.heartBreakAnimation.frame = 5; // Hold on shards
+                }
+            }
+        }
     }
     
     /**
@@ -431,16 +543,23 @@ export class Battle {
         // Update attack pattern
         this.currentAttackPattern.update();
         
+        // Set soul target for homing projectiles (TODO #4)
+        const activeObjects = this.currentAttackPattern.getActiveObjects();
+        activeObjects.forEach(obj => {
+            if (obj.type === 'homing_projectile' && obj.setTarget) {
+                obj.setTarget(this.soul);
+            }
+        });
+        
         // Store previous collision state for TP gain detection
         const hadCollision = this.soul.invincible;
         
         // Check collisions
-        collisionManager.checkCollisions(this.soul, this.currentAttackPattern.getActiveObjects());
+        collisionManager.checkCollisions(this.soul, activeObjects);
         
         // Grant TP in Deltarune mode for successful dodging
         if (gameModeManager.getMode() === 'deltarune') {
             // If we're not invincible and there are active attacks nearby, grant small TP
-            const activeObjects = this.currentAttackPattern.getActiveObjects();
             if (activeObjects.length > 0 && !hadCollision) {
                 this.playerTP = Math.min(this.maxTP, this.playerTP + 0.1);
             }
@@ -499,9 +618,12 @@ export class Battle {
     draw() {
         const ctx = this.ctx;
         
-        // Clear canvas
-        ctx.fillStyle = CONFIG.COLORS.background;
-        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        // Draw battle background sprite
+        this.spriteRenderer.drawBattleBackground(
+            0, 0, 
+            this.canvas.width, 
+            this.canvas.height
+        );
         
         // Apply shake effect
         ctx.save();
@@ -516,8 +638,22 @@ export class Battle {
             this.enemy.draw(ctx, this.canvas.width / 2, 80);
         }
         
-        // Draw battle box
-        this.drawBattleBox(ctx);
+        // Draw dust cloud animation (enemy defeat)
+        if (this.dustCloudAnimation) {
+            this.spriteRenderer.drawDustCloud(
+                this.dustCloudAnimation.x,
+                this.dustCloudAnimation.y,
+                this.dustCloudAnimation.frame
+            );
+        }
+        
+        // Draw battle box with sprite border
+        this.spriteRenderer.drawBattleBox(
+            CONFIG.BATTLE_BOX.x,
+            CONFIG.BATTLE_BOX.y,
+            CONFIG.BATTLE_BOX.width,
+            CONFIG.BATTLE_BOX.height
+        );
         
         // Draw attacks during attack phase
         if (this.phase === CONFIG.PHASE.ENEMY_ATTACK) {
@@ -527,10 +663,22 @@ export class Battle {
             this.soul.draw(ctx);
         }
         
+        // Draw heart break animation (game over)
+        if (this.heartBreakAnimation) {
+            this.spriteRenderer.drawHeartBreak(
+                this.heartBreakAnimation.x,
+                this.heartBreakAnimation.y,
+                this.heartBreakAnimation.frame
+            );
+        }
+        
         ctx.restore();
         
         // Draw visual effects
         this.drawVisualEffects(ctx);
+        
+        // Draw sprite-based damage numbers
+        this.spriteRenderer.renderDamageNumbers();
         
         // Draw sprite-based UI elements
         if (this.enemy) {
@@ -547,6 +695,17 @@ export class Battle {
         // Draw action buttons (menu phase)
         if (this.phase === CONFIG.PHASE.MENU) {
             this.uiRenderer.drawActionButtons();
+            
+            // Draw soul cursor sprite at selected button position
+            const soulPos = uiManager.getSoulCursorPosition();
+            if (soulPos.visible) {
+                // Offset to left of button (matching old HTML position)
+                this.spriteRenderer.drawSoulCursor(
+                    soulPos.x - 40, // Move left of button
+                    soulPos.y + 20, // Center vertically with button
+                    1.5 // Scale slightly larger
+                );
+            }
         }
     }
     

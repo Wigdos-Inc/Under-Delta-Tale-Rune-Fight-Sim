@@ -1,0 +1,130 @@
+{
+  "name": "Undyne",
+  "hp": 1500,
+  "maxHp": 1500,
+  "def": 10,
+  "atk": 8,
+  "gold": 0,
+  "exp": 0,
+  "flavor": "Heroine who NEVER gives up.",
+  "check": "* The heroine who never gives up.",
+  "soulMode": "green",
+  "canSpare": false,
+  "acts": [
+    {
+      "name": "Challenge",
+      "description": "You steel yourself. ATK and DEF increased!",
+      "effect": "challenge",
+      "canUse": true
+    },
+    {
+      "name": "Flex",
+      "description": "You flex your arms. Undyne flexes back!",
+      "effect": "neutral",
+      "canUse": true
+    },
+    {
+      "name": "Spare",
+      "description": "Undyne will never spare you!",
+      "effect": "fail",
+      "canUse": true
+    }
+  ],
+  "dialogue": [
+    "En Garde!",
+    "I'll show you how\ndetermined *I* am!",
+    "Nothing can stand in my way!",
+    "I won't give up!",
+    "NGAHHH!"
+  ],
+  "attackPatterns": [
+    {
+      "name": "Green Mode Spear Test",
+      "duration": 4000,
+      "waves": [
+        {
+          "time": 0,
+          "type": "projectiles",
+          "count": 1,
+          "speed": 3,
+          "side": "top",
+          "size": 15
+        },
+        {
+          "time": 800,
+          "type": "projectiles",
+          "count": 1,
+          "speed": 3,
+          "side": "bottom",
+          "size": 15
+        },
+        {
+          "time": 1600,
+          "type": "projectiles",
+          "count": 1,
+          "speed": 3,
+          "side": "left",
+          "size": 15
+        },
+        {
+          "time": 2400,
+          "type": "projectiles",
+          "count": 1,
+          "speed": 3,
+          "side": "right",
+          "size": 15
+        },
+        {
+          "time": 3200,
+          "type": "circle_pellets",
+          "count": 8,
+          "speed": 2
+        }
+      ]
+    },
+    {
+      "name": "Spear Barrage",
+      "duration": 5000,
+      "waves": [
+        {
+          "time": 0,
+          "type": "projectiles",
+          "count": 3,
+          "speed": 4,
+          "side": "top",
+          "size": 18
+        },
+        {
+          "time": 1000,
+          "type": "projectiles",
+          "count": 3,
+          "speed": 4,
+          "side": "bottom",
+          "size": 18
+        },
+        {
+          "time": 2000,
+          "type": "projectiles",
+          "count": 3,
+          "speed": 4,
+          "side": "left",
+          "size": 18
+        },
+        {
+          "time": 3000,
+          "type": "projectiles",
+          "count": 3,
+          "speed": 4,
+          "side": "right",
+          "size": 18
+        },
+        {
+          "time": 4000,
+          "type": "circle_pellets",
+          "count": 12,
+          "speed": 3
+        }
+      ]
+    }
+  ]
+}

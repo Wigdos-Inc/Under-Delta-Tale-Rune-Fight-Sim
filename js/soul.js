@@ -1,14 +1,15 @@
 /**
  * soul.js
- * Player SOUL (heart) movement and rendering
+ * Player SOUL (heart) movement and rendering - ENHANCED WITH MODES
  */
 
 import { CONFIG } from './config.js';
 import { ANIMATION, KEYS } from './constants.js';
 import { clamp } from './utils.js';
+import { RedMode, GreenMode, BlueMode, YellowMode, PurpleMode, SoulMode } from './soulModes.js';
 
 /**
- * Soul class - Represents the player's heart
+ * Soul class - Represents the player's heart - ENHANCED
  */
 export class Soul {
     constructor(x, y) {
@@ -30,10 +31,28 @@ export class Soul {
         // Trail effect
         this.trail = [];
         this.maxTrailLength = 5;
+        
+        // Movement tracking for blue/orange attacks
+        this.isMoving = false;
+        this.lastX = x;
+        this.lastY = y;
+        
+        // SOUL MODES SYSTEM
+        this.currentMode = null;
+        this.modes = {
+            [SoulMode.RED]: new RedMode(this),
+            [SoulMode.GREEN]: new GreenMode(this),
+            [SoulMode.BLUE]: new BlueMode(this),
+            [SoulMode.YELLOW]: new YellowMode(this),
+            [SoulMode.PURPLE]: new PurpleMode(this)
+        };
+        
+        // Set default mode
+        this.setMode(SoulMode.RED);
     }
     
     /**
-     * Update soul position based on input
+     * Update soul position based on input - ENHANCED WITH MODES
      * @param {Object} input - Input manager instance
      * @param {Object} bounds - Battle box bounds {x, y, width, height}
      */
@@ -46,32 +65,15 @@ export class Soul {
             }
         }
         
-        // Movement with arrow keys or WASD
-        let dx = 0;
-        let dy = 0;
-        
-        if (input.isAnyPressed(KEYS.MOVE_LEFT)) dx -= this.speed;
-        if (input.isAnyPressed(KEYS.MOVE_RIGHT)) dx += this.speed;
-        if (input.isAnyPressed(KEYS.MOVE_UP)) dy -= this.speed;
-        if (input.isAnyPressed(KEYS.MOVE_DOWN)) dy += this.speed;
-        
-        // Normalize diagonal movement
-        if (dx !== 0 && dy !== 0) {
-            dx *= ANIMATION.DIAGONAL_SPEED_MULTIPLIER;
-            dy *= ANIMATION.DIAGONAL_SPEED_MULTIPLIER;
+        // Update current mode (handles all movement)
+        if (this.currentMode) {
+            this.currentMode.update(input, bounds);
+            // Update color from mode
+            this.color = this.currentMode.getColor();
         }
         
-        // Update position
-        this.x += dx;
-        this.y += dy;
-        
-        // Keep within battle box bounds
-        const halfSize = this.size / 2;
-        this.x = clamp(this.x, bounds.x + halfSize, bounds.x + bounds.width - halfSize);
-        this.y = clamp(this.y, bounds.y + halfSize, bounds.y + bounds.height - halfSize);
-        
         // Add to trail if moving
-        if (dx !== 0 || dy !== 0) {
+        if (this.isMoving) {
             this.trail.push({ x: this.x, y: this.y, life: this.maxTrailLength });
         }
         
@@ -89,7 +91,7 @@ export class Soul {
     }
     
     /**
-     * Draw the soul
+     * Draw the soul - ENHANCED WITH MODES
      * @param {CanvasRenderingContext2D} ctx - Canvas context
      */
     draw(ctx) {
@@ -113,6 +115,11 @@ export class Soul {
         });
         
         ctx.globalAlpha = 1;
+        
+        // Draw mode-specific visuals (shield, ground line, etc.)
+        if (this.currentMode) {
+            this.currentMode.draw(ctx);
+        }
         
         // Flash when invincible
         if (this.invincible && Math.floor(this.invincibilityTimer / ANIMATION.INVINCIBILITY_FLASH_INTERVAL) % ANIMATION.INVINCIBILITY_FLASH_DURATION === 0) {
@@ -191,5 +198,58 @@ export class Soul {
      */
     isInvincible() {
         return this.invincible;
+    }
+    
+    /**
+     * Check if soul is currently moving
+     * @returns {boolean} True if moving
+     */
+    getIsMoving() {
+        return this.isMoving;
+    }
+    
+    /**
+     * Set soul mode (Red, Green, Blue, Yellow, Purple)
+     * @param {string} modeName - Mode name from SoulMode enum
+     */
+    setMode(modeName) {
+        // Exit current mode
+        if (this.currentMode) {
+            this.currentMode.onExit();
+        }
+        
+        // Set new mode
+        if (this.modes[modeName]) {
+            this.currentMode = this.modes[modeName];
+            this.currentMode.onEnter();
+            this.color = this.currentMode.getColor();
+        } else {
+            console.warn(`Unknown soul mode: ${modeName}`);
+        }
+    }
+    
+    /**
+     * Get current mode
+     * @returns {BaseSoulMode} Current mode instance
+     */
+    getMode() {
+        return this.currentMode;
+    }
+    
+    /**
+     * Get current mode name
+     * @returns {string} Current mode name
+     */
+    getModeName() {
+        return this.currentMode ? this.currentMode.modeName : SoulMode.RED;
+    }
+    
+    /**
+     * Get mode instance by name (for mode-specific operations)
+     * @param {string} modeName - Mode name
+     * @returns {BaseSoulMode} Mode instance
+     */
+    getModeInstance(modeName) {
+        return this.modes[modeName];
     }
 }
