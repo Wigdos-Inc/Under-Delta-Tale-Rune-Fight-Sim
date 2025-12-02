@@ -4,6 +4,7 @@
  */
 
 import { AttackPattern } from './attacks.js';
+import { COMBAT, SPRITE } from './constants.js';
 import { spriteManager, AnimatedSprite } from './sprites.js';
 
 /**
@@ -12,10 +13,10 @@ import { spriteManager, AnimatedSprite } from './sprites.js';
 export class Enemy {
     constructor(data) {
         this.name = data.name || 'Enemy';
-        this.hp = data.hp || 100;
-        this.maxHp = data.hp || 100;
-        this.attack = data.attack || 5;
-        this.defense = data.defense || 0;
+        this.hp = data.hp || COMBAT.DEFAULT_ENEMY_HP;
+        this.maxHp = data.hp || COMBAT.DEFAULT_ENEMY_HP;
+        this.attack = data.attack || COMBAT.DEFAULT_ENEMY_ATTACK;
+        this.defense = data.defense || COMBAT.DEFAULT_ENEMY_DEFENSE;
         this.gold = data.gold || 0;
         this.exp = data.exp || 0;
         this.dialogue = data.dialogue || ['...'];
@@ -33,7 +34,7 @@ export class Enemy {
         this.sprites = data.sprites || {};
         this.spriteAnimation = null;
         if (this.sprites.idle && Array.isArray(this.sprites.idle)) {
-            this.spriteAnimation = new AnimatedSprite(this.sprites.idle, 6);
+            this.spriteAnimation = new AnimatedSprite(this.sprites.idle, SPRITE.DEFAULT_FRAME_RATE);
             // Preload sprites
             spriteManager.loadSprites(this.sprites.idle);
         } else if (this.sprites.idle) {
@@ -88,7 +89,7 @@ export class Enemy {
      * @returns {number} Actual damage taken
      */
     takeDamage(damage) {
-        const actualDamage = Math.max(1, damage - this.defense);
+        const actualDamage = Math.max(COMBAT.MIN_DAMAGE, damage - this.defense);
         this.hp = Math.max(0, this.hp - actualDamage);
         return actualDamage;
     }
@@ -131,15 +132,15 @@ export class Enemy {
             case 'threaten':
             case 'terrorize':
                 text = act.text || `You used ${actName}!`;
-                this.mercy += act.mercyIncrease || 10;
-                if (this.mercy >= 100) {
+                this.mercy += act.mercyIncrease || COMBAT.DEFAULT_MERCY_INCREASE;
+                if (this.mercy >= COMBAT.MAX_MERCY) {
                     this.canSpare = true;
                 }
                 break;
             default:
                 text = act.text || `You used ${actName}!`;
-                this.mercy += act.mercyIncrease || 10;
-                if (this.mercy >= 100) {
+                this.mercy += act.mercyIncrease || COMBAT.DEFAULT_MERCY_INCREASE;
+                if (this.mercy >= COMBAT.MAX_MERCY) {
                     this.canSpare = true;
                 }
         }
@@ -168,9 +169,9 @@ export class Enemy {
         
         // Draw sprite
         if (this.spriteAnimation) {
-            this.spriteAnimation.draw(ctx, spriteManager, x, y, 2);
+            this.spriteAnimation.draw(ctx, spriteManager, x, y, SPRITE.DEFAULT_SCALE);
         } else if (this.sprites.idle) {
-            spriteManager.drawSprite(ctx, this.sprites.idle, x, y, 2);
+            spriteManager.drawSprite(ctx, this.sprites.idle, x, y, SPRITE.DEFAULT_SCALE);
         } else {
             // Fallback placeholder
             ctx.translate(x, y);

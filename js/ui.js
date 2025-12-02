@@ -4,6 +4,7 @@
  */
 
 import { CONFIG } from './config.js';
+import { COLORS, HTTP, Z_INDEX } from './constants.js';
 
 /**
  * UIManager class - Handles all UI elements
@@ -156,12 +157,12 @@ export class UIManager {
         this.hpMax.textContent = max;
         
         // Change color based on HP
-        if (percent > 50) {
-            this.hpBar.style.backgroundColor = '#ffff00'; // Yellow
-        } else if (percent > 20) {
-            this.hpBar.style.backgroundColor = '#ff9900'; // Orange
+        if (percent > HTTP.THRESHOLD_MEDIUM_HP) {
+            this.hpBar.style.backgroundColor = COLORS.HP_BAR_FULL;
+        } else if (percent > HTTP.THRESHOLD_LOW_HP) {
+            this.hpBar.style.backgroundColor = COLORS.HP_BAR_MEDIUM;
         } else {
-            this.hpBar.style.backgroundColor = '#ff0000'; // Red
+            this.hpBar.style.backgroundColor = COLORS.HP_BAR_LOW;
         }
     }
     
@@ -170,7 +171,7 @@ export class UIManager {
      * @param {string} color - Flash color
      * @param {number} duration - Duration in ms
      */
-    flashScreen(color = 'rgba(255, 0, 0, 0.5)', duration = 200) {
+    flashScreen(color = COLORS.DAMAGE_FLASH, duration = 200) {
         const overlay = document.createElement('div');
         overlay.style.position = 'fixed';
         overlay.style.top = '0';
@@ -179,7 +180,7 @@ export class UIManager {
         overlay.style.height = '100%';
         overlay.style.backgroundColor = color;
         overlay.style.pointerEvents = 'none';
-        overlay.style.zIndex = '9999';
+        overlay.style.zIndex = Z_INDEX.FLASH_OVERLAY.toString();
         
         document.body.appendChild(overlay);
         

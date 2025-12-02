@@ -4,6 +4,7 @@
  */
 
 import { gameModeManager, GAME_MODES } from './gameMode.js';
+import { ANIMATION, MENU, KEYS } from './constants.js';
 
 export class MenuUI {
     constructor(canvas) {
@@ -54,7 +55,7 @@ export class MenuUI {
                 this.selectedOption = Math.max(0, this.selectedOption - 1);
             } else if (e.key === 'ArrowDown') {
                 this.selectedOption = Math.min(this.mainOptions.length - 1, this.selectedOption + 1);
-            } else if (e.key === 'Enter' || e.key === 'z' || e.key === 'Z') {
+            } else if (KEYS.CONFIRM.includes(e.key.toLowerCase())) {
                 this.selectMainOption();
             }
         } else if (this.menuState === 'mode_select') {
@@ -62,9 +63,9 @@ export class MenuUI {
                 this.selectedOption = 0;
             } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
                 this.selectedOption = 1;
-            } else if (e.key === 'Enter' || e.key === 'z' || e.key === 'Z') {
+            } else if (KEYS.CONFIRM.includes(e.key.toLowerCase())) {
                 this.selectMode();
-            } else if (e.key === 'Escape' || e.key === 'x' || e.key === 'X') {
+            } else if (KEYS.CANCEL.includes(e.key.toLowerCase())) {
                 this.menuState = 'main';
                 this.selectedOption = 1;
             }
@@ -88,7 +89,7 @@ export class MenuUI {
             }
         } else if (this.menuState === 'mode_select') {
             // Check clicks on mode options
-            const ut_x = 160, dr_x = 400, y_pos = 250;
+            const ut_x = MENU.MODE_UT_X, dr_x = MENU.MODE_DR_X, y_pos = MENU.MODE_SELECT_Y;
             if (Math.abs(x - ut_x) < 80 && Math.abs(y - y_pos) < 60) {
                 this.selectedOption = 0;
                 this.selectMode();
@@ -125,12 +126,12 @@ export class MenuUI {
     
     update() {
         // Title bounce animation
-        this.titleBounce += 0.1 * this.titleBounceDir;
-        if (this.titleBounce > 5) this.titleBounceDir = -1;
-        if (this.titleBounce < -5) this.titleBounceDir = 1;
+        this.titleBounce += ANIMATION.TITLE_BOUNCE_SPEED * this.titleBounceDir;
+        if (this.titleBounce > ANIMATION.TITLE_BOUNCE_MAX) this.titleBounceDir = -1;
+        if (this.titleBounce < ANIMATION.TITLE_BOUNCE_MIN) this.titleBounceDir = 1;
         
         // Heart bounce
-        this.heartBounce += 0.15;
+        this.heartBounce += ANIMATION.HEART_BOUNCE_SPEED;
     }
     
     draw() {
@@ -160,11 +161,11 @@ export class MenuUI {
         ctx.shadowColor = colors.title;
         ctx.shadowBlur = 10;
         
-        const titleY = 150 + this.titleBounce;
+        const titleY = MENU.TITLE_Y + this.titleBounce;
         ctx.fillText('UNDERTALE / DELTARUNE', this.canvas.width / 2, titleY);
         
         ctx.font = 'bold 32px Determination Mono, monospace';
-        ctx.fillText('FIGHT SIMULATOR', this.canvas.width / 2, titleY + 50);
+        ctx.fillText('FIGHT SIMULATOR', this.canvas.width / 2, titleY + MENU.TITLE_SECONDARY_OFFSET);
         ctx.restore();
         
         // Draw mode indicator
@@ -172,14 +173,14 @@ export class MenuUI {
         ctx.fillStyle = colors.selected;
         ctx.textAlign = 'center';
         const modeName = this.selectedMode === GAME_MODES.UNDERTALE ? 'UNDERTALE' : 'DELTARUNE';
-        ctx.fillText(`[ ${modeName} MODE ]`, this.canvas.width / 2, titleY + 90);
+        ctx.fillText(`[ ${modeName} MODE ]`, this.canvas.width / 2, titleY + MENU.MODE_INDICATOR_OFFSET);
         
         // Draw menu options
         ctx.font = 'bold 24px Determination Mono, monospace';
         ctx.textAlign = 'center';
         
         for (let i = 0; i < this.mainOptions.length; i++) {
-            const y = 300 + i * 50;
+            const y = MENU.MENU_START_Y + i * MENU.MENU_ITEM_HEIGHT;
             const isSelected = i === this.selectedOption;
             
             ctx.fillStyle = isSelected ? colors.selected : colors.normal;
@@ -187,7 +188,7 @@ export class MenuUI {
             
             // Draw soul heart next to selected option
             if (isSelected) {
-                const heartX = this.canvas.width / 2 - 120;
+                const heartX = this.canvas.width / 2 - MENU.SOUL_X_OFFSET;
                 const heartY = y - 10 + Math.sin(this.heartBounce) * 3;
                 this.drawHeart(heartX, heartY, 16, colors.selected);
             }
@@ -197,7 +198,7 @@ export class MenuUI {
         ctx.font = '14px Determination Mono, monospace';
         ctx.fillStyle = '#888';
         ctx.textAlign = 'center';
-        ctx.fillText('[Arrow Keys] Navigate  [Z/Enter] Select  [X/Esc] Back', this.canvas.width / 2, 450);
+        ctx.fillText('[Arrow Keys] Navigate  [Z/Enter] Select  [X/Esc] Back', this.canvas.width / 2, MENU.CONTROLS_Y);
     }
     
     drawModeSelect(colors) {
@@ -210,11 +211,11 @@ export class MenuUI {
         ctx.fillText('SELECT GAME MODE', this.canvas.width / 2, 100);
         
         // Draw mode boxes
-        const boxWidth = 150;
-        const boxHeight = 120;
-        const ut_x = 160;
-        const dr_x = 400;
-        const y = 250;
+        const boxWidth = MENU.MODE_SELECT_BOX_WIDTH;
+        const boxHeight = MENU.MODE_SELECT_BOX_HEIGHT;
+        const ut_x = MENU.MODE_UT_X;
+        const dr_x = MENU.MODE_DR_X;
+        const y = MENU.MODE_SELECT_Y;
         
         // UNDERTALE box
         const utSelected = this.selectedOption === 0;
@@ -228,7 +229,7 @@ export class MenuUI {
         ctx.fillText('UNDERTALE', ut_x, y);
         
         if (utSelected) {
-            const heartX = ut_x - 70;
+            const heartX = ut_x - MENU.MODE_SOUL_X_OFFSET;
             const heartY = y - 10 + Math.sin(this.heartBounce) * 3;
             this.drawHeart(heartX, heartY, 16, this.colors.undertale.selected);
         }
@@ -243,7 +244,7 @@ export class MenuUI {
         ctx.fillText('DELTARUNE', dr_x, y);
         
         if (drSelected) {
-            const heartX = dr_x - 70;
+            const heartX = dr_x - MENU.MODE_SOUL_X_OFFSET;
             const heartY = y - 10 + Math.sin(this.heartBounce) * 3;
             this.drawHeart(heartX, heartY, 16, this.colors.deltarune.selected);
         }
@@ -254,17 +255,17 @@ export class MenuUI {
         ctx.textAlign = 'center';
         
         if (this.selectedOption === 0) {
-            ctx.fillText('Fight classic Undertale enemies and bosses!', this.canvas.width / 2, 380);
-            ctx.fillText('33 enemies including Sans, Papyrus, Toriel, and more!', this.canvas.width / 2, 405);
+            ctx.fillText('Fight classic Undertale enemies and bosses!', this.canvas.width / 2, MENU.MODE_DESCRIPTION_Y);
+            ctx.fillText('33 enemies including Sans, Papyrus, Toriel, and more!', this.canvas.width / 2, MENU.MODE_DESCRIPTION_Y + MENU.MODE_DESCRIPTION_OFFSET);
         } else {
-            ctx.fillText('Fight Deltarune enemies and bosses!', this.canvas.width / 2, 380);
-            ctx.fillText('18 enemies including Jevil, Spamton NEO, Queen, and more!', this.canvas.width / 2, 405);
+            ctx.fillText('Fight Deltarune enemies and bosses!', this.canvas.width / 2, MENU.MODE_DESCRIPTION_Y);
+            ctx.fillText('18 enemies including Jevil, Spamton NEO, Queen, and more!', this.canvas.width / 2, MENU.MODE_DESCRIPTION_Y + MENU.MODE_DESCRIPTION_OFFSET);
         }
         
         // Controls hint
         ctx.font = '14px Determination Mono, monospace';
         ctx.fillStyle = '#888';
-        ctx.fillText('[Arrow Keys] Select  [Z/Enter] Confirm  [X/Esc] Back', this.canvas.width / 2, 450);
+        ctx.fillText('[Arrow Keys] Select  [Z/Enter] Confirm  [X/Esc] Back', this.canvas.width / 2, MENU.CONTROLS_Y);
     }
     
     drawHeart(x, y, size, color) {

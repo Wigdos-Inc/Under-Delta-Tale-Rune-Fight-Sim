@@ -4,6 +4,7 @@
  */
 
 import { CONFIG } from './config.js';
+import { ATTACK } from './constants.js';
 import { randomInt, randomFloat } from './utils.js';
 
 /**
@@ -59,7 +60,7 @@ class AttackObject {
  * Projectile attack - moves in a straight line
  */
 export class Projectile extends AttackObject {
-    constructor(x, y, vx, vy, size = 20, color = '#ffffff') {
+    constructor(x, y, vx, vy, size = ATTACK.DEFAULT_PROJECTILE_SIZE, color = '#ffffff') {
         super(x, y);
         this.vx = vx;
         this.vy = vy;
@@ -112,7 +113,7 @@ export class Bone extends AttackObject {
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = ATTACK.BONE_OUTLINE_WIDTH;
         ctx.strokeRect(this.x, this.y, this.width, this.height);
     }
     
@@ -153,7 +154,7 @@ export class CircleAttack extends AttackObject {
     
     draw(ctx) {
         ctx.strokeStyle = this.color;
-        ctx.lineWidth = 3;
+        ctx.lineWidth = ATTACK.CIRCLE_LINE_WIDTH;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.stroke();
@@ -176,7 +177,7 @@ export class CircleAttack extends AttackObject {
 export class AttackPattern {
     constructor(patternData) {
         this.name = patternData.name || 'Unnamed';
-        this.duration = patternData.duration || 5000; // milliseconds
+        this.duration = patternData.duration || ATTACK.DEFAULT_PATTERN_DURATION;
         this.waves = patternData.waves || [];
         this.objects = [];
         this.startTime = 0;
@@ -254,8 +255,8 @@ export class AttackPattern {
      */
     spawnProjectiles(wave, box) {
         const count = wave.count || 1;
-        const speed = wave.speed || 2;
-        const size = wave.size || 20;
+        const speed = wave.speed || ATTACK.DEFAULT_PROJECTILE_SPEED;
+        const size = wave.size || ATTACK.DEFAULT_PROJECTILE_SIZE;
         
         for (let i = 0; i < count; i++) {
             const side = wave.side || ['left', 'right', 'top', 'bottom'][randomInt(0, 3)];
@@ -297,22 +298,22 @@ export class AttackPattern {
      */
     spawnBones(wave, box) {
         const count = wave.count || 1;
-        const speed = wave.speed || 3;
+        const speed = wave.speed || ATTACK.DEFAULT_BONE_SPEED;
         const orientation = wave.orientation || 'horizontal';
         
         for (let i = 0; i < count; i++) {
             let x, y, width, height, vx, vy;
             
             if (orientation === 'horizontal') {
-                width = randomInt(50, 150);
-                height = 15;
+                width = randomInt(ATTACK.DEFAULT_BONE_MIN_SIZE, ATTACK.DEFAULT_BONE_MAX_SIZE);
+                height = ATTACK.DEFAULT_BONE_HEIGHT;
                 x = box.x - width;
                 y = box.y + randomInt(0, box.height - height);
                 vx = speed;
                 vy = 0;
             } else {
-                width = 15;
-                height = randomInt(50, 150);
+                width = ATTACK.DEFAULT_BONE_WIDTH;
+                height = randomInt(ATTACK.DEFAULT_BONE_MIN_SIZE, ATTACK.DEFAULT_BONE_MAX_SIZE);
                 x = box.x + randomInt(0, box.width - width);
                 y = box.y - height;
                 vx = 0;
@@ -329,9 +330,9 @@ export class AttackPattern {
     spawnCircle(wave, box) {
         const x = box.x + box.width / 2;
         const y = box.y + box.height / 2;
-        const startRadius = wave.startRadius || 10;
-        const endRadius = wave.endRadius || 100;
-        const duration = wave.duration || 60;
+        const startRadius = wave.startRadius || ATTACK.DEFAULT_CIRCLE_START_RADIUS;
+        const endRadius = wave.endRadius || ATTACK.DEFAULT_CIRCLE_END_RADIUS;
+        const duration = wave.duration || ATTACK.DEFAULT_CIRCLE_DURATION;
         
         this.objects.push(new CircleAttack(x, y, startRadius, endRadius, duration));
     }

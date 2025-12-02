@@ -4,6 +4,7 @@
  */
 
 import { CONFIG } from './config.js';
+import { TIMING, COMBAT } from './constants.js';
 import { Soul } from './soul.js';
 import { Enemy, loadEnemyFromJSON } from './enemy.js';
 import { collisionManager } from './collision.js';
@@ -74,7 +75,7 @@ export class Battle {
         // Wait a moment then show action menu
         setTimeout(() => {
             this.startPlayerTurn();
-        }, 2000);
+        }, TIMING.DIALOGUE_DELAY);
     }
     
     /**
@@ -115,7 +116,7 @@ export class Battle {
      */
     handleFight() {
         // Simple damage calculation (in a full game, this would have a timing minigame)
-        const damage = Math.floor(Math.random() * 10) + 5;
+        const damage = Math.floor(Math.random() * COMBAT.BASE_ATTACK_DAMAGE_MAX) + COMBAT.BASE_ATTACK_DAMAGE_MIN;
         const actualDamage = this.enemy.takeDamage(damage);
         
         uiManager.showDialogue(`* You attack ${this.enemy.name} for ${actualDamage} damage!`);
@@ -127,7 +128,7 @@ export class Battle {
             } else {
                 this.startEnemyTurn();
             }
-        }, 2000);
+        }, TIMING.DIALOGUE_DELAY);
     }
     
     /**
@@ -146,7 +147,7 @@ export class Battle {
                 
                 setTimeout(() => {
                     this.startEnemyTurn();
-                }, 2000);
+                }, TIMING.DIALOGUE_DELAY);
             }
         })));
     }
@@ -161,13 +162,13 @@ export class Battle {
                 name: 'Bandage - Heals 10 HP',
                 callback: () => {
                     uiManager.hideSubMenu();
-                    this.playerHP = Math.min(this.maxHP, this.playerHP + 10);
+                    this.playerHP = Math.min(this.maxHP, this.playerHP + COMBAT.ITEM_BANDAGE_HEALING);
                     uiManager.updateHP(this.playerHP, this.maxHP);
-                    uiManager.showDialogue('* You used a Bandage. Recovered 10 HP!');
+                    uiManager.showDialogue(`* You used a Bandage. Recovered ${COMBAT.ITEM_BANDAGE_HEALING} HP!`);
                     
                     setTimeout(() => {
                         this.startEnemyTurn();
-                    }, 2000);
+                    }, TIMING.ITEM_USE_DELAY);
                 }
             }
         ];
@@ -189,12 +190,12 @@ export class Battle {
                         uiManager.showDialogue(`* You spared ${this.enemy.name}.`);
                         setTimeout(() => {
                             this.handleVictory();
-                        }, 2000);
+                        }, TIMING.DIALOGUE_DELAY);
                     } else {
                         uiManager.showDialogue(`* ${this.enemy.name} is not ready to be spared.`);
                         setTimeout(() => {
                             this.startEnemyTurn();
-                        }, 2000);
+                        }, TIMING.DIALOGUE_DELAY);
                     }
                 }
             },
@@ -205,7 +206,7 @@ export class Battle {
                     uiManager.showDialogue('* You fled from the battle!');
                     setTimeout(() => {
                         this.endBattle();
-                    }, 2000);
+                    }, TIMING.DIALOGUE_DELAY);
                 }
             }
         ];
@@ -227,7 +228,7 @@ export class Battle {
         setTimeout(() => {
             this.currentAttackPattern = this.enemy.getNextAttackPattern();
             this.currentAttackPattern.start();
-        }, 1500);
+        }, TIMING.ATTACK_START_DELAY);
     }
     
     /**
@@ -255,7 +256,7 @@ export class Battle {
         uiManager.showDialogue(`* YOU WON!\n* You earned ${this.enemy.exp} XP and ${this.enemy.gold} GOLD.`);
         setTimeout(() => {
             this.endBattle();
-        }, 3000);
+        }, TIMING.VICTORY_DELAY);
     }
     
     /**
@@ -269,7 +270,7 @@ export class Battle {
         setTimeout(() => {
             uiManager.showDialogue('* Game Over.');
             this.showReturnButton();
-        }, 2000);
+        }, TIMING.GAME_OVER_DELAY);
     }
     
     /**
@@ -298,7 +299,7 @@ export class Battle {
                 }
             };
             document.getElementById('battle-ui').appendChild(btn);
-        }, 1000);
+        }, TIMING.RETURN_BUTTON_DELAY);
     }
     
     /**
@@ -353,7 +354,7 @@ export class Battle {
             // Return to player turn
             setTimeout(() => {
                 this.startPlayerTurn();
-            }, 1000);
+            }, TIMING.TURN_TRANSITION_DELAY);
         }
     }
     
@@ -373,24 +374,6 @@ export class Battle {
         if (action) {
             this.handleAction(action);
         }
-    }
-    
-    /**
-     * Handle mouse movement for hover effects
-     * @param {MouseEvent} e - Mouse event
-     */
-    handleMouseMove(e) {
-        if (this.phase !== CONFIG.PHASE.MENU) return;
-        
-        const rect = this.canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        // Update hover state
-        this.uiRenderer.updateHover(x, y);
-        
-        // Change cursor if hovering over button
-        this.canvas.style.cursor = this.uiRenderer.hoveredButton ? 'pointer' : 'default';
     }
     
     /**

@@ -4,6 +4,7 @@
  */
 
 import { CONFIG } from './config.js';
+import { ANIMATION, KEYS } from './constants.js';
 import { clamp } from './utils.js';
 
 /**
@@ -43,15 +44,15 @@ export class Soul {
         let dx = 0;
         let dy = 0;
         
-        if (input.isAnyPressed(['arrowleft', 'a'])) dx -= this.speed;
-        if (input.isAnyPressed(['arrowright', 'd'])) dx += this.speed;
-        if (input.isAnyPressed(['arrowup', 'w'])) dy -= this.speed;
-        if (input.isAnyPressed(['arrowdown', 's'])) dy += this.speed;
+        if (input.isAnyPressed(KEYS.MOVE_LEFT)) dx -= this.speed;
+        if (input.isAnyPressed(KEYS.MOVE_RIGHT)) dx += this.speed;
+        if (input.isAnyPressed(KEYS.MOVE_UP)) dy -= this.speed;
+        if (input.isAnyPressed(KEYS.MOVE_DOWN)) dy += this.speed;
         
         // Normalize diagonal movement
         if (dx !== 0 && dy !== 0) {
-            dx *= 0.707; // 1/sqrt(2)
-            dy *= 0.707;
+            dx *= ANIMATION.DIAGONAL_SPEED_MULTIPLIER;
+            dy *= ANIMATION.DIAGONAL_SPEED_MULTIPLIER;
         }
         
         // Update position
@@ -75,7 +76,7 @@ export class Soul {
         ctx.save();
         
         // Flash when invincible
-        if (this.invincible && Math.floor(this.invincibilityTimer / 5) % 2 === 0) {
+        if (this.invincible && Math.floor(this.invincibilityTimer / ANIMATION.INVINCIBILITY_FLASH_INTERVAL) % ANIMATION.INVINCIBILITY_FLASH_DURATION === 0) {
             ctx.globalAlpha = 0.5;
         }
         

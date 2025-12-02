@@ -5,6 +5,7 @@
 
 import { spriteManager } from './sprites.js';
 import { gameModeManager, GAME_MODES } from './gameMode.js';
+import { ANIMATION, UI, COLORS } from './constants.js';
 
 export class UIRenderer {
     constructor(canvas) {
@@ -13,10 +14,10 @@ export class UIRenderer {
         
         // Button positions (Undertale layout - centered and evenly spaced)
         this.buttonLayout = {
-            fight: { x: 32, y: 432, width: 110, height: 42 },
-            act: { x: 185, y: 432, width: 110, height: 42 },
-            item: { x: 345, y: 432, width: 110, height: 42 },
-            mercy: { x: 500, y: 432, width: 110, height: 42 }
+            fight: { x: 32, y: UI.BUTTON_LAYOUT_Y, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
+            act: { x: 185, y: UI.BUTTON_LAYOUT_Y, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
+            item: { x: 345, y: UI.BUTTON_LAYOUT_Y, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT },
+            mercy: { x: 500, y: UI.BUTTON_LAYOUT_Y, width: UI.BUTTON_WIDTH, height: UI.BUTTON_HEIGHT }
         };
         
         this.selectedButton = null;
@@ -123,9 +124,9 @@ export class UIRenderer {
      */
     update() {
         // Soul bounce animation
-        this.soulBounce += 0.15 * this.soulBounceDir;
-        if (this.soulBounce > 3) this.soulBounceDir = -1;
-        if (this.soulBounce < 0) this.soulBounceDir = 1;
+        this.soulBounce += ANIMATION.SOUL_BOUNCE_SPEED * this.soulBounceDir;
+        if (this.soulBounce > ANIMATION.SOUL_BOUNCE_MAX) this.soulBounceDir = -1;
+        if (this.soulBounce < ANIMATION.SOUL_BOUNCE_MIN) this.soulBounceDir = 1;
     }
     
     /**
@@ -136,9 +137,9 @@ export class UIRenderer {
         
         // Draw background color based on game mode
         if (mode === GAME_MODES.UNDERTALE) {
-            this.ctx.fillStyle = '#000'; // Pure black for Undertale
+            this.ctx.fillStyle = COLORS.BG_UNDERTALE;
         } else {
-            this.ctx.fillStyle = '#0a0a0a'; // Slightly different for Deltarune
+            this.ctx.fillStyle = COLORS.BG_DELTARUNE;
         }
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
@@ -176,7 +177,7 @@ export class UIRenderer {
                 if (isHovered) {
                     const soul = spriteManager.getSprite(soulSprite);
                     if (soul && soul.complete) {
-                        const soulSize = 16;
+                        const soulSize = UI.SOUL_SIZE;
                         const soulX = pos.x - soulSize - 8;
                         const soulY = pos.y + (pos.height / 2) - (soulSize / 2) + this.soulBounce;
                         ctx.drawImage(soul, soulX, soulY, soulSize, soulSize);
@@ -205,46 +206,46 @@ export class UIRenderer {
      */
     drawHPBar(hp, maxHp, kr = 0) {
         const ctx = this.ctx;
-        const x = 250;
-        const y = 400;
+        const x = UI.HP_BAR_X;
+        const y = UI.HP_BAR_Y;
         
         // Draw "HP" text (yellow)
         ctx.font = 'bold 16px Determination Mono, monospace';
-        ctx.fillStyle = '#ffff00';
+        ctx.fillStyle = COLORS.TEXT_YELLOW;
         ctx.fillText('HP', x, y);
         
         // Draw HP bar background (red)
-        const barWidth = 120;
-        const barHeight = 20;
-        ctx.fillStyle = '#c00000';
-        ctx.fillRect(x + 40, y - 14, barWidth, barHeight);
+        const barWidth = UI.HP_BAR_WIDTH;
+        const barHeight = UI.HP_BAR_HEIGHT;
+        ctx.fillStyle = COLORS.HP_BAR_BACKGROUND;
+        ctx.fillRect(x + UI.HP_BAR_OFFSET, y - 14, barWidth, barHeight);
         
         // Draw HP bar border
-        ctx.strokeStyle = '#fff';
+        ctx.strokeStyle = COLORS.HP_BAR_BORDER;
         ctx.lineWidth = 2;
-        ctx.strokeRect(x + 40, y - 14, barWidth, barHeight);
+        ctx.strokeRect(x + UI.HP_BAR_OFFSET, y - 14, barWidth, barHeight);
         
         // Draw HP bar fill (yellow)
         const hpPercent = Math.max(0, Math.min(1, hp / maxHp));
-        ctx.fillStyle = '#ffff00';
-        ctx.fillRect(x + 42, y - 12, (barWidth - 4) * hpPercent, barHeight - 4);
+        ctx.fillStyle = COLORS.HP_BAR_FULL;
+        ctx.fillRect(x + UI.HP_BAR_OFFSET + 2, y - 12, (barWidth - 4) * hpPercent, barHeight - 4);
         
         // Draw KARMA (purple overlay)
         if (kr > 0) {
             const krPercent = Math.min(1, kr / maxHp);
-            ctx.fillStyle = 'rgba(160, 32, 240, 0.7)';
-            ctx.fillRect(x + 42, y - 12, (barWidth - 4) * krPercent, barHeight - 4);
+            ctx.fillStyle = COLORS.KARMA_OVERLAY;
+            ctx.fillRect(x + UI.HP_BAR_OFFSET + 2, y - 12, (barWidth - 4) * krPercent, barHeight - 4);
         }
         
         // Draw HP numbers (white)
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = COLORS.TEXT_WHITE;
         ctx.font = '16px Determination Mono, monospace';
         const currentHP = Math.max(0, Math.floor(hp));
-        ctx.fillText(`${currentHP} / ${maxHp}`, x + barWidth + 50, y);
+        ctx.fillText(`${currentHP} / ${maxHp}`, x + barWidth + UI.HP_TEXT_OFFSET, y);
         
         // Draw KR indicator if present
         if (kr > 0) {
-            ctx.fillStyle = '#ff00ff';
+            ctx.fillStyle = COLORS.TEXT_PINK;
             ctx.fillText(` KR`, x + barWidth + 120, y);
         }
     }
@@ -257,14 +258,14 @@ export class UIRenderer {
     drawEnemyName(name, hp = null) {
         const ctx = this.ctx;
         ctx.font = 'bold 18px Determination Mono, monospace';
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = COLORS.TEXT_WHITE;
         ctx.textAlign = 'left';
-        ctx.fillText(`★ ${name}`, 30, 400);
+        ctx.fillText(`★ ${name}`, UI.ENEMY_NAME_X, UI.ENEMY_NAME_Y);
         
         if (hp !== null) {
             ctx.font = '14px Determination Mono, monospace';
-            ctx.fillStyle = '#aaa';
-            ctx.fillText(`HP: ${hp}`, 30, 420);
+            ctx.fillStyle = COLORS.TEXT_GRAY;
+            ctx.fillText(`HP: ${hp}`, UI.ENEMY_NAME_X, UI.ENEMY_HP_Y);
         }
     }
     
@@ -276,20 +277,20 @@ export class UIRenderer {
      * @param {number} width - Box width
      * @param {number} height - Box height
      */
-    drawDialogueBox(text, x = 30, y = 250, width = 580, height = 140) {
+    drawDialogueBox(text, x = UI.DIALOGUE_BOX_X, y = UI.DIALOGUE_BOX_Y, width = UI.DIALOGUE_BOX_WIDTH, height = UI.DIALOGUE_BOX_HEIGHT) {
         const ctx = this.ctx;
         
         // Draw box background
-        ctx.fillStyle = '#000';
+        ctx.fillStyle = COLORS.BG_BLACK;
         ctx.fillRect(x, y, width, height);
         
         // Draw white border
-        ctx.strokeStyle = '#fff';
+        ctx.strokeStyle = COLORS.TEXT_WHITE;
         ctx.lineWidth = 5;
         ctx.strokeRect(x, y, width, height);
         
         // Draw text
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = COLORS.TEXT_WHITE;
         ctx.font = '16px Determination Mono, monospace';
         ctx.textAlign = 'left';
         
@@ -297,21 +298,21 @@ export class UIRenderer {
         const words = text.split(' ');
         let line = '';
         let yPos = y + 30;
-        const maxWidth = width - 40;
+        const maxWidth = width - UI.DIALOGUE_MAX_WIDTH_OFFSET;
         
         words.forEach(word => {
             const testLine = line + word + ' ';
             const metrics = ctx.measureText(testLine);
             
             if (metrics.width > maxWidth && line !== '') {
-                ctx.fillText(line, x + 20, yPos);
+                ctx.fillText(line, x + UI.DIALOGUE_PADDING, yPos);
                 line = word + ' ';
-                yPos += 24;
+                yPos += UI.DIALOGUE_LINE_HEIGHT;
             } else {
                 line = testLine;
             }
         });
-        ctx.fillText(line, x + 20, yPos);
+        ctx.fillText(line, x + UI.DIALOGUE_PADDING, yPos);
     }
     
     /**
