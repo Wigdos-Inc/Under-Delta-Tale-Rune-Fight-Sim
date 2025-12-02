@@ -1,0 +1,65 @@
+{
+    "name": "Knight Knight",
+    "hp": 230,
+    "attack": 10,
+    "defense": 8,
+    "gold": 30,
+    "exp": 15,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Knight Knight blocks the way!",
+        "* Knight Knight is guarding.",
+        "* Knight Knight stands firm.",
+        "* Smells like steel and roses."
+    ],
+    "checkText": "ATK 10 DEF 8\n* This heavy knight fears nothing.\n  Loves its pet cat more than life.",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/05 - Core/Knight Knight/spr_knightknight_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Sing",
+            "effect": "sing",
+            "text": "* You sing a lullaby.\n* Knight Knight falls asleep!",
+            "mercyIncrease": 100
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

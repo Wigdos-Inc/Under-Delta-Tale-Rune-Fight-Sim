@@ -1,0 +1,63 @@
+{
+    "name": "Tasque Manager",
+    "hp": 3800,
+    "attack": 12,
+    "defense": 8,
+    "gold": 0,
+    "exp": 0,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Tasque Manager cracks her whip!",
+        "* Tasque Manager gives orders.",
+        "* Everything is orderly.",
+        "* Smells like order."
+    ],
+    "checkText": "ATK 12 DEF 8\\n* Manages all the Tasques.",
+    "sprites": {
+        "idle": "Deltarune Sprites/Characters/Bosses/Ch2/Tasque Manager/Ch2/idle_0.png"
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Pet",
+            "effect": "pet",
+            "text": "* You try to pet Tasque Manager...",
+            "mercyIncrease": 10
+        },
+        {
+            "name": "Compliment",
+            "effect": "compliment",
+            "text": "* You compliment her management.",
+            "mercyIncrease": 20
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Tasque Swarm",
+            "duration": 5000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "tasques",
+                    "count": 4,
+                    "speed": 3
+                },
+                {
+                    "time": 1500,
+                    "type": "whip",
+                    "count": 6,
+                    "speed": 4
+                },
+                {
+                    "time": 3000,
+                    "type": "tasques",
+                    "count": 6,
+                    "speed": 3.5
+                }
+            ]
+        }
+    ]
+}

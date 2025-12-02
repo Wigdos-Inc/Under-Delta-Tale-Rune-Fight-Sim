@@ -1,0 +1,71 @@
+{
+    "name": "Vulkin",
+    "hp": 66,
+    "attack": 9,
+    "defense": 0,
+    "gold": 10,
+    "exp": 6,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Vulkin erupts!",
+        "* Vulkin is warming up.",
+        "* Vulkin wants to be popular.",
+        "* Smells like hot springs."
+    ],
+    "checkText": "ATK 9 DEF 0\n* Hotheaded. Tries to calm\n  people down with hugs.",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/04 - Hotland/Vulkin/spr_vulkin_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Encourage",
+            "effect": "encourage",
+            "text": "* You encourage Vulkin.\n* Vulkin is pumped up!",
+            "mercyIncrease": 30
+        },
+        {
+            "name": "Hug",
+            "effect": "hug",
+            "text": "* You hug Vulkin.\n* Vulkin is cooled down!",
+            "mercyIncrease": 50
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

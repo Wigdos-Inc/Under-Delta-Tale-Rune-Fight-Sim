@@ -1,0 +1,71 @@
+{
+    "name": "Muffet",
+    "hp": 1250,
+    "attack": 10,
+    "defense": 0,
+    "gold": 350,
+    "exp": 100,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Muffet traps you!",
+        "* Muffet giggles.",
+        "* Muffet is checking her\n  account balance.",
+        "* Smells like cobwebs and donuts."
+    ],
+    "checkText": "ATK 10 DEF 0\n* If she invites you to her\n  parlor, excuse yourself.",
+    "sprites": {
+        "idle": [
+            "Battle/Characters/Muffet/spr_muffet_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Pay",
+            "effect": "pay",
+            "text": "* You pay Muffet.\n* Muffet lets you go!",
+            "mercyIncrease": 100
+        },
+        {
+            "name": "Struggle",
+            "effect": "struggle",
+            "text": "* You struggle in the web.",
+            "mercyIncrease": 10
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

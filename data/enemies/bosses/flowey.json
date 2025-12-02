@@ -1,0 +1,64 @@
+{
+    "name": "Flowey",
+    "hp": 1000,
+    "attack": 8,
+    "defense": 10,
+    "gold": 0,
+    "exp": 0,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Flowey laughs maniacally.",
+        "* Flowey is thinking about\n  killing everyone.",
+        "* Flowey winks at you.",
+        "* Smells like flowers."
+    ],
+    "checkText": "ATK 8 DEF 10\n* Truly evil.",
+    "sprites": {
+        "idle": "Battle/Characters/Flowey/General/spr_floweynice_0.png",
+        "evil": "Battle/Characters/Flowey/General/spr_floweyevil_0.png"
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Struggle",
+            "effect": "struggle",
+            "text": "* You struggle...",
+            "mercyIncrease": 0
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Friendliness Pellets",
+            "duration": 5000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "circle_pellets",
+                    "count": 8,
+                    "startRadius": 20,
+                    "endRadius": 120,
+                    "duration": 1000
+                },
+                {
+                    "time": 1500,
+                    "type": "circle_pellets",
+                    "count": 12,
+                    "startRadius": 20,
+                    "endRadius": 120,
+                    "duration": 800
+                },
+                {
+                    "time": 3000,
+                    "type": "circle_pellets",
+                    "count": 16,
+                    "startRadius": 20,
+                    "endRadius": 120,
+                    "duration": 600
+                }
+            ]
+        }
+    ]
+}

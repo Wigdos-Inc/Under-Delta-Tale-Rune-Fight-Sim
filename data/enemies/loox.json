@@ -1,0 +1,71 @@
+{
+    "name": "Loox",
+    "hp": 50,
+    "attack": 6,
+    "defense": 6,
+    "gold": 5,
+    "exp": 5,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Loox draws near!",
+        "* Loox stares at you.",
+        "* Loox is suspicious of you.",
+        "* Loox gnashes its teeth."
+    ],
+    "checkText": "ATK 6 DEF 6\n* Don't pick on.\n* Family name: Eyewalker.",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/01 - Ruins/Loox/spr_loox_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Pick On",
+            "effect": "pickon",
+            "text": "* You pick on Loox.\n* Its defense dropped!",
+            "mercyIncrease": 30
+        },
+        {
+            "name": "Don't Pick On",
+            "effect": "dontpickon",
+            "text": "* You don't pick on Loox.\n* Loox appreciates your restraint.",
+            "mercyIncrease": 50
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

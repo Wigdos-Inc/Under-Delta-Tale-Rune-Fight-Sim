@@ -1,0 +1,71 @@
+{
+    "name": "Shyren",
+    "hp": 66,
+    "attack": 7,
+    "defense": 0,
+    "gold": 9,
+    "exp": 4,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Shyren hums a melody.",
+        "* Shyren trebles with fear.",
+        "* Shyren is humming.",
+        "* Smells like music."
+    ],
+    "checkText": "ATK 7 DEF 0\n* A talented musician\n  but she's too shy to sing.",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/03 - Waterfall/Shyren/spr_shyren_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Hum",
+            "effect": "hum",
+            "text": "* You hum along with Shyren.\n* Shyren grows confident!",
+            "mercyIncrease": 30
+        },
+        {
+            "name": "Sing",
+            "effect": "sing",
+            "text": "* You sing to Shyren.\n* Shyren is happy!",
+            "mercyIncrease": 50
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

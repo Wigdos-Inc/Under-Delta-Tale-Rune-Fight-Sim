@@ -1,0 +1,71 @@
+{
+    "name": "Moldbygg",
+    "hp": 80,
+    "attack": 8,
+    "defense": 0,
+    "gold": 10,
+    "exp": 8,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Moldbygg wavers forward.",
+        "* Moldbygg is oozing.",
+        "* Moldbygg burbles.",
+        "* Smells like vanilla."
+    ],
+    "checkText": "ATK 8 DEF 0\n* Huge, hulking, unscary.\n* Looking for love.",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/03 - Waterfall/Moldbygg/spr_moldbygg_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Lie Down",
+            "effect": "lie",
+            "text": "* You lie on the ground.\n* Moldbygg lies on top of you!",
+            "mercyIncrease": 50
+        },
+        {
+            "name": "Unhug",
+            "effect": "unhug",
+            "text": "* You push Moldbygg off.\n* Moldbygg gets the hint.",
+            "mercyIncrease": 50
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

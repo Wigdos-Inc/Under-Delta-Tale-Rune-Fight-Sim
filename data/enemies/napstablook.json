@@ -1,0 +1,72 @@
+{
+    "name": "Napstablook",
+    "hp": 88,
+    "attack": 10,
+    "defense": 255,
+    "gold": 0,
+    "exp": 0,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* napstablook...",
+        "* i'm sorry...",
+        "* i'm just really...\n  ...tired...",
+        "* oh no..."
+    ],
+    "checkText": "ATK 10 DEF -40\n* This monster is really feeling\n  'it'... whatever 'it' is.",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/01 - Ruins/Napstablook/spr_napstabattle_0.png",
+            "Battle/Enemies/01 - Ruins/Napstablook/spr_napstabattle_1.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Cheer",
+            "effect": "cheer",
+            "text": "* You console Napstablook.\n* Its ATTACK dropped!",
+            "mercyIncrease": 20
+        },
+        {
+            "name": "Flirt",
+            "effect": "flirt",
+            "text": "* You flirt with Napstablook.\n  uh... no thanks...",
+            "mercyIncrease": 10
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

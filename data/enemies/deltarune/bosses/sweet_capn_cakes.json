@@ -1,0 +1,66 @@
+{
+    "name": "Sweet Cap'n Cakes",
+    "hp": 3600,
+    "attack": 11,
+    "defense": 7,
+    "gold": 0,
+    "exp": 0,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Sweet, Cap'n, and K_K attack in harmony!",
+        "* They're making music.",
+        "* The beat drops.",
+        "* Smells like batteries and sugar."
+    ],
+    "checkText": "ATK 11 DEF 7\\n* Three musical entrepreneurs.",
+    "sprites": {
+        "idle": "Deltarune Sprites/Characters/Bosses/Ch2/Sweet Cap_n Cakes/Sweet/idle_0.png"
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Dance",
+            "effect": "dance",
+            "text": "* You dance to the music!",
+            "mercyIncrease": 30
+        },
+        {
+            "name": "Applaud",
+            "effect": "applaud",
+            "text": "* You applaud their performance.",
+            "mercyIncrease": 25
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Musical Notes",
+            "duration": 5500,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "notes",
+                    "count": 8,
+                    "speed": 3,
+                    "pattern": "musical"
+                },
+                {
+                    "time": 2000,
+                    "type": "notes",
+                    "count": 12,
+                    "speed": 3.5,
+                    "pattern": "musical"
+                },
+                {
+                    "time": 4000,
+                    "type": "notes",
+                    "count": 10,
+                    "speed": 4,
+                    "pattern": "musical"
+                }
+            ]
+        }
+    ]
+}

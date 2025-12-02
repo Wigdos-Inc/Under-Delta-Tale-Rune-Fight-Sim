@@ -1,0 +1,71 @@
+{
+    "name": "Final Froggit",
+    "hp": 100,
+    "attack": 10,
+    "defense": 5,
+    "gold": 15,
+    "exp": 10,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Final Froggit hops in!",
+        "* Final Froggit is pondering\n  the universe.",
+        "* Final Froggit ribbits wisely.",
+        "* Smells like ancient wisdom."
+    ],
+    "checkText": "ATK 10 DEF 5\n* This frog has lived a long time\n  and has sage advice.",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/05 - Core/Final Froggit/spr_finalfroggit_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Compliment",
+            "effect": "compliment",
+            "text": "* You compliment Final Froggit.\n* It nods knowingly.",
+            "mercyIncrease": 40
+        },
+        {
+            "name": "Mystify",
+            "effect": "mystify",
+            "text": "* You tell Final Froggit something\n  mystical. It's satisfied.",
+            "mercyIncrease": 100
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,71 @@
+{
+    "name": "Ice Cap",
+    "hp": 48,
+    "attack": 6,
+    "defense": 3,
+    "gold": 5,
+    "exp": 4,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Ice Cap appears!",
+        "* Ice Cap is thinking about\n  its hat.",
+        "* Ice Cap is freezing.",
+        "* Smells like icicles."
+    ],
+    "checkText": "ATK 6 DEF 3\n* This teen wonders why it isn't\n  named 'Ice Hat'.",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/02 - Snowdin/Icecap/spr_icecap_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Steal Hat",
+            "effect": "steal",
+            "text": "* You stole Ice Cap's hat.\n* Ice Cap is bare!",
+            "mercyIncrease": 100
+        },
+        {
+            "name": "Ignore",
+            "effect": "ignore",
+            "text": "* You ignore Ice Cap.",
+            "mercyIncrease": 10
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

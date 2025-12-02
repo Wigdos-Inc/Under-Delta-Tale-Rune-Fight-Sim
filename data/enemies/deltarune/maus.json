@@ -1,0 +1,54 @@
+{
+    "name": "Maus",
+    "hp": 200,
+    "attack": 7,
+    "defense": 0,
+    "gold": 10,
+    "exp": 15,
+    "spareThreshold": 100,
+    "dialogue": [
+        "* Maus clicks around!",
+        "* Maus is squeaking.",
+        "* Smells like circuits."
+    ],
+    "checkText": "ATK 7 DEF 0\\n* A Darkner from CH2.",
+    "sprites": {
+        "idle": "Deltarune Sprites/Characters/Enemies/Ch2/Maus/idle_0.png"
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Click",
+            "effect": "click",
+            "text": "* You click on Maus.",
+            "mercyIncrease": 25
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 3,
+                    "size": 15,
+                    "side": "left"
+                }
+            ]
+        }
+    ]
+}

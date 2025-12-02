@@ -1,0 +1,65 @@
+{
+    "name": "Madjick",
+    "hp": 190,
+    "attack": 10,
+    "defense": 5,
+    "gold": 25,
+    "exp": 12,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Madjick casts a spell!",
+        "* Madjick is concentrating.",
+        "* Madjick is muttering\n  incantations.",
+        "* Smells like magic dust."
+    ],
+    "checkText": "ATK 10 DEF 5\n* This magical mercenary wields\n  strange powers.",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/05 - Core/Madjick/spr_madjick_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Clear Mind",
+            "effect": "clearmind",
+            "text": "* You clear your mind.\n* Madjick's magic is disturbed!",
+            "mercyIncrease": 50
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,71 @@
+{
+    "name": "Aaron",
+    "hp": 98,
+    "attack": 8,
+    "defense": 0,
+    "gold": 10,
+    "exp": 7,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Aaron appears!",
+        "* Aaron is flexing.",
+        "* Aaron is admiring himself.",
+        "* Smells like musk."
+    ],
+    "checkText": "ATK 8 DEF 0\n* This seahorse has a lot of\n  HP. Don't just hack away...",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/03 - Waterfall/Aaron/spr_aaron_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Flex",
+            "effect": "flex",
+            "text": "* You flex your muscles.\n* Aaron is impressed!",
+            "mercyIncrease": 40
+        },
+        {
+            "name": "Flirt",
+            "effect": "flirt",
+            "text": "* You flirt with Aaron.\n  Aaron's face gets redder...",
+            "mercyIncrease": 40
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

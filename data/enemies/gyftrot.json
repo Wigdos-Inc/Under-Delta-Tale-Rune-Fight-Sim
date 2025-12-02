@@ -1,0 +1,71 @@
+{
+    "name": "Gyftrot",
+    "hp": 108,
+    "attack": 7,
+    "defense": 3,
+    "gold": 15,
+    "exp": 8,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Gyftrot appears!",
+        "* Gyftrot is sighing.",
+        "* Gyftrot is annoyed.",
+        "* Smells like pine trees."
+    ],
+    "checkText": "ATK 7 DEF 3\n* Wonders why people are so\n  horrible to each other.",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/02 - Snowdin/Gyftrot/spr_gyftrot_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Undecorate",
+            "effect": "undecorate",
+            "text": "* You remove the decorations.\n* Gyftrot feels much better!",
+            "mercyIncrease": 50
+        },
+        {
+            "name": "Decorate",
+            "effect": "decorate",
+            "text": "* You add more decorations.\n* Gyftrot sighs even louder...",
+            "mercyIncrease": 0
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

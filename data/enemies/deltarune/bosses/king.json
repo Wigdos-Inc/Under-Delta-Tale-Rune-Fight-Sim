@@ -1,0 +1,60 @@
+{
+    "name": "King",
+    "hp": 4000,
+    "attack": 13,
+    "defense": 8,
+    "gold": 0,
+    "exp": 0,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* The King of Spades attacks!",
+        "* King laughs wickedly.",
+        "* King readies his weapon.",
+        "* Smells like tyranny."
+    ],
+    "checkText": "ATK 13 DEF 8\\n* The King of the Card Kingdom.",
+    "sprites": {
+        "idle": "Deltarune Sprites/Characters/Bosses/Ch1/King/Ch1/idle_0.png"
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Pacify",
+            "effect": "pacify",
+            "text": "* You try to calm King down...",
+            "mercyIncrease": 0
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Spade Attack",
+            "duration": 5500,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "spades",
+                    "count": 8,
+                    "speed": 3,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "spades",
+                    "count": 10,
+                    "speed": 3.5,
+                    "side": "all"
+                },
+                {
+                    "time": 3500,
+                    "type": "spades",
+                    "count": 15,
+                    "speed": 4,
+                    "side": "all"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,54 @@
+{
+    "name": "Hathy",
+    "hp": 180,
+    "attack": 5,
+    "defense": 0,
+    "gold": 10,
+    "exp": 15,
+    "spareThreshold": 100,
+    "dialogue": [
+        "* Hathy blocks the way!",
+        "* Hathy adjusts its crown.",
+        "* Smells like royalty."
+    ],
+    "checkText": "ATK 5 DEF 0\\n* A Darkner from CH1.",
+    "sprites": {
+        "idle": "Deltarune Sprites/Characters/Enemies/Ch1/Hathy + Head Hathy/idle_0.png"
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Bow",
+            "effect": "bow",
+            "text": "* You bow to Hathy.",
+            "mercyIncrease": 30
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 3,
+                    "size": 15,
+                    "side": "left"
+                }
+            ]
+        }
+    ]
+}

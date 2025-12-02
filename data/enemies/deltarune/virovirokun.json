@@ -1,0 +1,54 @@
+{
+    "name": "Virovirokun",
+    "hp": 250,
+    "attack": 8,
+    "defense": 1,
+    "gold": 10,
+    "exp": 15,
+    "spareThreshold": 100,
+    "dialogue": [
+        "* Virovirokun is loading...",
+        "* Virovirokun downloaded something.",
+        "* Smells like malware."
+    ],
+    "checkText": "ATK 8 DEF 1\\n* A Darkner from CH2.",
+    "sprites": {
+        "idle": "Deltarune Sprites/Characters/Enemies/Ch2/Virovirokun/idle_0.png"
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Clean",
+            "effect": "clean",
+            "text": "* You clean Virovirokun.",
+            "mercyIncrease": 30
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 3,
+                    "size": 15,
+                    "side": "left"
+                }
+            ]
+        }
+    ]
+}

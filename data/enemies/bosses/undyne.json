@@ -1,0 +1,107 @@
+{
+    "name": "Undyne",
+    "hp": 1500,
+    "attack": 10,
+    "defense": 0,
+    "gold": 0,
+    "exp": 0,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Undyne attacks!",
+        "* Undyne is smiling.",
+        "* Undyne points heroically\n  at you.",
+        "* Smells like anime."
+    ],
+    "checkText": "ATK 10 DEF 0\n* The heroine that NEVER gives up.",
+    "sprites": {
+        "idle": "Battle/Characters/Undyne/spr_undyneb_0.png",
+        "determined": "Battle/Characters/Undyne/spr_undynex_face1_0.png"
+    },
+    "mechanics": {
+        "greenSoul": true,
+        "spearBlocking": true
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Challenge",
+            "effect": "challenge",
+            "text": "* You tell Undyne you'll fight her.",
+            "mercyIncrease": 0
+        },
+        {
+            "name": "Plead",
+            "effect": "plead",
+            "text": "* You plead with Undyne.",
+            "mercyIncrease": 10
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Spear Rain",
+            "duration": 5000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "spears",
+                    "count": 8,
+                    "speed": 3,
+                    "side": "top",
+                    "color": "yellow"
+                },
+                {
+                    "time": 1500,
+                    "type": "spears",
+                    "count": 10,
+                    "speed": 3.5,
+                    "side": "top",
+                    "color": "yellow"
+                },
+                {
+                    "time": 3000,
+                    "type": "spears",
+                    "count": 12,
+                    "speed": 4,
+                    "side": "top",
+                    "color": "yellow"
+                }
+            ]
+        },
+        {
+            "name": "Arrow Spears",
+            "duration": 6000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "arrow_spears",
+                    "count": 5,
+                    "speed": 2.5,
+                    "side": "all",
+                    "color": "yellow",
+                    "turnRed": true
+                },
+                {
+                    "time": 2000,
+                    "type": "arrow_spears",
+                    "count": 7,
+                    "speed": 3,
+                    "side": "all",
+                    "color": "yellow",
+                    "turnRed": true
+                },
+                {
+                    "time": 4000,
+                    "type": "arrow_spears",
+                    "count": 9,
+                    "speed": 3.5,
+                    "side": "all",
+                    "color": "yellow",
+                    "turnRed": true
+                }
+            ]
+        }
+    ]
+}

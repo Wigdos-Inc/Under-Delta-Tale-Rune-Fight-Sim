@@ -1,0 +1,71 @@
+{
+    "name": "Whimsalot",
+    "hp": 95,
+    "attack": 10,
+    "defense": 2,
+    "gold": 12,
+    "exp": 8,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Whimsalot swoops in!",
+        "* Whimsalot is confident.",
+        "* Whimsalot is flying strong.",
+        "* Smells like confidence."
+    ],
+    "checkText": "ATK 10 DEF 2\n* Upgraded. Optimistic.\n  Still scared of you.",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/05 - Core/Whimsalot/spr_whimsalot_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Console",
+            "effect": "console",
+            "text": "* You console Whimsalot.\n* Whimsalot calms down.",
+            "mercyIncrease": 50
+        },
+        {
+            "name": "Terrorize",
+            "effect": "terrorize",
+            "text": "* You terrorize Whimsalot.\n* Whimsalot flies away!",
+            "mercyIncrease": 100
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

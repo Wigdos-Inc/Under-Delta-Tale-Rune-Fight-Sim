@@ -1,0 +1,71 @@
+{
+    "name": "Vegetoid",
+    "hp": 72,
+    "attack": 6,
+    "defense": 2,
+    "gold": 4,
+    "exp": 5,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Vegetoid came out of the earth!",
+        "* Vegetoid settles down.",
+        "* Vegetoid offers you a healthy meal.",
+        "* Smells like apple juice."
+    ],
+    "checkText": "ATK 6 DEF 2\n* Serving Size: 1 Monster.\n  Not monitored by the USDA.",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/01 - Ruins/Vegetoid/spr_vegetoid_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Dinner",
+            "effect": "dinner",
+            "text": "* You ask Vegetoid for dinner.\n* It offers you a healthy meal!",
+            "mercyIncrease": 50
+        },
+        {
+            "name": "Devour",
+            "effect": "devour",
+            "text": "* You eat Vegetoid's vegetables.\n* Your HP was maxed out!",
+            "mercyIncrease": 100
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

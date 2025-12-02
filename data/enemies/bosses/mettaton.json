@@ -1,0 +1,104 @@
+{
+    "name": "Mettaton EX",
+    "hp": 1000,
+    "attack": 10,
+    "defense": 255,
+    "gold": 0,
+    "exp": 0,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Mettaton poses dramatically!",
+        "* Mettaton is checking his\n  ratings.",
+        "* Mettaton adjusts his hair.",
+        "* Smells like a television studio."
+    ],
+    "checkText": "ATK 10 DEF 255\n* Lights! Camera! Action!",
+    "sprites": {
+        "idle": "Battle/Characters/Mettaton EX/spr_mettb_upperbody_0.png",
+        "pose": "Battle/Characters/Mettaton EX/spr_mettb_upperbody_1.png"
+    },
+    "mechanics": {
+        "ratingsSystem": true,
+        "ratingThreshold": 12000
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Pose",
+            "effect": "pose",
+            "text": "* You strike a pose!\n* The ratings went up!",
+            "mercyIncrease": 20
+        },
+        {
+            "name": "Boast",
+            "effect": "boast",
+            "text": "* You boast about your abilities!\n* The ratings went up!",
+            "mercyIncrease": 20
+        },
+        {
+            "name": "Yellow",
+            "effect": "yellow",
+            "text": "* You turn the switch to yellow!",
+            "mercyIncrease": 100
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Leg Attack",
+            "duration": 5000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "legs",
+                    "count": 6,
+                    "speed": 3,
+                    "side": "left"
+                },
+                {
+                    "time": 2000,
+                    "type": "legs",
+                    "count": 6,
+                    "speed": 3,
+                    "side": "right"
+                },
+                {
+                    "time": 3500,
+                    "type": "legs",
+                    "count": 8,
+                    "speed": 3.5,
+                    "side": "both"
+                }
+            ]
+        },
+        {
+            "name": "Disco Ball",
+            "duration": 6000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "disco_ball",
+                    "count": 1,
+                    "speed": 2,
+                    "bulletCount": 8
+                },
+                {
+                    "time": 2000,
+                    "type": "disco_ball",
+                    "count": 1,
+                    "speed": 2.5,
+                    "bulletCount": 12
+                },
+                {
+                    "time": 4000,
+                    "type": "disco_ball",
+                    "count": 1,
+                    "speed": 3,
+                    "bulletCount": 16
+                }
+            ]
+        }
+    ]
+}

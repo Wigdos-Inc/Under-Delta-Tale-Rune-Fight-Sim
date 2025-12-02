@@ -1,0 +1,71 @@
+{
+    "name": "Pyrope",
+    "hp": 110,
+    "attack": 10,
+    "defense": 0,
+    "gold": 12,
+    "exp": 10,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* Pyrope bursts in!",
+        "* Pyrope is jumping around.",
+        "* Pyrope is heating up.",
+        "* Smells like fireworks."
+    ],
+    "checkText": "ATK 10 DEF 0\n* This hotheaded youngster\n  is itching for a fight.",
+    "sprites": {
+        "idle": [
+            "Battle/Enemies/04 - Hotland/Pyrope/spr_pyrope_0.png"
+        ]
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Heat Up",
+            "effect": "heat",
+            "text": "* You encourage Pyrope.\n* Pyrope burns brighter!",
+            "mercyIncrease": 30
+        },
+        {
+            "name": "Cool Down",
+            "effect": "cool",
+            "text": "* You cool Pyrope down.\n* Pyrope feels better!",
+            "mercyIncrease": 50
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Default Attack",
+            "duration": 4000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "projectiles",
+                    "count": 5,
+                    "speed": 2,
+                    "size": 15,
+                    "side": "top"
+                },
+                {
+                    "time": 1500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "left"
+                },
+                {
+                    "time": 2500,
+                    "type": "projectiles",
+                    "count": 4,
+                    "speed": 2.5,
+                    "size": 15,
+                    "side": "right"
+                }
+            ]
+        }
+    ]
+}

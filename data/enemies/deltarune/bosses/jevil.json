@@ -1,0 +1,65 @@
+{
+    "name": "Jevil",
+    "hp": 3500,
+    "attack": 12,
+    "defense": 10,
+    "gold": 0,
+    "exp": 0,
+    "spareThreshold": 0,
+    "dialogue": [
+        "* CHAOS, CHAOS!",
+        "* I CAN DO ANYTHING!",
+        "* Jevil laughs maniacally.",
+        "* Smells like chaos."
+    ],
+    "checkText": "ATK 12 DEF 10\\n* The Joker Card. Can do anything.",
+    "sprites": {
+        "idle": "Deltarune Sprites/Characters/Bosses/Ch1/Jevil/Body/idle_0.png"
+    },
+    "acts": [
+        {
+            "name": "Check",
+            "effect": "check"
+        },
+        {
+            "name": "Pirouette",
+            "effect": "pirouette",
+            "text": "* You pirouette. Jevil is amused!",
+            "mercyIncrease": 10
+        },
+        {
+            "name": "Hypnosis",
+            "effect": "hypnosis",
+            "text": "* You hypnotize Jevil...",
+            "mercyIncrease": 15
+        }
+    ],
+    "attackPatterns": [
+        {
+            "name": "Chaos Carousel",
+            "duration": 6000,
+            "waves": [
+                {
+                    "time": 0,
+                    "type": "carousel",
+                    "count": 8,
+                    "speed": 3,
+                    "pattern": "circular"
+                },
+                {
+                    "time": 2000,
+                    "type": "carousel",
+                    "count": 12,
+                    "speed": 3.5,
+                    "pattern": "spiral"
+                },
+                {
+                    "time": 4000,
+                    "type": "devilsknife",
+                    "count": 4,
+                    "speed": 4
+                }
+            ]
+        }
+    ]
+}
