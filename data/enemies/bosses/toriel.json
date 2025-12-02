@@ -37,25 +37,32 @@
     "attackPatterns": [
         {
             "name": "Fire Wave",
+            "description": "Waves of fireballs from sides requiring up/down movement",
             "duration": 4000,
+            "sprites": {
+                "fireball": "data/assets/Undertale Sprites/Battle/Characters/Toriel/Attacks/spr_firebullet_0.png"
+            },
             "waves": [
                 {
                     "time": 0,
                     "type": "fire_wave",
                     "count": 5,
-                    "speed": 2
+                    "speed": 2,
+                    "sprite": "data/assets/Undertale Sprites/Battle/Characters/Toriel/Attacks/spr_firebullet_0.png"
                 },
                 {
                     "time": 1500,
                     "type": "fire_wave",
                     "count": 6,
-                    "speed": 2.5
+                    "speed": 2.5,
+                    "sprite": "data/assets/Undertale Sprites/Battle/Characters/Toriel/Attacks/spr_firebullet_1.png"
                 },
                 {
                     "time": 3000,
                     "type": "fire_wave",
                     "count": 5,
-                    "speed": 2
+                    "speed": 2,
+                    "sprite": "data/assets/Undertale Sprites/Battle/Characters/Toriel/Attacks/spr_firebullet_center_1.png"
                 }
             ]
         }
