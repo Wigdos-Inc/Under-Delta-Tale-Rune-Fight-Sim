@@ -8,6 +8,7 @@ import { Soul } from './soul.js';
 import { Enemy, loadEnemyFromJSON } from './enemy.js';
 import { collisionManager } from './collision.js';
 import { uiManager } from './ui.js';
+import { UIRenderer } from './uiRenderer.js';
 import { audioManager } from './audio.js';
 import { InputManager } from './utils.js';
 
@@ -35,6 +36,9 @@ export class Battle {
         this.currentAttackPattern = null;
         this.turnCount = 0;
         
+        // UI Renderer for sprite-based UI
+        this.uiRenderer = new UIRenderer(this.canvas);
+        
         // Setup collision detection
         collisionManager.onCollision((data) => {
             this.handlePlayerHit(data);
@@ -42,6 +46,12 @@ export class Battle {
         
         // Setup UI callbacks
         uiManager.setActionCallback((action) => this.handleAction(action));
+        
+        // Setup canvas click handler for sprite buttons
+        this.canvas.addEventListener('click', (e) => this.handleCanvasClick(e));
+        
+        // Setup canvas mousemove for hover effects
+        this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
         
         // Battle box shake effect
         this.shakeAmount = 0;
@@ -242,7 +252,7 @@ export class Battle {
      * Handle victory
      */
     handleVictory() {
-        uiManager.showDialogue(`* YOU WON!\n* You earned ${this.enemy.maxHp} XP and ${this.enemy.maxHp * 2} GOLD.`);
+        uiManager.showDialogue(`* YOU WON!\n* You earned ${this.enemy.exp} XP and ${this.enemy.gold} GOLD.`);
         setTimeout(() => {
             this.endBattle();
         }, 3000);
@@ -257,7 +267,8 @@ export class Battle {
         this.playerHP = 0;
         
         setTimeout(() => {
-            uiManager.showDialogue('* Game Over. Refresh to try again.');
+            uiManager.showDialogue('* Game Over.');
+            this.showReturnButton();
         }, 2000);
     }
     
@@ -266,15 +277,44 @@ export class Battle {
      */
     endBattle() {
         this.phase = CONFIG.PHASE.MENU;
-        uiManager.showDialogue('* Battle ended. Refresh to start again.');
+        uiManager.showDialogue('* Battle ended.');
+        this.showReturnButton();
+    }
+    
+    /**
+     * Show return to menu button
+     */
+    showReturnButton() {
+        setTimeout(() => {
+            const btn = document.createElement('button');
+            btn.textContent = 'Return to Menu';
+            btn.className = 'return-menu-btn';
+            btn.onclick = () => {
+                btn.remove();
+                if (window.game && window.game.returnToMenu) {
+                    window.game.returnToMenu();
+                } else {
+                    location.reload();
+                }
+            };
+            document.getElementById('battle-ui').appendChild(btn);
+        }, 1000);
     }
     
     /**
      * Update battle state
      */
     update() {
-        // Update UI
+        // Update UI animations
+        this.uiRenderer.update();
+        
+        // Update UI text animation
         uiManager.updateDialogue();
+        
+        // Update enemy animation
+        if (this.enemy) {
+            this.enemy.update();
+        }
         
         // Update based on phase
         switch (this.phase) {
@@ -318,6 +358,60 @@ export class Battle {
     }
     
     /**
+     * Handle canvas clicks for sprite buttons
+     * @param {MouseEvent} e - Mouse event
+     */
+    handleCanvasClick(e) {
+        if (this.phase !== CONFIG.PHASE.MENU) return;
+        
+        const rect = this.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Check if click is on any button
+        const action = this.uiRenderer.checkButtonClick(x, y);
+        if (action) {
+            this.handleAction(action);
+        }
+    }
+    
+    /**
+     * Handle mouse movement for hover effects
+     * @param {MouseEvent} e - Mouse event
+     */
+    handleMouseMove(e) {
+        if (this.phase !== CONFIG.PHASE.MENU) return;
+        
+        const rect = this.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Update hover state
+        this.uiRenderer.updateHover(x, y);
+        
+        // Change cursor if hovering over button
+        this.canvas.style.cursor = this.uiRenderer.hoveredButton ? 'pointer' : 'default';
+    }
+    
+    /**
+     * Handle mouse movement for hover effects
+     * @param {MouseEvent} e - Mouse event
+     */
+    handleMouseMove(e) {
+        if (this.phase !== CONFIG.PHASE.MENU) return;
+        
+        const rect = this.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Update hover state
+        this.uiRenderer.updateHover(x, y);
+        
+        // Change cursor if hovering over button
+        this.canvas.style.cursor = this.uiRenderer.hoveredButton ? 'pointer' : 'default';
+    }
+    
+    /**
      * Draw battle
      */
     draw() {
@@ -352,6 +446,17 @@ export class Battle {
         }
         
         ctx.restore();
+        
+        // Draw sprite-based UI elements
+        if (this.enemy) {
+            this.uiRenderer.drawHPBar(this.playerHP, this.maxHP);
+            this.uiRenderer.drawEnemyName(this.enemy.name);
+        }
+        
+        // Draw action buttons (menu phase)
+        if (this.phase === CONFIG.PHASE.MENU) {
+            this.uiRenderer.drawActionButtons();
+        }
     }
     
     /**

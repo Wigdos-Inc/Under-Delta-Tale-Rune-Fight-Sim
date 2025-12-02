@@ -4,6 +4,9 @@
  */
 
 import { Battle } from './battle.js';
+import { enemySelectMenu } from './enemySelect.js';
+import { MenuUI } from './menuUI.js';
+import { gameModeManager } from './gameMode.js';
 
 /**
  * Game class - Main game controller
@@ -13,8 +16,13 @@ class Game {
         this.canvas = document.getElementById('game-canvas');
         this.ctx = this.canvas.getContext('2d');
         this.battle = new Battle(this.canvas);
+        this.menuUI = new MenuUI(this.canvas);
         this.lastTime = 0;
         this.running = false;
+        this.gameState = 'menu'; // 'menu', 'battle', 'enemy_select'
+        
+        // Setup menu callback
+        this.menuUI.setStartGameCallback(() => this.showEnemySelect());
     }
     
     /**
@@ -23,13 +31,41 @@ class Game {
     init() {
         console.log('Initializing Under Delta Tale - Rune Fight Simulator');
         
-        // Start battle with default enemy
-        this.battle.startBattle('data/enemies/test_enemy.json');
-        
-        // Start game loop
-        this.running = true;
-        this.lastTime = performance.now();
-        requestAnimationFrame((time) => this.gameLoop(time));
+        // Start with main menu
+        this.gameState = 'menu';
+        this.startGameLoop();
+    }
+    
+    /**
+     * Show enemy selection menu
+     */
+    showEnemySelect() {
+        this.gameState = 'enemy_select';
+        const dataPath = gameModeManager.getDataPath();
+        enemySelectMenu.show((enemyPath) => {
+            console.log('Starting battle with:', enemyPath);
+            this.startBattle(enemyPath);
+        }, dataPath);
+    }
+    
+    /**
+     * Start a battle with selected enemy
+     * @param {string} enemyPath - Path to enemy JSON
+     */
+    startBattle(enemyPath) {
+        this.gameState = 'battle';
+        this.battle.startBattle(enemyPath);
+    }
+    
+    /**
+     * Start game loop
+     */
+    startGameLoop() {
+        if (!this.running) {
+            this.running = true;
+            this.lastTime = performance.now();
+            requestAnimationFrame((time) => this.gameLoop(time));
+        }
     }
     
     /**
@@ -58,14 +94,23 @@ class Game {
      * @param {number} deltaTime - Time since last frame
      */
     update(deltaTime) {
-        this.battle.update();
+        if (this.gameState === 'menu') {
+            this.menuUI.update();
+        } else if (this.gameState === 'battle') {
+            this.battle.update();
+        }
     }
     
     /**
      * Render game
      */
     render() {
-        this.battle.draw();
+        if (this.gameState === 'menu') {
+            this.menuUI.draw();
+        } else if (this.gameState === 'battle') {
+            this.battle.draw();
+        }
+        // enemy_select state uses HTML overlay
     }
     
     /**
@@ -73,6 +118,14 @@ class Game {
      */
     stop() {
         this.running = false;
+    }
+    
+    /**
+     * Return to main menu
+     */
+    returnToMenu() {
+        this.gameState = 'menu';
+        enemySelectMenu.hide();
     }
 }
 

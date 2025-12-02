@@ -4,6 +4,7 @@
  */
 
 import { AttackPattern } from './attacks.js';
+import { spriteManager, AnimatedSprite } from './sprites.js';
 
 /**
  * Enemy class - Represents an enemy with attacks and dialogue
@@ -15,16 +16,29 @@ export class Enemy {
         this.maxHp = data.hp || 100;
         this.attack = data.attack || 5;
         this.defense = data.defense || 0;
+        this.gold = data.gold || 0;
+        this.exp = data.exp || 0;
         this.dialogue = data.dialogue || ['...'];
         this.checkText = data.checkText || 'Just an enemy.';
         this.canSpare = false;
-        this.spareThreshold = data.spareThreshold || 0.5; // HP percentage
+        this.spareThreshold = data.spareThreshold || 0; // Mercy percentage (0-100)
         
         // Acts available for this enemy
         this.acts = data.acts || [
             { name: 'Check', effect: 'check' },
             { name: 'Talk', effect: 'talk' }
         ];
+        
+        // Load sprites
+        this.sprites = data.sprites || {};
+        this.spriteAnimation = null;
+        if (this.sprites.idle && Array.isArray(this.sprites.idle)) {
+            this.spriteAnimation = new AnimatedSprite(this.sprites.idle, 6);
+            // Preload sprites
+            spriteManager.loadSprites(this.sprites.idle);
+        } else if (this.sprites.idle) {
+            spriteManager.loadSprite(this.sprites.idle);
+        }
         
         // Load attack patterns
         this.attackPatterns = [];
@@ -109,84 +123,79 @@ export class Enemy {
         
         switch (act.effect) {
             case 'check':
-                text = `${this.name} - ATK ${this.attack} DEF ${this.defense}\n${this.checkText}`;
+                text = this.checkText;
                 break;
             case 'talk':
-                text = 'You talk to the enemy.';
-                this.mercy += 20;
-                if (this.mercy >= 100) {
-                    this.canSpare = true;
-                    text += '\n' + this.name + ' seems more merciful.';
-                }
-                break;
             case 'compliment':
-                text = `You compliment ${this.name}.`;
-                this.mercy += 30;
+            case 'console':
+            case 'threaten':
+            case 'terrorize':
+                text = act.text || `You used ${actName}!`;
+                this.mercy += act.mercyIncrease || 10;
                 if (this.mercy >= 100) {
                     this.canSpare = true;
-                    text += '\n' + this.name + ' seems pleased.';
                 }
-                break;
-            case 'threaten':
-                text = `You threaten ${this.name}.`;
-                this.mercy += 10;
                 break;
             default:
-                text = `You used ${actName}!`;
-                this.mercy += 10;
+                text = act.text || `You used ${actName}!`;
+                this.mercy += act.mercyIncrease || 10;
+                if (this.mercy >= 100) {
+                    this.canSpare = true;
+                }
         }
         
         return { text, effect };
     }
     
     /**
-     * Draw enemy sprite (placeholder)
+     * Update enemy animation
+     * @param {number} deltaTime - Time since last frame
+     */
+    update(deltaTime = 16.67) {
+        if (this.spriteAnimation) {
+            this.spriteAnimation.update(deltaTime);
+        }
+    }
+    
+    /**
+     * Draw enemy sprite
      * @param {CanvasRenderingContext2D} ctx - Canvas context
      * @param {number} x - X position
      * @param {number} y - Y position
      */
     draw(ctx, x, y) {
-        // Draw simple placeholder sprite
         ctx.save();
-        ctx.translate(x, y);
         
-        // Draw a simple monster shape
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.arc(0, -20, 30, 0, Math.PI * 2);
-        ctx.fill();
+        // Draw sprite
+        if (this.spriteAnimation) {
+            this.spriteAnimation.draw(ctx, spriteManager, x, y, 2);
+        } else if (this.sprites.idle) {
+            spriteManager.drawSprite(ctx, this.sprites.idle, x, y, 2);
+        } else {
+            // Fallback placeholder
+            ctx.translate(x, y);
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(0, 0, 30, 0, Math.PI * 2);
+            ctx.fill();
+        }
         
-        // Eyes
-        ctx.fillStyle = '#000000';
-        ctx.fillRect(-15, -25, 8, 8);
-        ctx.fillRect(7, -25, 8, 8);
-        
-        // Body
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(-25, -10, 50, 40);
-        
-        // HP bar above enemy
+        // HP bar above enemy (only show if damaged)
         if (this.hp < this.maxHp) {
-            const barWidth = 60;
-            const barHeight = 8;
+            const barWidth = 80;
+            const barHeight = 6;
             const hpPercent = this.hp / this.maxHp;
             
             ctx.fillStyle = '#8b0000';
-            ctx.fillRect(-barWidth / 2, -60, barWidth, barHeight);
+            ctx.fillRect(x - barWidth / 2, y - 80, barWidth, barHeight);
             
             ctx.fillStyle = '#00ff00';
-            ctx.fillRect(-barWidth / 2, -60, barWidth * hpPercent, barHeight);
+            ctx.fillRect(x - barWidth / 2, y - 80, barWidth * hpPercent, barHeight);
             
             ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(-barWidth / 2, -60, barWidth, barHeight);
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x - barWidth / 2, y - 80, barWidth, barHeight);
         }
-        
-        // Draw name
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '12px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText(this.name, 0, 45);
         
         ctx.restore();
     }
