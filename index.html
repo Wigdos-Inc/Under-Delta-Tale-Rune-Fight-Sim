@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Under Delta Tale - Rune Fight Simulator</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas" width="640" height="480"></canvas>
+        
+        <!-- Battle UI Elements -->
+        <div id="battle-ui">
+            <!-- HP Bar -->
+            <div id="hp-container">
+                <span id="hp-text">HP</span>
+                <div id="hp-bar-bg">
+                    <div id="hp-bar-fill"></div>
+                </div>
+                <span id="hp-numbers"><span id="hp-current">20</span> / <span id="hp-max">20</span></span>
+            </div>
+            
+            <!-- Dialogue Box -->
+            <div id="dialogue-box">
+                <div id="dialogue-text"></div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div id="action-buttons" class="hidden">
+                <button class="action-btn" id="btn-fight" data-action="fight">
+                    <span class="btn-icon">⚔️</span> FIGHT
+                </button>
+                <button class="action-btn" id="btn-act" data-action="act">
+                    <span class="btn-icon">💬</span> ACT
+                </button>
+                <button class="action-btn" id="btn-item" data-action="item">
+                    <span class="btn-icon">🎒</span> ITEM
+                </button>
+                <button class="action-btn" id="btn-mercy" data-action="mercy">
+                    <span class="btn-icon">❤️</span> MERCY
+                </button>
+            </div>
+            
+            <!-- Sub-menu for actions -->
+            <div id="sub-menu" class="hidden"></div>
+        </div>
+    </div>
+    
+    <!-- Load modules in order -->
+    <script type="module" src="js/config.js"></script>
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/audio.js"></script>
+    <script type="module" src="js/soul.js"></script>
+    <script type="module" src="js/collision.js"></script>
+    <script type="module" src="js/attacks.js"></script>
+    <script type="module" src="js/enemy.js"></script>
+    <script type="module" src="js/ui.js"></script>
+    <script type="module" src="js/battle.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
