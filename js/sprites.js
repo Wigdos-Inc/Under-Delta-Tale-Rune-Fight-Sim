@@ -12,7 +12,6 @@ export class SpriteManager {
     constructor() {
         this.sprites = new Map();
         this.loadingPromises = new Map();
-        this.basePath = ''; // Empty base path - full paths are provided by callers
         this.failedSprites = new Set(); // Track failed loads to avoid retrying
         this.loadAttempts = new Map(); // Track load attempts
         this.maxRetries = 3;
@@ -77,7 +76,7 @@ export class SpriteManager {
                 reject(new Error(`Failed to load sprite: ${path}`));
             };
             
-            img.src = this.basePath + path;
+            img.src = path;
         });
         
         this.loadingPromises.set(path, promise);
