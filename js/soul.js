@@ -123,7 +123,7 @@ export class Soul {
      */
     makeInvincible() {
         this.invincible = true;
-        this.invincibilityTimer = CONFIG.SOUL.invincibilityTime / 16.67; // Convert to frames (assuming 60fps)
+        this.invincibilityTimer = CONFIG.SOUL.invincibilityTime / CONFIG.ANIMATION.msPerFrame; // Convert to frames
     }
     
     /**

@@ -111,7 +111,7 @@ export class UIManager {
         
         this.textTimer++;
         
-        if (this.textTimer >= this.textSpeed / 16.67) { // Convert ms to frames
+        if (this.textTimer >= this.textSpeed / CONFIG.ANIMATION.msPerFrame) { // Convert ms to frames
             this.textTimer = 0;
             
             if (this.textIndex < this.currentText.length) {

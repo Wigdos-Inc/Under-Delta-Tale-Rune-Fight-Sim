@@ -54,7 +54,9 @@ export const CONFIG = {
     ANIMATION: {
         textSpeed: 50,      // milliseconds per character
         damageFlashTime: 500, // milliseconds
-        shakeIntensity: 5
+        shakeIntensity: 5,
+        frameRate: 60,      // Target frame rate
+        msPerFrame: 16.67   // Milliseconds per frame (1000 / 60)
     },
     
     // Sound settings
