@@ -31,6 +31,14 @@ function getDbConfigFromEnv() {
 
 const cfg = getDbConfigFromEnv();
 
+// Diagnostic: print resolved DB connection info (never print the password)
+console.log('DB config resolved:', {
+  host: cfg.host,
+  port: cfg.port,
+  user: cfg.user,
+  database: cfg.database
+});
+
 const pool = mysql.createPool({
   host: cfg.host,
   port: cfg.port,
