@@ -20,11 +20,20 @@ app.use(helmet());
 const rawFrontend = process.env.FRONTEND_URL || 'http://localhost:8080';
 const allowedOrigin = String(rawFrontend).replace(/\/$/, '');
 
+console.log('CORS Configuration:');
+console.log('  Raw FRONTEND_URL:', rawFrontend);
+console.log('  Allowed Origin:', allowedOrigin);
+
 app.use(cors({
   origin: function (origin, callback) {
+    console.log('CORS request from origin:', origin || '(no origin header)');
     // allow requests like curl/postman with no origin
     if (!origin) return callback(null, true);
-    if (origin === allowedOrigin) return callback(null, true);
+    if (origin === allowedOrigin) {
+      console.log('  ✓ Origin allowed');
+      return callback(null, true);
+    }
+    console.log('  ✗ Origin rejected (expected:', allowedOrigin, ')');
     return callback(new Error('CORS policy: origin not allowed'));
   },
   credentials: true,
