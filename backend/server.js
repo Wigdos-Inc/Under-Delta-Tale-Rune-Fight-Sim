@@ -16,11 +16,7 @@ console.log('Starting server...');
 console.log('PORT from env:', process.env.PORT);
 console.log('Will listen on port:', PORT);
 
-// Security middleware
-app.use(helmet());
-
-// CORS configuration
-// Normalize frontend URL (strip trailing slash) and configure CORS to allow credentials
+// CORS configuration - Railway-compatible version
 const rawFrontend = process.env.FRONTEND_URL || 'http://localhost:8080';
 const allowedOrigin = String(rawFrontend).replace(/\/$/, '');
 
@@ -28,25 +24,35 @@ console.log('CORS Configuration:');
 console.log('  Raw FRONTEND_URL:', rawFrontend);
 console.log('  Allowed Origin:', allowedOrigin);
 
+// Single CORS middleware - Railway-optimized (MUST be before other middleware)
 app.use(cors({
-  origin: function (origin, callback) {
+  origin: (origin, callback) => {
     console.log('CORS request from origin:', origin || '(no origin header)');
-    // allow requests like curl/postman with no origin
-    if (!origin) return callback(null, true);
+    // Allow requests with no origin (Postman, curl, Railway internal health checks)
+    if (!origin) {
+      console.log('  ✓ No origin - allowed');
+      return callback(null, true);
+    }
+    // Allow the configured frontend origin
     if (origin === allowedOrigin) {
       console.log('  ✓ Origin allowed');
       return callback(null, true);
     }
-    console.log('  ✗ Origin rejected (expected:', allowedOrigin, ')');
-    return callback(new Error('CORS policy: origin not allowed'));
+    // CRITICAL: Return false instead of Error to avoid 500 status that causes 502
+    console.warn('  ✗ CORS rejected origin:', origin, '(expected:', allowedOrigin, ')');
+    callback(null, false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  optionsSuccessStatus: 204  // Railway prefers 204 for OPTIONS
 }));
 
-// Ensure preflight responses are handled
-app.options('*', cors({ origin: allowedOrigin, credentials: true, optionsSuccessStatus: 200 }));
+// Security middleware (after CORS to avoid conflicts)
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" }
+}));
 
 // Body parser
 app.use(express.json());
@@ -62,11 +68,24 @@ const generalLimiter = rateLimit({
 
 app.use('/api/', generalLimiter);
 
+// Root health check for Railway (must respond with 200)
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
+app.get('/', (req, res) => {
+  res.json({ 
+    status: 'online', 
+    service: 'Undertale/Deltarune Fight Sim API',
+    version: '1.0.0'
+  });
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/progress', progressRoutes);
 
-// Health check — include a lightweight DB probe so readiness reflects DB state
+// Health check with DB probe
 app.get('/api/health', async (req, res) => {
   try {
     // lightweight DB check
@@ -86,9 +105,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
+// Start server - bind to 0.0.0.0 for Railway
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV}`);
+  console.log(\`Server running on port \${PORT}\`);
+  console.log(\`Environment: \${process.env.NODE_ENV}\`);
   console.log('Server is ready to accept connections');
 });
