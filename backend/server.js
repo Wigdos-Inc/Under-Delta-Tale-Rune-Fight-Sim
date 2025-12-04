@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
+const db = require('./config/database');
 
 const authRoutes = require('./routes/auth');
 const progressRoutes = require('./routes/progress');
@@ -15,10 +16,24 @@ const PORT = process.env.PORT || 3000;
 app.use(helmet());
 
 // CORS configuration
+// Normalize frontend URL (strip trailing slash) and configure CORS to allow credentials
+const rawFrontend = process.env.FRONTEND_URL || 'http://localhost:8080';
+const allowedOrigin = String(rawFrontend).replace(/\/$/, '');
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:8080',
-  credentials: true
+  origin: function (origin, callback) {
+    // allow requests like curl/postman with no origin
+    if (!origin) return callback(null, true);
+    if (origin === allowedOrigin) return callback(null, true);
+    return callback(new Error('CORS policy: origin not allowed'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
+
+// Ensure preflight responses are handled
+app.options('*', cors({ origin: allowedOrigin, credentials: true, optionsSuccessStatus: 200 }));
 
 // Body parser
 app.use(express.json());
@@ -38,9 +53,15 @@ app.use('/api/', generalLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/progress', progressRoutes);
 
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Server is running' });
+// Health check — include a lightweight DB probe so readiness reflects DB state
+app.get('/api/health', async (req, res) => {
+  try {
+    // lightweight DB check
+    await db.query('SELECT 1');
+    res.json({ status: 'ok', message: 'Server and DB are reachable' });
+  } catch (err) {
+    res.status(503).json({ status: 'error', message: 'DB unreachable' });
+  }
 });
 
 // Error handling middleware

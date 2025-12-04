@@ -29,7 +29,7 @@ A browser-based fighting simulator that recreates every battle from Undertale an
 
 **Backend:**
 - Node.js with Express.js
-- MySQL (hosted on filess.io)
+- MySQL (hosted on railway.app)
 - JWT authentication with httpOnly cookies
 - bcrypt password hashing (12 rounds)
 - Rate limiting (helmet, CORS)

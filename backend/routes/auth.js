@@ -118,12 +118,13 @@ router.post('/login', loginLimiter, async (req, res) => {
     );
 
     // Set cookie
-    res.cookie('authToken', token, {
+    const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 24 * 60 * 60 * 1000 // 24 hours
-    });
+    };
+    res.cookie('authToken', token, cookieOptions);
 
     res.json({
       message: 'Login successful',
@@ -138,7 +139,12 @@ router.post('/login', loginLimiter, async (req, res) => {
 
 // Logout
 router.post('/logout', (req, res) => {
-  res.clearCookie('authToken');
+  // Clear cookie with the same options used when setting it (important for cross-site cookies)
+  res.clearCookie('authToken', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+  });
   res.json({ message: 'Logged out successfully' });
 });
 
