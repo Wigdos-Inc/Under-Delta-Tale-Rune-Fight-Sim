@@ -1,0 +1,13 @@
+{
+    "chat.mcp.serverSampling": {
+        "Under-Delta-Tale-Rune-Fight-Sim/.vscode/mcp.json: microsoft/playwright-mcp": {
+            "allowedModels": [
+                "copilot/gpt-5-mini",
+                "copilot/claude-sonnet-4.5",
+                "copilot/grok-code-fast-1"
+            ]
+        }
+    },
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.pythonProjects": []
+}
