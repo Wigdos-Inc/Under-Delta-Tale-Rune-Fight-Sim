@@ -12,6 +12,10 @@ const progressRoutes = require('./routes/progress');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+console.log('Starting server...');
+console.log('PORT from env:', process.env.PORT);
+console.log('Will listen on port:', PORT);
+
 // Security middleware
 app.use(helmet());
 
@@ -83,7 +87,8 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV}`);
+  console.log('Server is ready to accept connections');
 });
