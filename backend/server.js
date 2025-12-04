@@ -107,7 +107,7 @@ app.use((err, req, res, next) => {
 
 // Start server - bind to 0.0.0.0 for Railway
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(\`Server running on port \${PORT}\`);
-  console.log(\`Environment: \${process.env.NODE_ENV}\`);
+  console.log(`Server running on port \${PORT}`);
+  console.log(`Environment: \${process.env.NODE_ENV}`);
   console.log('Server is ready to accept connections');
 });
