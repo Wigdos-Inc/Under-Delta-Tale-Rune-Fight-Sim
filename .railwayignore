@@ -1,8 +1,0 @@
-# Ignore frontend files - Railway should only deploy backend
-index.html
-src/
-css/
-data/
-docs/
-fight info
-.vscode/
