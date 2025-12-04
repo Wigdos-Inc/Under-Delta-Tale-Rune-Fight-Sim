@@ -2,8 +2,17 @@
  * API Client for communicating with backend
  */
 class ApiClient {
-  constructor(baseUrl = 'https://under-delta-tale-rune-fight-sim.railway.internal') {
-    this.baseUrl = baseUrl;
+  constructor(baseUrl = null) {
+    // Auto-detect environment
+    const isLocal = window.location.hostname === 'localhost';
+    
+    // Default URLs based on environment
+    this.baseUrl = baseUrl || (
+      isLocal 
+        ? 'http://localhost:3000/api'
+        : 'https://under-delta-tale-rune-fight-sim-production.up.railway.app/api'
+    );
+    
     this.isAuthenticated = false;
     this.username = null;
     this.userId = null;
