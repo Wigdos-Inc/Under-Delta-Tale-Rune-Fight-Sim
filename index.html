@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undertale/Deltarune Fighting Simulator</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="loginForm" class="auth-form">
+                <h2>Login</h2>
+                <input type="text" id="loginUsername" placeholder="Username">
+                <input type="password" id="loginPassword" placeholder="Password">
+                <button id="loginBtn">Login</button>
+                <p>Don't have an account? <a href="#" id="showRegister">Register</a></p>
+                <p>Or <a href="#" id="playGuest">Continue as Guest</a></p>
+            </div>
+            <div id="registerForm" class="auth-form hidden">
+                <h2>Register</h2>
+                <input type="text" id="registerUsername" placeholder="Username">
+                <input type="email" id="registerEmail" placeholder="Email">
+                <input type="password" id="registerPassword" placeholder="Password">
+                <button id="registerBtn">Register</button>
+                <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Container -->
+    <div id="gameContainer">
+        <!-- Enemy Selection Screen -->
+        <div id="enemySelection" class="screen">
+            <div class="header">
+                <h1>UNDERTALE / DELTARUNE</h1>
+                <h2>FIGHTING SIMULATOR</h2>
+                <div id="userInfo">
+                    <span id="username">Guest</span>
+                    <button id="logoutBtn" class="hidden">Logout</button>
+                </div>
+            </div>
+
+            <div class="game-tabs">
+                <button id="undertaleTab" class="tab-btn active" data-game="undertale">UNDERTALE</button>
+                <button id="deltaruneTab" class="tab-btn" data-game="deltarune">DELTARUNE</button>
+            </div>
+
+            <div id="enemyList" class="enemy-list">
+                <!-- Enemies will be loaded dynamically -->
+            </div>
+
+            <div class="stats-panel">
+                <h3>Your Stats</h3>
+                <div id="statsDisplay">
+                    <p>Total Battles: <span id="totalBattles">0</span></p>
+                    <p>Total Wins: <span id="totalWins">0</span></p>
+                    <p>Favorite Enemy: <span id="favoriteEnemy">-</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Battle Screen -->
+        <div id="battleScreen" class="screen hidden">
+            <!-- Battle Canvas -->
+            <canvas id="battleCanvas" width="640" height="480"></canvas>
+
+            <!-- Battle UI Overlay -->
+            <div id="battleUI">
+                <!-- HP Bar -->
+                <div id="hpBar">
+                    <span id="playerName">CHARA</span>
+                    <span id="playerLV">LV 19</span>
+                    <div class="hp-container">
+                        <span>HP</span>
+                        <div class="hp-bar-bg">
+                            <div id="hpBarFill" class="hp-bar-fill"></div>
+                        </div>
+                        <span id="hpText">92 / 92</span>
+                    </div>
+                </div>
+
+                <!-- Battle Buttons -->
+                <div id="battleButtons" class="battle-buttons">
+                    <button id="fightBtn" class="battle-btn">
+                        <span class="btn-icon">❤</span> FIGHT
+                    </button>
+                    <button id="actBtn" class="battle-btn">
+                        <span class="btn-icon">★</span> ACT
+                    </button>
+                    <button id="itemBtn" class="battle-btn">
+                        <span class="btn-icon">◆</span> ITEM
+                    </button>
+                    <button id="mercyBtn" class="battle-btn">
+                        <span class="btn-icon">☼</span> MERCY
+                    </button>
+                </div>
+
+                <!-- Dialogue Box -->
+                <div id="dialogueBox" class="dialogue-box">
+                    <p id="dialogueText"></p>
+                </div>
+
+                <!-- ACT Menu -->
+                <div id="actMenu" class="action-menu hidden">
+                    <!-- ACT options will be loaded dynamically -->
+                </div>
+
+                <!-- MERCY Menu -->
+                <div id="mercyMenu" class="action-menu hidden">
+                    <button class="menu-option" data-action="spare">Spare</button>
+                    <button class="menu-option" data-action="flee">Flee</button>
+                </div>
+            </div>
+
+            <!-- Battle Results Modal -->
+            <div id="resultsModal" class="modal hidden">
+                <div class="modal-content">
+                    <h2 id="resultsTitle">VICTORY!</h2>
+                    <div id="resultsContent">
+                        <p>Time: <span id="resultTime">0.00s</span></p>
+                        <p>Damage Taken: <span id="resultDamage">0</span></p>
+                        <p id="newBestText" class="hidden">NEW PERSONAL BEST!</p>
+                    </div>
+                    <button id="returnToMenuBtn">Return to Menu</button>
+                    <button id="retryBtn">Retry</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboardModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="leaderboardTitle">Leaderboard</h2>
+            <div id="leaderboardContent">
+                <!-- Leaderboard entries will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="src/api/ApiClient.js"></script>
+    <script src="src/engine/BattleEngine.js"></script>
+    <script src="src/engine/SoulController.js"></script>
+    <script src="src/projectiles/Projectile.js"></script>
+    <script src="src/projectiles/ProjectilePool.js"></script>
+    <script src="src/enemies/Enemy.js"></script>
+    <script src="src/ui/UIRenderer.js"></script>
+    
+    <!-- Undertale Enemies -->
+    <script src="src/enemies/undertale/Froggit.js"></script>
+    <script src="src/enemies/undertale/Whimsun.js"></script>
+    <script src="src/enemies/undertale/Loox.js"></script>
+    <script src="src/enemies/undertale/Migosp.js"></script>
+    <script src="src/enemies/undertale/Moldsmal.js"></script>
+    
+    <script src="src/main.js"></script>
+</body>
+</html>
