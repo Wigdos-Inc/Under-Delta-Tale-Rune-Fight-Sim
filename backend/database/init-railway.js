@@ -24,13 +24,22 @@ async function initializeRailwayDatabase() {
     const schemaPath = path.join(__dirname, 'schema.sql');
     const schema = fs.readFileSync(schemaPath, 'utf8');
 
-    // Split into individual statements
-    const statements = schema
+    // Remove comments and split into individual statements
+    const cleanSchema = schema
+      .split('\n')
+      .filter(line => !line.trim().startsWith('--'))
+      .join('\n');
+    
+    const statements = cleanSchema
       .split(';')
       .map(stmt => stmt.trim())
-      .filter(stmt => stmt.length > 0 && !stmt.startsWith('--'));
+      .filter(stmt => stmt.length > 0);
 
     console.log(`Executing ${statements.length} SQL statements...`);
+    if (statements.length === 0) {
+      console.error('No SQL statements found in schema.sql');
+      process.exit(1);
+    }
 
     // Execute each statement
     for (let i = 0; i < statements.length; i++) {

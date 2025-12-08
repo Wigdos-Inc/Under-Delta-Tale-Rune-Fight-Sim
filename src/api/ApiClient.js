@@ -160,3 +160,8 @@ class ApiClient {
 
 // Create global API client instance
 const apiClient = new ApiClient();
+
+// Make it accessible globally
+if (typeof window !== 'undefined') {
+  window.apiClient = apiClient;
+}

@@ -12,12 +12,29 @@ let enemies = {};
  * Initialize application
  */
 async function init() {
-  // Initialize UI renderer
-  uiRenderer = new UIRenderer();
-  
-  // Initialize battle engine
-  const canvas = document.getElementById('battleCanvas');
-  battleEngine = new BattleEngine(canvas);
+  try {
+    console.log('Initializing game...');
+    
+    // Ensure apiClient is available
+    if (typeof apiClient === 'undefined') {
+      console.error('ApiClient not loaded!');
+      return;
+    }
+    
+    console.log('ApiClient loaded:', apiClient);
+    
+    // Initialize UI renderer
+    uiRenderer = new UIRenderer();
+    console.log('UIRenderer initialized');
+    
+    // Initialize battle engine
+    const canvas = document.getElementById('battleCanvas');
+    if (!canvas) {
+      console.error('Canvas element not found!');
+      return;
+    }
+    battleEngine = new BattleEngine(canvas);
+    console.log('BattleEngine initialized');
   
   // Setup event listeners
   setupEventListeners();
@@ -27,16 +44,24 @@ async function init() {
   
   // Load enemies
   loadEnemies();
+  console.log('Enemies loaded:', enemies);
   
   // Display enemy list
   displayEnemyList(currentGame);
+  
+  console.log('Game initialization complete!');
+  } catch (err) {
+    console.error('Failed to initialize game:', err);
+    alert('Failed to initialize game. Please refresh the page. Error: ' + err.message);
+  }
 }
 
 /**
  * Check if user is authenticated
  */
 async function checkAuthentication() {
-  const isAuth = await apiClient.verifyAuth();
+  try {
+    const isAuth = await apiClient.verifyAuth();
   
   if (isAuth) {
     // User is logged in
@@ -48,6 +73,11 @@ async function checkAuthentication() {
     loadUserStats();
   } else {
     // Show auth modal
+    document.getElementById('authModal').classList.remove('hidden');
+  }
+  } catch (err) {
+    console.error('Authentication check failed:', err);
+    // Show auth modal on error
     document.getElementById('authModal').classList.remove('hidden');
   }
 }
@@ -226,14 +256,46 @@ function switchGame(game) {
  * Load enemy definitions
  */
 function loadEnemies() {
+  console.log('Loading enemies...');
+  
   // Load Undertale enemies
-  enemies.undertale = [
-    new Froggit(),
-    new Whimsun(),
-    new Loox(),
-    new Migosp(),
-    new Moldsmal()
-  ];
+  enemies.undertale = [];
+  
+  // Check if enemy classes are loaded
+  if (typeof Froggit !== 'undefined') {
+    enemies.undertale.push(new Froggit());
+    console.log('Loaded: Froggit');
+  } else {
+    console.warn('Froggit class not found');
+  }
+  
+  if (typeof Whimsun !== 'undefined') {
+    enemies.undertale.push(new Whimsun());
+    console.log('Loaded: Whimsun');
+  } else {
+    console.warn('Whimsun class not found');
+  }
+  
+  if (typeof Loox !== 'undefined') {
+    enemies.undertale.push(new Loox());
+    console.log('Loaded: Loox');
+  } else {
+    console.warn('Loox class not found');
+  }
+  
+  if (typeof Migosp !== 'undefined') {
+    enemies.undertale.push(new Migosp());
+    console.log('Loaded: Migosp');
+  } else {
+    console.warn('Migosp class not found');
+  }
+  
+  if (typeof Moldsmal !== 'undefined') {
+    enemies.undertale.push(new Moldsmal());
+    console.log('Loaded: Moldsmal');
+  } else {
+    console.warn('Moldsmal class not found');
+  }
   
   enemies.deltarune = [
     // Placeholder - will be populated with Deltarune enemy instances
