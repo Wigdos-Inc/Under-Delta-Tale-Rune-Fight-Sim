@@ -1,0 +1,10 @@
+# Files to ignore for FRONTEND deployment
+backend/
+node_modules/
+*.log
+.git/
+.env
+docs/
+README.md
+STATUS.md
+start-servers.sh

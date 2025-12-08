@@ -1,0 +1,14 @@
+{
+  "name": "undertale-deltarune-fight-sim-frontend",
+  "version": "1.0.0",
+  "description": "Undertale/Deltarune Fighting Simulator - Frontend Static Server",
+  "scripts": {
+    "start": "npx http-server -p $PORT -c-1 --cors"
+  },
+  "keywords": ["undertale", "deltarune", "game", "fighting-simulator"],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.x"
+  }
+}
